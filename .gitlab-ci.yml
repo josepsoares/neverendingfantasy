@@ -1,0 +1,57 @@
+image: node:16
+
+variables:
+  FF_USE_FASTZIP: 'true'
+  ARTIFACT_COMPRESSION_LEVEL: fastest
+  CACHE_COMPRESSION_LEVEL: fastest
+  TRANSFER_METER_FREQUENCY: 5s
+  # VERCEL_TOKEN: $VERCEL_TOKEN
+
+cache:
+  key:
+    files:
+      - yarn.lock
+  paths:
+    - node_modules/
+
+stages:
+  - install
+  - format
+  - test
+#  - deploy
+
+install:
+  stage: install
+  script:
+    - yarn install
+  artifacts:
+    paths:
+      - node_modules/
+      - .next
+
+#jest:
+#  stage: test
+#  script:
+#    - yarn test
+
+#typescript:
+#  stage: test
+#  script:
+#    - yarn type-check
+
+prettify:
+  stage: format
+  script:
+    - yarn prettify
+
+linter:
+  stage: format
+  script:
+    - yarn lint
+#deploy:
+#  stage: deploy
+#  script:
+#    - yarn build
+#    - npx vercel --token ${VERCEL_TOKEN} --prod
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

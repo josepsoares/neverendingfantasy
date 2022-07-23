@@ -1,0 +1,21 @@
+{
+  "name": "neverending fantasy",
+  "short_name": "neverending fantasy",
+  "start_url": "/",
+  "orientation": "portrait-primary",
+  "theme_color": "#2b5797",
+  "background_color": "#2b5797",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}

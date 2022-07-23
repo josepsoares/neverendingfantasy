@@ -1,0 +1,101 @@
+@font-face {
+  font-family: 'FinalFantasyFont';
+  src: url('../../public/assets/font/Highwind.ttf') format('truetype');
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#nprogress .bar {
+  height: 10px !important;
+}
+
+button:hover,
+button:active,
+a:hover,
+a:active,
+input:hover,
+input:active,
+input:focus,
+select:hover,
+select:focus,
+select:active {
+  cursor: url('../assets/cursors/FF9Cursor.png') 12 2, auto;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 0.35rem;
+  max-width: 100% !important;
+}
+
+ul {
+  list-style-image: url('../assets/icons/phoenix-down-icon.png');
+}
+
+ul li {
+  margin-left: 20px;
+}
+
+p a,
+li a {
+  text-decoration: underline !important;
+}
+
+p a:hover,
+li a:hover {
+  text-decoration: underline !important;
+  text-decoration-color: rgb(20, 183, 220) !important;
+}
+
+.title {
+  border-bottom: solid 10px;
+  border-color: cornflowerblue;
+  font-size: 12rem;
+  margin-bottom: 3rem;
+}
+
+.img-border {
+  border-radius: 2rem;
+}
+
+.overlay-img {
+  opacity: 0.1;
+  z-index: -100;
+  filter: sepia(100%) hue-rotate(173deg) !important;
+  -webkit-filter: sepia(100%) hue-rotate(173deg) !important;
+}
+
+.overlay-img-round {
+  opacity: 0.4;
+  z-index: -100;
+  border-radius: 24px;
+  filter: sepia(100%) hue-rotate(173deg) !important;
+  -webkit-filter: sepia(100%) hue-rotate(173deg) !important;
+}
+
+.overlay-img-w-round {
+  opacity: 0.4;
+  z-index: -100;
+  filter: sepia(100%) hue-rotate(173deg) saturate(20%) !important;
+  -webkit-filter: sepia(100%) hue-rotate(173deg) saturate(20%) !important;
+}
+
+nav ol li {
+  list-style-type: none;
+}
+
+nav ol {
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+}
