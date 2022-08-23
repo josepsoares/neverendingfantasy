@@ -10,9 +10,13 @@ import {
 } from '@chakra-ui/react';
 
 const useFilterDrawer = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isFilterDrawerOpen,
+    onOpen: onFilterDrawerOpen,
+    onClose: onFilterDrawerClose
+  } = useDisclosure();
 
-  return { isOpen, onOpen, onClose };
+  return { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose };
 };
 
 const FilterDrawer: React.FC<{

@@ -13,7 +13,7 @@ const HeadingWithFilter: React.FC<{
       alignItems="center"
       pb={8}
     >
-      <Heading pt={2} as="h1" margin="0" textColor="brand.500">
+      <Heading fontSize="8xl" as="h1" pt={2} m={0} color="brand.800">
         {title}
       </Heading>
       {data && (

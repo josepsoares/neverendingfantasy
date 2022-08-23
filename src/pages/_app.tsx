@@ -10,7 +10,6 @@ import Footer from '@components/common/footer';
 import Breadcrumbs from '@components/common/breadcumbs';
 import GoToTopButton from '@components/common/buttons/goToTopButton';
 import GoBackButton from '@components/common/buttons/goBackButton';
-import Fonts from '@styles/font';
 
 import '@styles/globals.css';
 import '@styles/embla.css';
@@ -36,7 +35,6 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
 
   return (
     <ChakraProvider theme={nfTheme}>
-      <Fonts />
       <TopProgressBar />
       <SimpleGrid width="100%" minH="110vh" templateRows="1fr auto">
         <AnimatePresence

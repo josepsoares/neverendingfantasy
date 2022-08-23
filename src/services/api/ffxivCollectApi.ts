@@ -2,24 +2,22 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 import { REHYDRATE } from 'redux-persist';
 
-import {
-  IAchievement,
-  IAchievementsResponse,
-  IArmoire,
-  IArmoiresResponse,
-  IBarding,
-  IBardingsResponse,
-  IFashion,
-  IFashionResponse,
-  IHairstyle,
-  IHairstylesResponse,
-  IMinionsResponse,
-  IMount,
-  IMountsResponse
-} from '@ts/interfaces/api/ffxiv/ffxivCollectInterfaces';
 import { _add } from '@utils/helpers/add';
 import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
-import { TGenericObject } from '@ts/types/TGenericObject';
+
+import type {
+  IAchievement,
+  IAchievementsResponse,
+  IArmoiresResponse,
+  IEmoteResponse,
+  IFashionResponse,
+  IHairstylesResponse,
+  IMinionsResponse,
+  IMountsResponse,
+  IOrchestrionResponse,
+  IRelicWeaponResponse
+} from '@ts/interfaces/api/ffxiv/ffxivCollectInterfaces';
+import type { TGenericObject } from '@ts/types/TGenericObject';
 
 export const ffxivCollectApi = createApi({
   reducerPath: 'api-ffxiv-collect',
@@ -45,38 +43,30 @@ export const ffxivCollectApi = createApi({
     indexMounts: builder.query<IMountsResponse, TGenericObject>({
       query: searchParams => `mounts?${addParamsToGetRequest(searchParams)}`
     }),
-    getMount: builder.query<IMount, string>({
-      query: id => `mounts/${id}`
-    }),
     indexMinions: builder.query<IMinionsResponse, TGenericObject>({
       query: searchParams => `minions?${addParamsToGetRequest(searchParams)}`
-    }),
-    getMinion: builder.query<IMinionsResponse, string>({
-      query: id => `minions/${id}`
-    }),
-    indexBardings: builder.query<IBardingsResponse, TGenericObject>({
-      query: searchParams => `bardings?${addParamsToGetRequest(searchParams)}`
-    }),
-    getBarding: builder.query<IBarding, string>({
-      query: id => `bardings/${id}`
     }),
     indexHairstyles: builder.query<IHairstylesResponse, TGenericObject>({
       query: searchParams => `hairstyles?${addParamsToGetRequest(searchParams)}`
     }),
-    getHairstyle: builder.query<IHairstyle, string>({
-      query: id => `hairstyles/${id}`
-    }),
     indexArmoires: builder.query<IArmoiresResponse, TGenericObject>({
       query: searchParams => `armoires?${addParamsToGetRequest(searchParams)}`
-    }),
-    getArmoire: builder.query<IArmoire, string>({
-      query: id => `armoires/${id}`
     }),
     indexFashions: builder.query<IFashionResponse, TGenericObject>({
       query: searchParams => `fashions?${addParamsToGetRequest(searchParams)}`
     }),
-    getFashion: builder.query<IFashion, string>({
-      query: id => `fashions/${id}`
+    indexOrchestrion: builder.query<IOrchestrionResponse, TGenericObject>({
+      query: searchParams =>
+        `orchestrions?${addParamsToGetRequest(searchParams)}`
+    }),
+    indexRelicWeapons: builder.query<IRelicWeaponResponse, TGenericObject>({
+      query: searchParams =>
+        `fashions?type_category_eq=weapons&${addParamsToGetRequest(
+          searchParams
+        )}`
+    }),
+    indexEmotes: builder.query<IEmoteResponse, TGenericObject>({
+      query: searchParams => `emotes?${addParamsToGetRequest(searchParams)}`
     })
   })
 });
@@ -85,17 +75,13 @@ export const {
   useIndexAchievementsQuery,
   useGetAchievementQuery,
   useIndexMountsQuery,
-  useGetMountQuery,
   useIndexMinionsQuery,
-  useGetMinionQuery,
-  useIndexBardingsQuery,
-  useGetBardingQuery,
   useIndexHairstylesQuery,
-  useGetHairstyleQuery,
   useIndexArmoiresQuery,
-  useGetArmoireQuery,
   useIndexFashionsQuery,
-  useGetFashionQuery,
+  useIndexOrchestrionQuery,
+  useIndexRelicWeaponsQuery,
+  useIndexEmotesQuery,
   util: { getRunningOperationPromises }
 } = ffxivCollectApi;
 
@@ -103,15 +89,11 @@ export const {
   indexAchievements,
   getAchievement,
   indexMounts,
-  getMount,
   indexMinions,
-  getMinion,
-  indexBardings,
-  getBarding,
   indexHairstyles,
-  getHairstyle,
   indexArmoires,
-  getArmoire,
   indexFashions,
-  getFashion
+  indexOrchestrion,
+  indexRelicWeapons,
+  indexEmotes
 } = ffxivCollectApi.endpoints;

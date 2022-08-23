@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
+import { Box, Image } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
 import { _add } from '@utils/helpers/add';
-import { Box } from '@chakra-ui/react';
 
 interface Breadcrumb {
   breadcrumb: string;
@@ -24,7 +25,7 @@ const Breadcrumbs = () => {
 
       const pathArray = linkPath.map((path, i) => {
         return {
-          breadcrumb: path,
+          breadcrumb: path.replaceAll('-', ' '),
           href: '/' + linkPath.slice(0, i + 1).join('/')
         };
       });
@@ -38,56 +39,69 @@ const Breadcrumbs = () => {
   }
 
   return (
-    <nav aria-label="breadcrumbs">
-      <ol>
-        <Box
-          textColor="brand.100"
-          as="li"
-          display="inline-flex"
-          alignItems="center"
-        >
-          <Link href="/">
-            <a>home</a>
-          </Link>
-          <Icon
-            height="20px"
-            width="20px"
-            icon="bx:bx-chevron-right"
-            style={{ marginInline: '8px' }}
-          />
-        </Box>
-        {breadcrumbs.length >= 1 &&
-          breadcrumbs.map((breadcrumb, i) => {
-            if (!breadcrumb || breadcrumb.breadcrumb.length === 0) {
-              return null;
-            } else {
-              const isLastChild = breadcrumbs.length === _add(i, 1);
+    <>
+      <Box
+        as="header"
+        display="flex"
+        flexDir="row"
+        alignItems="center"
+        gap={[2, null, 4]}
+      >
+        <Image src="/favicons/favicon-32x32.png" alt="Neverendingfantsy logo" />
+        <nav aria-label="breadcrumbs">
+          <ol>
+            <Box
+              as="li"
+              textColor="brand.100"
+              display="inline-flex"
+              alignItems="center"
+              fontSize={['initial', 'large', '2xl']}
+            >
+              <Link href="/">
+                <a>home</a>
+              </Link>
+              <Icon
+                height="20px"
+                width="20px"
+                icon="bx:bx-chevron-right"
+                style={{ marginInline: '8px' }}
+              />
+            </Box>
+            {breadcrumbs.length >= 1 &&
+              breadcrumbs.map((breadcrumb, i) => {
+                if (!breadcrumb || breadcrumb.breadcrumb.length === 0) {
+                  return null;
+                } else {
+                  const isLastChild = breadcrumbs.length === _add(i, 1);
 
-              return (
-                <Box
-                  textColor="brand.100"
-                  as="li"
-                  display="inline-flex"
-                  alignItems="center"
-                  key={i}
-                >
-                  <Link href={breadcrumb.href}>
-                    <a>{breadcrumb.breadcrumb}</a>
-                  </Link>
-                  {!isLastChild && (
-                    <Icon
-                      height="20px"
-                      width="20px"
-                      icon="bx:bx-chevron-right"
-                      style={{ marginInline: '8px' }}
-                    />
-                  )}
-                </Box>
-              );
-            }
-          })}
-      </ol>
-    </nav>
+                  return (
+                    <Box
+                      as="li"
+                      key={i}
+                      textColor="brand.100"
+                      display="inline-flex"
+                      alignItems="center"
+                      fontSize={['initial', 'large', '2xl']}
+                    >
+                      <Link href={breadcrumb.href}>
+                        <a>{breadcrumb.breadcrumb}</a>
+                      </Link>
+                      {!isLastChild && (
+                        <Icon
+                          height="20px"
+                          width="20px"
+                          icon="bx:bx-chevron-right"
+                          style={{ marginInline: '8px' }}
+                        />
+                      )}
+                    </Box>
+                  );
+                }
+              })}
+          </ol>
+        </nav>
+      </Box>
+    </>
   );
 };
 

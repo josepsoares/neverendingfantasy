@@ -20,12 +20,12 @@ import {
   Grid,
   Heading,
   IconButton,
+  Image,
   Text
 } from '@chakra-ui/react';
 import ExternalLink from '@components/common/externalLink';
 import EmblaCarousel from '@components/common/emblaCarousel';
 import { Icon } from '@iconify/react';
-import Image from 'next/image';
 import { capitalizeString } from '@utils/helpers/capitalizeString';
 
 const GamePage: NextPage = () => {
@@ -67,7 +67,7 @@ const GamePage: NextPage = () => {
               mt={16}
               alignItems="center"
               justify="center"
-              h={data.background_image ? 64 : 'auto'}
+              h={data.background_image ? 96 : 'auto'}
               position="relative"
             >
               {data.background_image && (
@@ -77,10 +77,18 @@ const GamePage: NextPage = () => {
                   layout="fill"
                   objectFit="cover"
                   quality={100}
-                  className="overlay-img-w-round"
+                  opacity={0.1}
+                  zIndex="-100"
+                  filter="sepia(100%) hue-rotate(173deg)"
                 />
               )}
-              <Heading as="h1" textAlign="center">
+              <Heading
+                color="brand.800"
+                fontSize="8xl"
+                as="h1"
+                p="8"
+                textAlign="center"
+              >
                 {data.name}{' '}
                 {data?.website && (
                   <ExternalLink link={data.website}>
@@ -128,20 +136,6 @@ const GamePage: NextPage = () => {
                       i === data.developers.length - 1
                         ? dev.name
                         : `${dev.name}, `
-                    )}
-                  </Text>
-                </Box>
-
-                <Box>
-                  <Heading as="h3" pb={4}>
-                    Publishers
-                  </Heading>
-
-                  <Text>
-                    {data.publishers.map((pub, i) =>
-                      i === data.publishers.length - 1
-                        ? pub.name
-                        : `${pub.name}, `
                     )}
                   </Text>
                 </Box>

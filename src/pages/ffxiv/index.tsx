@@ -3,8 +3,7 @@ import Link from 'next/link';
 
 import SEO from '@components/common/seo';
 import { Box, Grid, Heading, Text } from '@chakra-ui/react';
-import CardBg from '@components/common/cardBg';
-import BgBlueBox from '@components/common/bgBlueBox';
+import CardBg from '@components/common/cardImgBg';
 
 const FFXIVPage: NextPage = () => {
   return (
@@ -15,7 +14,7 @@ const FFXIVPage: NextPage = () => {
       />
 
       <Box px={[12, null, 24, 32]} py={16}>
-        <Heading as="h1" pb={6} textColor="brand.500">
+        <Heading color="brand.800" fontSize="8xl" as="h1" pb={8}>
           FFXIV stuff
         </Heading>
         <Text pb={4}>
@@ -34,37 +33,7 @@ const FFXIVPage: NextPage = () => {
         </Text>
       </Box>
 
-      <Link href="/ffxiv/collectables-fashion" passHref={true}>
-        <Box
-          as="a"
-          w="100%"
-          opacity="0.9"
-          display="block"
-          transition="background-color 1s linear"
-          background="#0064d7"
-          sx={{
-            '&:hover, &:active': {
-              background: '#2f93ff'
-            }
-          }}
-        >
-          <CardBg
-            h={80}
-            imgUrl="img/ffxiv/ffxiv-fashion.jpg"
-            imgAlt="Fashion Image"
-            radii={false}
-          >
-            <Heading textColor="white" as="h2">
-              Collectables and Fashion
-            </Heading>
-            <Text textColor="white">
-              collectables, fashion things and a randomizer
-            </Text>
-          </CardBg>
-        </Box>
-      </Link>
-
-      <Grid templateColumns={['1fr', null, 'repeat(2, 1fr)', 'repeat(3, 1fr)']}>
+      <Grid templateColumns={['1fr', null, 'repeat(2, 1fr)']}>
         <Link href="/ffxiv/classjobs" passHref={true}>
           <Box
             as="a"
@@ -80,13 +49,13 @@ const FFXIVPage: NextPage = () => {
             }}
           >
             <CardBg
-              h={64}
-              imgUrl="img/ffxiv/ffxiv-classjobs.jpg"
+              h={80}
+              imgUrl="/assets/img/ffxiv/classjobs.jpg"
               imgAlt="Class Jobs"
               radii={false}
             >
               <Heading zIndex="2" textColor="white" as="h2">
-                Class Jobs
+                Classes and Jobs
               </Heading>
               <Text zIndex="2" textColor="white">
                 explore all the cool class jobs your character can do
@@ -110,8 +79,8 @@ const FFXIVPage: NextPage = () => {
             }}
           >
             <CardBg
-              h={64}
-              imgUrl="img/ffxiv/ffxiv-dungeon.jpg"
+              h={80}
+              imgUrl="/assets/img/ffxiv/midgardsormr.webp"
               imgAlt="Class Jobs"
               radii={false}
             >
@@ -125,7 +94,7 @@ const FFXIVPage: NextPage = () => {
           </Box>
         </Link>
 
-        <Link href="/ffxiv/triple-triad" passHref={true}>
+        <Link href="/ffxiv/collectables-and-fashion" passHref={true}>
           <Box
             as="a"
             w="100%"
@@ -140,8 +109,38 @@ const FFXIVPage: NextPage = () => {
             }}
           >
             <CardBg
-              h={64}
-              imgUrl="img/ffxiv/ffxiv-triple-triad.jpg"
+              h={80}
+              imgUrl="/assets/img/ffxiv/fashion.jpg"
+              imgAlt="Fashion Image"
+              radii={false}
+            >
+              <Heading textColor="white" as="h2">
+                Collectables and Fashion
+              </Heading>
+              <Text textColor="white">
+                collectables, fashion things and a randomizer
+              </Text>
+            </CardBg>
+          </Box>
+        </Link>
+
+        <Link href="/ffxiv/triple-triad" passHref={true}>
+          <Box
+            as="a"
+            w="100%"
+            opacity="0.9"
+            display="block"
+            transition="background-color 0.5s linear"
+            background="#0064d7"
+            sx={{
+              '&:hover, &:active': {
+                background: '#2f93ff'
+              }
+            }}
+          >
+            <CardBg
+              h={80}
+              imgUrl="/assets/img/ffxiv/triple-triad.jpg"
               imgAlt="Triple Triad Image"
               radii={false}
             >

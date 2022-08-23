@@ -3,7 +3,7 @@ type SourceProperty = {
   text: string;
   related_type?: string;
   related_id?: number;
-}[];
+};
 
 export interface IFFXIVCollectApiResponse {
   query: any;
@@ -44,26 +44,11 @@ export interface IArmoire {
     id: number;
     name: string;
   };
-  sources?: SourceProperty;
+  sources?: SourceProperty[];
 }
 
 export interface IArmoiresResponse extends IFFXIVCollectApiResponse {
   results: IArmoire[];
-}
-
-export interface IBarding {
-  id: number;
-  name: string;
-  order: number;
-  patch: string;
-  item_id?: number;
-  owned: string;
-  icon: string;
-  sources?: SourceProperty;
-}
-
-export interface IBardingsResponse extends IFFXIVCollectApiResponse {
-  results: IBarding[];
 }
 
 export interface IFashion {
@@ -76,7 +61,8 @@ export interface IFashion {
   owned: string;
   image?: string;
   icon?: string;
-  sources?: SourceProperty;
+  tradeable: boolean;
+  sources?: SourceProperty[];
 }
 
 export interface IFashionResponse extends IFFXIVCollectApiResponse {
@@ -91,7 +77,7 @@ export interface IHairstyle {
   item_id?: number;
   owned: string;
   icon?: string;
-  sources?: SourceProperty;
+  sources?: SourceProperty[];
 }
 
 export interface IHairstylesResponse extends IFFXIVCollectApiResponse {
@@ -117,7 +103,7 @@ export interface IMinion {
   image?: string;
   icon?: string;
   owned: string;
-  sources: SourceProperty;
+  sources: SourceProperty[];
   verminion?: {
     cost: number;
     attack: number;
@@ -158,9 +144,72 @@ export interface IMount {
   owned: string;
   image: string;
   icon: string;
-  sources: SourceProperty;
+  sources: SourceProperty[];
 }
 
 export interface IMountsResponse extends IFFXIVCollectApiResponse {
   results: IMount[];
+}
+
+export interface IOrchestrion {
+  id: number;
+  name: string;
+  description: string;
+  patch: string;
+  item_id?: any;
+  tradeable: boolean;
+  owned: string;
+  number: string;
+  icon: string;
+  category: {
+    id: number;
+    name: string;
+  };
+  sources: SourceProperty[];
+}
+
+export interface IOrchestrionResponse extends IFFXIVCollectApiResponse {
+  results: IOrchestrion[];
+}
+
+export interface IRelicWeapon {
+  id: number;
+  name: string;
+  order: number;
+  achievement_id: number;
+  icon: string;
+  owned: string;
+  type: {
+    name: string;
+    category: string;
+    jobs: number;
+    order: number;
+    expansion: number;
+  };
+  sources: SourceProperty[];
+}
+
+export interface IRelicWeaponResponse extends IFFXIVCollectApiResponse {
+  results: IRelicWeapon[];
+}
+
+export interface IEmote {
+  id: number;
+  name: string;
+  command: string;
+  order: number;
+  patch: string;
+  item_id?: any;
+  tradeable: boolean;
+  owned: string;
+  icon: string;
+  category: {
+    id: number;
+    name: string;
+  };
+  sources: SourceProperty[];
+}
+
+export interface IEmoteResponse extends IFFXIVCollectApiResponse {
+  results: IEmote[];
 }

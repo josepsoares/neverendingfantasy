@@ -25,7 +25,8 @@ const Npcs: NextPage = () => {
   });
   const { data, error, isLoading } = npcs;
 
-  const { isOpen, onOpen, onClose } = useFilterDrawer();
+  const { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose } =
+    useFilterDrawer();
 
   return (
     <>
@@ -35,7 +36,7 @@ const Npcs: NextPage = () => {
         <HeadingWithFilter
           title="Triple Triad - Npcs"
           data={data}
-          onOpen={onOpen}
+          onOpen={onFilterDrawerOpen}
         />
 
         <Box>
@@ -46,8 +47,8 @@ const Npcs: NextPage = () => {
           ) : data ? (
             <>
               <FilterDrawer
-                visible={isOpen}
-                close={onClose}
+                visible={isFilterDrawerOpen}
+                close={onFilterDrawerClose}
                 filtersJSX={
                   <Flex flexDir="column" gap={6}>
                     <FormControl label="Name">
@@ -56,19 +57,35 @@ const Npcs: NextPage = () => {
                     </FormControl>
                     <FormControl label="Difficulty">
                       <FormLabel as="legend">Difficulty</FormLabel>
-                      <Select options={['one', 'two', 'three']} value={'one'} />
+                      <Select value={'one'}>
+                        <option value="one">one</option>
+                        <option value="two">two</option>
+                        <option value="three">three</option>
+                      </Select>
                     </FormControl>
                     <FormControl label="Quest">
                       <FormLabel as="legend">Quest</FormLabel>
-                      <Select options={['one', 'two', 'three']} value={'one'} />
+                      <Select value={'one'}>
+                        <option value="one">one</option>
+                        <option value="two">two</option>
+                        <option value="three">three</option>
+                      </Select>
                     </FormControl>
                     <FormControl label="Rules">
                       <FormLabel as="legend">Rules</FormLabel>
-                      <Select options={['one', 'two', 'three']} value={'one'} />
+                      <Select value={'one'}>
+                        <option value="one">one</option>
+                        <option value="two">two</option>
+                        <option value="three">three</option>
+                      </Select>
                     </FormControl>
                     <FormControl label="Rewards">
                       <FormLabel as="legend">Rewards</FormLabel>
-                      <Select options={['one', 'two', 'three']} value={'one'} />
+                      <Select value={'one'}>
+                        <option value="one">one</option>
+                        <option value="two">two</option>
+                        <option value="three">three</option>
+                      </Select>
                     </FormControl>
                   </Flex>
                 }

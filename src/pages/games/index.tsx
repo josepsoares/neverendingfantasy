@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -32,8 +33,7 @@ import { IGame } from '@ts/interfaces/api/rawgInterfaces';
 import HeadingWithFilter from '@components/common/headingWithFilter';
 import { capitalizeString } from '@utils/helpers/capitalizeString';
 import { Icon } from '@iconify/react';
-import { useEffect, useState } from 'react';
-import { store } from '@redux/store';
+import Card from '@components/common/card';
 
 const Games: NextPage = () => {
   const dispatch = useDispatch();
@@ -60,6 +60,8 @@ const Games: NextPage = () => {
   const state = useSelector(state => state);
   const { isLoading, error, data, currentData, refetch } = games;
 
+  console.log(data);
+
   useEffect(() => {
     if (data) {
       setstoreGames([...storeGames, ...data.results]);
@@ -70,7 +72,8 @@ const Games: NextPage = () => {
 
   console.log('store games', storeGames);
 
-  const { isOpen, onOpen, onClose } = useFilterDrawer();
+  const { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose } =
+    useFilterDrawer();
 
   return (
     <>
@@ -79,7 +82,11 @@ const Games: NextPage = () => {
         description="Find all, really all, the games the final fantasy franchise has to offer"
       />
       <Box px={[12, null, 24, 32]} py={16}>
-        <HeadingWithFilter title="Games" data={data} onOpen={onOpen} />
+        <HeadingWithFilter
+          title="Games"
+          data={data}
+          onOpen={onFilterDrawerOpen}
+        />
         <Box pb={16}>
           <Text>
             you know, there are a lot of final fantasy games. they never seem to
@@ -95,8 +102,8 @@ const Games: NextPage = () => {
           ) : data ? (
             <>
               <FilterDrawer
-                visible={isOpen}
-                close={onClose}
+                visible={isFilterDrawerOpen}
+                close={onFilterDrawerClose}
                 filtersJSX={
                   <Flex flexDir="column" gap={8}>
                     <FormControl as="fieldset">
@@ -201,17 +208,7 @@ const Games: NextPage = () => {
                         key={i}
                       >
                         <Box as="a">
-                          <Flex
-                            shadow="lg"
-                            bgColor="brand.600"
-                            color="white"
-                            height={'26rem'}
-                            rounded="lg"
-                            boxShadow="base"
-                            flexDir="column"
-                            position="relative"
-                            alignItems="center"
-                          >
+                          <Card p={0}>
                             <Box w="100%" position="relative">
                               <Image
                                 borderBottomRightRadius={0}
@@ -223,28 +220,15 @@ const Games: NextPage = () => {
                                     ? `${game.name} Image`
                                     : 'Placeholder'
                                 }
-                                quality={100}
                                 height="48"
                                 w="full"
                                 objectFit="cover"
-                                src={
-                                  game.background_image !== null
-                                    ? game.background_image
-                                    : require('../../assets/img/placeholder.png')
-                                }
+                                src={game.background_image}
+                                fallbackSrc="/assets/img/placeholder.png"
                               />
                             </Box>
-                            <Box p={8}>
-                              <Heading
-                                style={{
-                                  textOverflow: 'ellipsis',
-                                  WebkitLineClamp: 2,
-                                  overflow: 'hidden',
-                                  whiteSpace: 'break-spaces'
-                                }}
-                                fontSize="2xl"
-                                as="h4"
-                              >
+                            <Box w="100%" p={8}>
+                              <Heading fontSize="2xl" as="h4" noOfLines={2}>
                                 {game.name}
                               </Heading>
                               <Box>
@@ -284,7 +268,7 @@ const Games: NextPage = () => {
                                 )}
                               </Box>
                             </Box>
-                          </Flex>
+                          </Card>
                         </Box>
                       </Link>
                     );

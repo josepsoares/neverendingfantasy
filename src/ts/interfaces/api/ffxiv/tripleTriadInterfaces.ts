@@ -49,20 +49,6 @@ export interface ICardsResponse extends ITripleTriadApiResponse {
   results: ICard[];
 }
 
-export interface IDeck {
-  user: string;
-  purpose: {
-    type: string;
-    name: string;
-  };
-  rating: number;
-  cards: ICard[];
-}
-
-export interface IDeckResponse extends ITripleTriadApiResponse {
-  results: IDeck[];
-}
-
 export interface INpc {
   id: number;
   resident_id: number;
@@ -96,8 +82,4 @@ export interface IPack {
   cost: number;
   link: string;
   cards?: ICard[];
-}
-
-export interface IPacksResponse extends ITripleTriadApiResponse {
-  results: IPack[];
 }

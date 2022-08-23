@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
       width="100%"
       flexDir="column"
       alignItems="center"
-      justifyContent="center"
+      justifyContent="flex-end"
       fontSize="xx-small"
       textAlign="center"
     >
@@ -19,12 +19,7 @@ const Footer: React.FC = () => {
         ALL FINAL FANTASY GAMES CONTENT IS PROPERTY OF SQUARE ENIX CO., LTD
       </Text>
       <Text>
-        neverending fantasy - {new Date().getFullYear()}, built with{' '}
-        <ExternalLink link='"https://reactjs.org/"'>react</ExternalLink> and{' '}
-        <ExternalLink link="https://nextjs.org/">nextjs</ExternalLink>
-      </Text>
-      <Text>
-        made by{' '}
+        made in {new Date().getFullYear()}, by{' '}
         <ExternalLink link="https://josepsoares.vercel.app/">
           josépsoares
         </ExternalLink>

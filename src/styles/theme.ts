@@ -25,12 +25,22 @@ export const nfTheme = extendTheme({
   },
   styles: {
     global: {
+      body: {
+        fontSize: '18px',
+        padding: 0,
+        margin: 0,
+        overflowX: 'hidden'
+      },
       h1: {
         fontFamily: 'FinalFantasyFont !important',
         fontSize: '8rem'
       },
       h2: {
         fontFamily: 'FinalFantasyFont !important'
+      },
+      'h1, h2, h3': {
+        letterSpacing: '0.35rem',
+        maxWidth: '100% !important'
       },
       '#nprogress .bar': {
         height: '10px !important'
@@ -54,5 +64,6 @@ export const nfTheme = extendTheme({
       }
     }
   },
+
   ...config
 });

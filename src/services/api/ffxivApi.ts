@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { TGenericObject } from '@ts/types/TGenericObject';
 import { HYDRATE } from 'next-redux-wrapper';
 import { REHYDRATE } from 'redux-persist';
+
+import type { TGenericObject } from '@ts/types/TGenericObject';
 
 export const ffxivApi = createApi({
   reducerPath: 'api-ffxiv',

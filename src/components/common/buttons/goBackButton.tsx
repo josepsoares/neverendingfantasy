@@ -14,10 +14,10 @@ const GoBackButton = () => {
     >
       <IconButton
         aria-label="Go back"
-        bgColor="brand.200"
+        bgColor="brand.500"
         colorScheme="brand"
         rounded="full"
-        boxShadow="md"
+        boxShadow="dark-lg"
         boxSize={16}
         position="fixed"
         top="90%"

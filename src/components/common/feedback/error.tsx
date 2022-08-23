@@ -21,7 +21,7 @@ const Error = () => {
         <Heading as="h1">An error occurred</Heading>
         <Box py={10}>
           <Image
-            src={require('../../../assets/img/error_tonberry.png')}
+            src={'/assets/img/error_tonberry.png'}
             alt="Tonberry Image"
             placeholder="blur"
             width={100}
