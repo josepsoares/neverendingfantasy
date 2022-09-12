@@ -7,22 +7,7 @@
     "deploy": "vercel",
     "type-check": "tsc --pretty --noEmit",
     "prettify": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "lint": "next lint --fix",
-    "test": "jest --watch",
-    "test:ci": "jest --ci --passWithNoTests",
-    "husky": "husky install",
-    "test-all": "yarn type-check && yarn prettify && yarn lint && yarn test"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.ts|tsx": [
-      "yarn prettify",
-      "eslint --fix"
-    ]
+    "test-all": "yarn type-check && yarn prettify && yarn lint"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.3.2",
@@ -56,8 +41,6 @@
     "eslint-config-next": "^12.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.31.8",
-    "husky": "4",
-    "lint-staged": "^12.1.4",
     "prettier": "^2.7.1",
     "typescript": "^4.8.3",
     "vercel": "^23.1.2"
