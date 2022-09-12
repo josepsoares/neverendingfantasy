@@ -17,19 +17,26 @@ const FFXIVPage: NextPage = () => {
         <Heading color="brand.800" fontSize="8xl" as="h1" pb={8}>
           FFXIV stuff
         </Heading>
-        <Text pb={4}>
-          Final Fantasy XIV is a massively multiplayer online role-playing game
-          (MMORPG) developed and published by Square Enix. Directed and produced
-          by Naoki Yoshida, it was released worldwide for Microsoft Windows and
+        <Text fontSize="2xl" pb={4}>
+          Did you know that the critically acclaimed MMORPG Final Fantasy XIV
+          has a free trial, and includes the entirety of A Realm Reborn AND the
+          award-winning Heavensward expansion up to level 60 with no
+          restrictions on playtime? Sign up, and enjoy Eorzea today!
+        </Text>
+
+        <Text fontSize="2xl" pb={4}>
+          Well, for serious now, Final Fantasy XIV is directed and produced by
+          Naoki Yoshida, it was released worldwide for Microsoft Windows and
           PlayStation 3 in August 2013, as a replacement for the failed 2010
           version of the game, with support for PlayStation 4, PlayStation 5,
           and macOS releasing later. Final Fantasy XIV takes place in the
           fictional land of Eorzea, five years after the events of the original
           2010 release.
         </Text>
-        <Text>
+
+        <Text fontSize="2xl">
           You can check out here things about FFXIV, you know, collectables,
-          class jobs, raids, dungeons, the oyster is your world
+          class jobs, raids, dungeons, the oyster is your world, enjoy!
         </Text>
       </Box>
 

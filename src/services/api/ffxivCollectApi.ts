@@ -16,8 +16,8 @@ import type {
   IMountsResponse,
   IOrchestrionResponse,
   IRelicWeaponResponse
-} from '@ts/interfaces/api/ffxiv/ffxivCollectInterfaces';
-import type { TGenericObject } from '@ts/types/TGenericObject';
+} from '@ts/interfaces/ffxivCollectInterfaces';
+import type { TGenericObject } from '@ts/TGenericObject';
 
 export const ffxivCollectApi = createApi({
   reducerPath: 'api-ffxiv-collect',

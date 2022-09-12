@@ -8,8 +8,8 @@ import type {
   IGamesResponse,
   IPublishersDevelopersResponse,
   ITagsGenresResponse
-} from '@ts/interfaces/api/rawgInterfaces';
-import type { TGenericObject } from '@ts/types/TGenericObject';
+} from '@ts/interfaces/rawgInterfaces';
+import { TGenericObject } from '@ts/TGenericObject';
 
 export const rawgApi = createApi({
   reducerPath: 'api-games',

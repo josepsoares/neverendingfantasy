@@ -4,11 +4,11 @@ import { REHYDRATE } from 'redux-persist';
 
 import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
 
-import type {
+import {
   ICardsResponse,
   INpcsResponse
-} from '@ts/interfaces/api/ffxiv/tripleTriadInterfaces';
-import type { TGenericObject } from '@ts/types/TGenericObject';
+} from '@ts/interfaces/tripleTriadInterfaces';
+import { TGenericObject } from '@ts/TGenericObject';
 
 export const tripleTriadApi = createApi({
   reducerPath: 'api-ffxiv-triple-triad',

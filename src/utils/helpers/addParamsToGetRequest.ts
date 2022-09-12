@@ -1,5 +1,5 @@
-import { TGenericObject } from '@ts/types/TGenericObject';
 import { _add } from '@utils/helpers/add';
+import { TGenericObject } from '@ts/TGenericObject';
 
 export const addParamsToGetRequest = (queries: TGenericObject) => {
   return Object.keys(queries)

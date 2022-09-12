@@ -12,7 +12,6 @@ import GoToTopButton from '@components/common/buttons/goToTopButton';
 import GoBackButton from '@components/common/buttons/goBackButton';
 
 import '@styles/globals.css';
-import '@styles/embla.css';
 import 'nprogress/nprogress.css';
 
 const TopProgressBar = dynamic(

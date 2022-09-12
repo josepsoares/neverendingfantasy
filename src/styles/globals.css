@@ -44,3 +44,8 @@ nav ol {
   padding: 0;
   display: inline-flex;
 }
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}

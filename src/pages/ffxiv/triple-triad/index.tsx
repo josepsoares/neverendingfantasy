@@ -17,7 +17,7 @@ const TripleTriad: NextPage = () => {
           Triple Triad
         </Heading>
 
-        <Text>
+        <Text fontSize="2xl">
           Triple Triad is a card battle mini-game originally from Final Fantasy
           VIII. It was released alongside Gold Saucer in patch 2.51. Players can
           collect Triple Triad Cards from various sources. Winning a Triple

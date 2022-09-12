@@ -1,12 +1,13 @@
-import type { NextPage } from 'next';
+import React, { useRef } from 'react';
+import { NextPage } from 'next';
 import Link from 'next/link';
-import { useRef } from 'react';
 
 import {
   Box,
   Button,
   Flex,
   Heading,
+  IconButton,
   Image,
   SimpleGrid,
   Text
@@ -16,8 +17,9 @@ import { Icon } from '@iconify/react';
 import SEO from '@components/common/seo';
 import ExternalLink from '@components/common/externalLink';
 import CardImgBg from '@components/common/cardImgBg';
+import TestimonialItem from '@components/common/testimonialItem';
 
-import { apiLinks, ffResourcesLinks } from '@utils/constants';
+import { apiLinks, ffResourcesLinks, testimonials } from '@utils/constants';
 
 const Home: NextPage = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -76,7 +78,7 @@ const Home: NextPage = () => {
           <Text mt={10} fontSize={['md', '2xl', '3xl']} color="#dae8ff">
             Made by the japanese company -{' '}
             <Link href="https://en.wikipedia.org/wiki/Square_(video_game_company)">
-              <a>Square</a>
+              <a>Square Enix (formerly Square)</a>
             </Link>{' '}
             - known for its innovation, visuals, such as the inclusion of
             full-motion videos (FMVs), photorealistic character models, silly
@@ -119,148 +121,140 @@ const Home: NextPage = () => {
       </Flex>
 
       {/* place quotes of famous people who talked about the ff franchise here */}
-      <Box minH="100vh">
-        <Box
-          ref={contentRef}
-          pt={[20, null, null, 32]}
-          px={[8, 12, 24, null]}
-          pb={10}
+      <Box pt={[20, null, null, 32]} px={[8, 12, 24, 32]} pb={20}>
+        <Heading
+          textAlign="center"
+          textColor="brand.500"
+          as="h1"
+          fontSize="8xl"
+          pb={8}
         >
-          <Flex
-            gap={[8, 10, null, 12, 20]}
-            flexDir="row"
-            flexWrap="wrap"
-            justifyContent={['center', null]}
-            pb={20}
-          >
-            <Box
-              order={[2, null, null, 1]}
-              w={['full', null, null, '60%']}
-              pt={[null, null, null, 12]}
-              fontSize="lg"
-            >
-              <Text fontSize="xl">
-                For those who don't know, Final Fantasy is a Japanese anthology
-                science fantasy media franchise created by{' '}
-                <a href="https://en.wikipedia.org/wiki/Hironobu_Sakaguchi">
-                  Hironobu Sakaguchi
-                </a>
-                , and developed and owned by{' '}
-                <a href="https://square-enix-games.com/en_EU/home">
-                  Square Enix
-                </a>{' '}
-                (formerly Square), which centers on a series of fantasy and
-                science role-playing video games. The first game in the series
-                was released in 1987, it already counts with 15 numbered main
-                entries having been released to date.
-              </Text>
+          What truly is Final Fantasy?
+        </Heading>
 
-              <Text fontSize="xl" mt={2}>
-                The franchise has since branched into other video game genres
-                and other media types (CGI films, anime, manga etc.), and it's
-                still growing nowadays, making it really popular.
-              </Text>
-              <Text fontSize="xl" mt={2}>
-                Well, here in this webpage you can explore stuff about all the
-                games of the FF series, and more in depth the MMORPG FFXIV.
-              </Text>
+        <Box pb={12} px={[8, 12, 24, null]}>
+          <Text fontSize="2xl">
+            Well, repeating a little bit the intro above, Final Fantasy is a
+            Japanese anthology media franchise created by{' '}
+            <a href="https://en.wikipedia.org/wiki/Hironobu_Sakaguchi">
+              Hironobu Sakaguchi
+            </a>
+            , which centers on a series of fantasy and sci-fi role-playing video
+            games. The franchise has also branched into different game genres
+            and medias including CGI films, anime, etc.
+          </Text>
+
+          <Text fontSize="2xl" mt={2}>
+            But yeah, the games of the franchise can address various themes and{' '}
+            <Box as="span" fontWeight="semibold" color="brand.500">
+              convey different feelings and messages to the human masses
             </Box>
-
-            <Flex
-              justifyContent="center"
-              alignItems="center"
-              w={['100%', 'auto']}
-              order={[1, null, null, 2]}
-            >
-              <Image
-                alt="Final Fantasy Everywhere"
-                width={400}
-                height={300}
-                placeholder="blur"
-                src={'/assets/img/ff-everywhere-meme.png'}
-                objectFit="cover"
-              />
-            </Flex>
-          </Flex>
+            , so nothing better than{' '}
+            <Box as="span" fontWeight="semibold" color="brand.500">
+              some quotes of various individuals about their feelings of the
+              franchise:
+            </Box>
+          </Text>
         </Box>
 
-        <SimpleGrid columns={[1, null, null, 2]}>
-          <Link href="/games" passHref={true}>
-            <Box
-              as="a"
-              w="100%"
-              opacity="0.9"
-              display="block"
-              transition="background-color 0.5s linear"
-              background="#0050ac"
-              _hover={{
-                bgColor: '#1763b4'
-              }}
-              _active={{
-                bgColor: '#1763b4'
-              }}
-            >
-              <CardImgBg
-                h="96"
-                imgUrl="/assets/img/ffx-opening-art.png"
-                imgAlt="Final Fantasy Games"
-              >
-                <Heading
-                  fontFamily="FinalFantasyFont"
-                  fontSize={['4xl', null, '5xl', '6xl']}
-                  color="white"
-                  zIndex="200"
-                  as="h3"
-                >
-                  Games
-                </Heading>
-                <Text color="white" zIndex="200" fontSize={['lg', null, 'xl']}>
-                  find the gazillion games the series has
-                </Text>
-              </CardImgBg>
-            </Box>
-          </Link>
-
-          <Link href="/ffxiv" passHref={true}>
-            <Box
-              as="a"
-              w="100%"
-              opacity="0.9"
-              display="block"
-              transition="background-color 0.5s linear"
-              background="#0050ac"
-              _hover={{
-                bgColor: '#1763b4'
-              }}
-              _active={{
-                bgColor: '#1763b4'
-              }}
-            >
-              <CardImgBg
-                h="96"
-                imgUrl="/assets/img/ffxiv/data-center-travel-system.jpg"
-                imgAlt="Final Fantasy XIV"
-              >
-                <Heading
-                  fontFamily="FinalFantasyFont"
-                  fontSize={['4xl', null, '5xl', '6xl']}
-                  color="white"
-                  zIndex="2"
-                  as="h3"
-                >
-                  FFXIV
-                </Heading>
-                <Text color="white" zIndex="2" fontSize={['lg', null, 'xl']}>
-                  explore info and stuff from the popular mmo
-                </Text>
-              </CardImgBg>
-            </Box>
-          </Link>
+        <SimpleGrid className="wrapper">
+          {testimonials.map((item, i) => (
+            <TestimonialItem
+              key={i}
+              itemId={`${i}`}
+              img={item.img}
+              name={item.name}
+              quote={item.quote}
+              profession={item.profession}
+            />
+          ))}
         </SimpleGrid>
       </Box>
 
+      <SimpleGrid ref={contentRef} columns={[1, null, null, 2]} pb={6}>
+        <Link href="/games" passHref={true}>
+          <Box
+            as="a"
+            w="100%"
+            opacity="0.9"
+            display="block"
+            transition="background-color 0.5s linear"
+            background="#0050ac"
+            _hover={{
+              bgColor: '#1763b4'
+            }}
+            _active={{
+              bgColor: '#1763b4'
+            }}
+          >
+            <CardImgBg
+              h="lg"
+              imgUrl="/assets/img/ffx-opening-art.png"
+              imgAlt="Final Fantasy Games"
+              radii={false}
+            >
+              <Heading
+                fontFamily="FinalFantasyFont"
+                fontSize={['4xl', null, '5xl', '6xl']}
+                color="white"
+                zIndex="200"
+                as="h3"
+              >
+                Games
+              </Heading>
+              <Text color="white" zIndex="200" fontSize={['lg', null, '2xl']}>
+                find the gazillion games the series has
+              </Text>
+            </CardImgBg>
+          </Box>
+        </Link>
+
+        <Link href="/ffxiv" passHref={true}>
+          <Box
+            as="a"
+            w="100%"
+            opacity="0.9"
+            display="block"
+            transition="background-color 0.5s linear"
+            background="#0050ac"
+            _hover={{
+              bgColor: '#1763b4'
+            }}
+            _active={{
+              bgColor: '#1763b4'
+            }}
+          >
+            <CardImgBg
+              h="lg"
+              imgUrl="/assets/img/ffxiv/data-center-travel-system.jpg"
+              imgAlt="Final Fantasy XIV"
+              radii={false}
+            >
+              <Heading
+                fontFamily="FinalFantasyFont"
+                fontSize={['4xl', null, '5xl', '6xl']}
+                color="white"
+                zIndex="2"
+                as="h3"
+              >
+                FFXIV
+              </Heading>
+              <Text color="white" zIndex="2" fontSize={['lg', null, '2xl']}>
+                explore info and stuff from the popular mmo
+              </Text>
+            </CardImgBg>
+          </Box>
+        </Link>
+      </SimpleGrid>
+
       <Box pt={[32, null, null]} px={[8, 12, 24, 32]}>
-        <Heading textColor="brand.500" as="h1" fontSize="6xl" pb={8}>
+        <Heading
+          textAlign="center"
+          textColor="brand.500"
+          as="h1"
+          fontSize="8xl"
+          pb={8}
+        >
           But...? where all this data came from?
         </Heading>
         <SimpleGrid

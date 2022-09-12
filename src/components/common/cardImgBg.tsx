@@ -29,7 +29,6 @@ const cardImgBg: React.FC<{
         h="full"
         objectFit="cover"
         objectPosition="center"
-        quality={100}
         opacity={0.2}
         zIndex="-100"
         position="absolute"

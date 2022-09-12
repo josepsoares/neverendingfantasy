@@ -28,8 +28,7 @@ export const nfTheme = extendTheme({
       body: {
         fontSize: '18px',
         padding: 0,
-        margin: 0,
-        overflowX: 'hidden'
+        margin: 0
       },
       h1: {
         fontFamily: 'FinalFantasyFont !important',

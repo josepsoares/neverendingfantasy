@@ -88,7 +88,7 @@ const Games: NextPage = () => {
           onOpen={onFilterDrawerOpen}
         />
         <Box pb={16}>
-          <Text>
+          <Text fontSize="2xl">
             you know, there are a lot of final fantasy games. they never seem to
             end and they're everywhere, on your phone, in consoles or in your pc
             and, well, here they are, just keep scrolling
