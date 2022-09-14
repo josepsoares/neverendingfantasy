@@ -26,7 +26,10 @@ const Home: NextPage = () => {
 
   const scrollToContent = () =>
     contentRef.current &&
-    contentRef.current.scrollIntoView({ behavior: 'smooth' });
+    contentRef.current.scrollTo({
+      top: contentRef.current.getBoundingClientRect().top - 20,
+      behavior: 'smooth'
+    });
 
   return (
     <>
@@ -132,7 +135,7 @@ const Home: NextPage = () => {
           What truly is Final Fantasy?
         </Heading>
 
-        <Box pb={12} px={[8, 12, 24, null]}>
+        <Box pb={12} px={[2, 8, 10, 28, null]}>
           <Text fontSize="2xl">
             Well, repeating a little bit the intro above, Final Fantasy is a
             Japanese anthology media franchise created by{' '}
@@ -157,14 +160,31 @@ const Home: NextPage = () => {
           </Text>
         </Box>
 
-        <SimpleGrid className="wrapper">
+        <SimpleGrid
+          gap={4}
+          px={[null, 6, 8, 18, null]}
+          alignItems="center"
+          gridTemplateColumns={[
+            '1fr',
+            null,
+            null,
+            'repeat(2, 1fr)',
+            'repeat(3, 1fr)',
+            'repeat(5, 1fr)',
+            'repeat(7, 1fr)'
+          ]}
+        >
           {testimonials.map((item, i) => (
             <TestimonialItem
               key={i}
-              itemId={`${i}`}
               img={item.img}
               name={item.name}
               quote={item.quote}
+              gridColSm={item?.gridColSm}
+              gridColMd={item?.gridColMd}
+              gridColLg={item?.gridColLg}
+              gridCol4K={item?.gridCol4K}
+              rowLg={item.rowLg}
               profession={item.profession}
             />
           ))}

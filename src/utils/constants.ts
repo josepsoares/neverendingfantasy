@@ -46,58 +46,98 @@ const ffResourcesLinks = [
 const testimonials = [
   {
     name: 'Jirard "The Completionist" Khalil',
-    img: 'https://pbs.twimg.com/media/FRbxSRUVUAAk9II?format=jpg&name=large',
+    img: 'testimonials/jirard.png',
     profession: 'Youtuber',
+    gridColSm: '1/3',
+    gridColMd: '1/3',
+    gridColLg: '1/4',
+    gridCol4K: '1/5',
     quote:
-      "Final Fantasy is a very important franchise to me and who I am as a gamer. Despite my countless efforts I can't complete these bad boys back to back to back but if I could I would."
+      "Final Fantasy series is anything but 'Final', it just won't stop growing and evolving. To call this series 'Final' is no longer ironic it's pratically sarcasm at this point. Nedless to say Final Fantasy is a very important franchise to me and who I am as gamer. Despite my countless efforts I can't complete these bad boys back, to back, to back, but, if I could I would"
+  },
+  {
+    name: 'Hironobu Sakaguchi',
+    img: 'testimonials/hironobu-sakaguchi.jpg',
+    gridColLg: '4/6',
+    gridCol4K: '5/7',
+    profession: 'Video Game Producer',
+    quote:
+      "I'm having so much fun with [Final Fantasy 14] that I don't want to get involved in its production. I wouldn't want to learn any inside information"
+  },
+  {
+    name: 'James A. Taylor',
+    img: 'testimonials/james-arnold-taylor.png',
+    gridColMd: '1/2',
+    gridColLg: '1/2',
+    gridCol4K: '7/8',
+    profession: 'Voice Actor\n(Tidus VA)',
+    quote: 'It was supposed to be a awkward, goofy, dumb laugh'
+  },
+  {
+    name: 'Wisecrack',
+    img: 'testimonials/wisecrack.jpg',
+    gridColSm: '1/3',
+    gridColMd: '2/4',
+    gridColLg: '1/6',
+    gridCol4K: '1/4',
+    rowLg: '5',
+    profession: 'Youtube Channel',
+    quote:
+      "Despite nedlessly convoluted storytelling, the thing fans lash on to is the wonderfully complex characters and their personal struggles, even though a new instalement introduces a new cast there's a significant amount of thematic overlap that ties these characters together and keep the fans coming back for more.\nAt its core, Final Fantasy is a series of games that explores the intricacies of dreams, desires, spirituality environmentalism and, well, fantasy"
   },
   {
     name: 'Naoki "YoshiP" Yoshida',
-    img: 'http://t3.gstatic.com/licensed-image?q=tbn:ANd9GcRV2MR8FZzKs-iNnNlSwypYIkU2Kdk0BRte_sOP6E6Zz4tsZ0eVzH5FoUNj-mDxkgQh',
+    img: 'testimonials/yoship.png',
+    gridColLg: '1/3',
+    gridCol4K: '4/6',
     profession: 'Video Game Producer',
     quote:
       'For me, Final Fantasy is about having a deep story, rich game design, the best game audio to accompany those aspects — as well as the inclusion of chocobos, moogles, and summons'
   },
   {
-    name: 'Wisecrack',
-    img: 'https://yt3.ggpht.com/ytc/AMLnZu_oA9o16B6eCoK9F2o9IKqHQjUyV65w7T4jPjs8PA=s88-c-k-c0x00ffffff-no-rj',
-    profession: 'Youtube Channel',
-    quote:
-      'At its core, Final Fantasy is a series of games that explores the intricacies of dreams, desires, spirituality environmentalism and well, fantasy'
-  },
-  {
-    name: 'James Arnold Taylor',
-    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/James_Arnold_Taylor_%2852260398772%29.jpg/1200px-James_Arnold_Taylor_%2852260398772%29.jpg',
-    profession: 'Voice Actor (Tidus VA)',
-    quote: 'It was supposed to be a awkward, goofy, dumb laugh'
-  },
-  {
-    name: 'Hironobu Sakaguchi',
-    img: 'http://blogs-images.forbes.com/olliebarder/files/2017/06/sakaguchi_headshot_interview.jpg',
-    profession: 'Video Game Producer',
-    quote:
-      "I'm having so much fun with [Final Fantasy 14] that I don't want to get involved in its production. I wouldn't want to learn any inside information, either"
-  },
-  {
     name: 'Naoki "YoshiP" Yoshida',
-    img: 'http://t3.gstatic.com/licensed-image?q=tbn:ANd9GcRV2MR8FZzKs-iNnNlSwypYIkU2Kdk0BRte_sOP6E6Zz4tsZ0eVzH5FoUNj-mDxkgQh',
+    img: 'testimonials/yoship.png',
+    gridColLg: '3/6',
+    gridCol4K: '6/8',
     profession: 'Video Game Producer',
     quote:
-      'In terms of whether Final Fantasy is successfully adapting to industry trends, I believe the series is currently struggling. We’re now at a point where we receive a wide variety of requests regarding the direction of our game design.'
+      'In terms of whether Final Fantasy is successfully adapting to industry trends, I believe the series is currently struggling. We’re now at a point where we receive a wide variety of requests regarding the direction of our game design'
   },
   {
     name: 'Robert Pattison',
-    img: 'https://br.web.img3.acsta.net/pictures/19/03/20/16/05/1007568.jpg',
+    img: 'testimonials/robert-pattinson.png',
+    gridColLg: '1/3',
+    gridCol4K: '1/3',
     profession: 'Actor',
     quote:
       "I was in love with Aeris and Tifa. Everybody wants to have both. It's the two sides, it's the two options of girls you can have."
   },
   {
-    name: 'Someone on the Internet',
-    img: 'https://www.unfe.org/wp-content/uploads/2019/04/SM-placeholder.png',
-    profession: 'Unknown',
+    name: 'Old Woman',
+    img: 'testimonials/stay-away-summoner.png',
+    gridColLg: '3/4',
+    gridCol4K: 'auto',
+    profession: 'Besaid Citizen',
+    quote: 'Stay away from the summoner!'
+  },
+  {
+    name: 'Someone on the Reddit',
+    img: 'placeholder.png',
+    gridColLg: '4/6',
+    gridCol4K: '4/6',
+    profession: 'Human Being',
     quote:
       "I don't think the series is as good as it used to be. Not sure if this is popular or unpopular but it’s definitely divisive"
+  },
+  {
+    name: 'Someone on the Youtube',
+    img: 'placeholder.png',
+    gridColLg: '2/6',
+    gridCol4K: '6/8',
+    rowLg: '2',
+    profession: 'Human Being',
+    quote:
+      "But what do we care about the most in Final Fantasy? Waifus and Husbandos! You'll always have that golden honey character, the pinnacle of all existance, the best of the best!"
   }
 ];
 

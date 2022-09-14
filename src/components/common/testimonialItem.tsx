@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, Image, Text } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
 const TestimonialItem: React.FC<{
@@ -6,42 +6,72 @@ const TestimonialItem: React.FC<{
   img: string;
   profession: string;
   quote: string;
-  itemId: string;
-}> = ({ name, img, profession, quote }) => {
+  gridColSm?: string;
+  gridColMd?: string;
+  gridColLg?: string;
+  gridCol4K?: string;
+  rowLg?: string;
+}> = ({
+  name,
+  img,
+  profession,
+  quote,
+  gridColSm,
+  gridColMd,
+  gridColLg,
+  gridCol4K,
+  rowLg
+}) => {
   return (
     <Flex
       p={6}
       bgColor="brand.500"
       color="white"
-      flexDir="row"
+      flexDir="column"
       borderRadius="3xl"
+      justifyContent="center"
+      gridColumn={{
+        sm: null,
+        md: null,
+        lg: gridColSm,
+        xl: gridColMd,
+        '2xl': gridColLg,
+        '3xl': gridCol4K
+      }}
+      gridRowStart={{
+        base: 'auto',
+        lg: rowLg
+      }}
     >
-      <Image
-        w="28"
-        h="28"
-        mr={8}
-        objectFit="cover"
-        objectPosition="center"
-        borderRadius="full"
-        src={img}
-        alt={name}
-      />
-      <Box>
-        <Text mb={4}>
-          <Icon
-            style={{ display: 'inline', marginRight: '5px' }}
-            icon="bxs:quote-alt-left"
-            color="white"
-            height="25px"
-            width="25px"
-          />
-          {quote}
-        </Text>
-        <Text as="h6" fontWeight="bold">
-          {name}
-        </Text>
-        <Text>{profession}</Text>
-      </Box>
+      <Text mb={6} fontSize="2xl">
+        <Icon
+          style={{ display: 'inline', marginRight: '5px' }}
+          icon="bxs:quote-alt-left"
+          color="white"
+          height="25px"
+          width="25px"
+        />
+        {quote}
+      </Text>
+      <Flex alignItems="center" flexDir="row">
+        <Image
+          w={20}
+          h={20}
+          mr={6}
+          objectFit="cover"
+          objectPosition="center"
+          borderRadius="full"
+          justifySelf="center"
+          src={`/assets/img/${img}`}
+          alt={name}
+        />
+        <Box>
+          <Text as="h6" fontWeight="bold">
+            {name}
+          </Text>
+          <Text>{profession}</Text>
+        </Box>
+      </Flex>
     </Flex>
   );
 };
