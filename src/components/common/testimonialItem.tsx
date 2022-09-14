@@ -40,7 +40,10 @@ const TestimonialItem: React.FC<{
       }}
       gridRowStart={{
         base: 'auto',
-        lg: rowLg
+        lg: rowLg,
+        xl: 'auto',
+        '2xl': rowLg,
+        '3xl': 'auto'
       }}
     >
       <Text mb={6} fontSize="2xl">

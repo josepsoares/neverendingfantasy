@@ -7,7 +7,6 @@ import {
   Button,
   Flex,
   Heading,
-  IconButton,
   Image,
   SimpleGrid,
   Text
