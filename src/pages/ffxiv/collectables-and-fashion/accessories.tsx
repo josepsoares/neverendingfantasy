@@ -1,11 +1,11 @@
 import type { NextPage } from 'next';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import {
   Box,
   Button,
   FormControl,
-  Grid,
   Heading,
   Image,
   Input,
@@ -25,21 +25,22 @@ import {
 import HeadingWithFilter from '@components/common/headingWithFilter';
 import EmptyData from '@components/common/feedback/emptyData';
 import Card from '@components/common/card';
+import BaseModal from '@components/common/modal';
 import SEO from '@components/common/seo';
 
+import { IFashion } from '@ts/interfaces/ffxivCollectInterfaces';
+
 const Accessories: NextPage = () => {
+  const router = useRouter();
   const accessories = useIndexFashionsQuery({});
   const { isLoading, error, data } = accessories;
 
   const { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose } =
     useFilterDrawer();
 
-  const [showAllDescription, setShowAllDescription] = useState({
-    show: false,
-    id: null
-  });
-
-  console.log(showAllDescription);
+  const [selectedAccessory, setSelectedAccessory] = useState<IFashion | null>(
+    null
+  );
 
   console.log(data);
 
@@ -95,7 +96,17 @@ const Accessories: NextPage = () => {
               {data.results?.length ? (
                 <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
                   {data.results.map((accessory, i) => (
-                    <Card p={6} key={i}>
+                    <Card
+                      p={6}
+                      key={i}
+                      isButton={true}
+                      onClick={() => {
+                        setSelectedAccessory(accessory);
+                        router.push(
+                          `${router.pathname}?accessory=${accessory.id}`
+                        );
+                      }}
+                    >
                       <Image
                         src={`${accessory.image}`}
                         alt={`${accessory.name} Icon`}
@@ -110,51 +121,24 @@ const Accessories: NextPage = () => {
                         {accessory.name}
                       </Heading>
 
-                      <Box alignSelf="flex-start" textAlign="left">
-                        <Text fontSize="16">
+                      <Box alignSelf="center">
+                        <Text textAlign="center" fontSize="16">
                           {accessory.owned} players own this
                         </Text>
 
-                        <Text fontSize="16">
+                        <Text textAlign="center" fontSize="16">
                           Introduced in patch {accessory.patch}
                         </Text>
 
-                        <Text fontSize="16">
+                        <Text textAlign="center" fontSize="16">
+                          This accessory is{' '}
                           {accessory.tradeable === true
-                            ? 'Tradable'
-                            : 'Non-tradable'}
+                            ? 'tradable'
+                            : 'non-tradable'}
                         </Text>
                       </Box>
 
-                      <Text
-                        noOfLines={
-                          showAllDescription.show && showAllDescription.id === i
-                            ? null
-                            : 2
-                        }
-                      >
-                        {accessory.description}
-                      </Text>
-
-                      <Button
-                        variant="ghost"
-                        onClick={() =>
-                          setShowAllDescription({
-                            show: !showAllDescription.show,
-                            id: i
-                          })
-                        }
-                        _active={{
-                          color: 'brand.500',
-                          bgColor: 'white'
-                        }}
-                        _hover={{
-                          color: 'brand.500',
-                          bgColor: 'white'
-                        }}
-                      >
-                        See entire description
-                      </Button>
+                      <Text noOfLines={3}>{accessory.description}</Text>
                     </Card>
                   ))}
                 </SimpleGrid>
@@ -165,6 +149,37 @@ const Accessories: NextPage = () => {
           ) : null}
         </Box>
       </Box>
+      {selectedAccessory !== null ? (
+        <BaseModal
+          open={router.query?.accessory ? true : false}
+          title={selectedAccessory.name}
+          whileClosing={() => router.push(router.pathname)}
+          body={
+            <>
+              <Heading color="brand.500" fontSize="2xl" as="h4" pb={2}>
+                Description
+              </Heading>
+              <Text>{selectedAccessory.description}</Text>
+
+              <Heading color="brand.500" fontSize="2xl" as="h4" pt={5} pb={2}>
+                Source(s)
+              </Heading>
+
+              {selectedAccessory.sources.length > 0 ? (
+                <SimpleGrid gap={1} pt={2}>
+                  {selectedAccessory.sources.map((item, i) => (
+                    <Text key={i}>
+                      <u>{item.type}:</u> {item.text}
+                    </Text>
+                  ))}
+                </SimpleGrid>
+              ) : (
+                <Text>No source(s) found for this fashion accessory</Text>
+              )}
+            </>
+          }
+        />
+      ) : null}
     </>
   );
 };

@@ -27,7 +27,7 @@ import Card from '@components/common/card';
 import BaseModal from '@components/common/modal';
 import SEO from '@components/common/seo';
 
-import type { IMount } from '@ts/interfaces/api/ffxiv/ffxivCollectInterfaces';
+import { IMount } from '@ts/interfaces/ffxivCollectInterfaces';
 
 const Mounts: NextPage = () => {
   const router = useRouter();
@@ -153,7 +153,69 @@ const Mounts: NextPage = () => {
           open={router.query?.mount ? true : false}
           title={selectedMount.name}
           whileClosing={() => router.push(router.pathname)}
-          body={<></>}
+          body={
+            <>
+              <Image
+                mx="auto"
+                width="28"
+                height="28"
+                borderRadius="lg"
+                src={`${selectedMount.image}`}
+                alt={`${selectedMount.name} Icon`}
+              />
+              <Text pt="2" pb="4" textAlign="center">
+                {selectedMount.tooltip}
+              </Text>
+
+              <Heading color="brand.500" fontSize="2xl" as="h4" pt={5} pb={2}>
+                General Info
+              </Heading>
+              <Text>{selectedMount.owned} players own this mount</Text>
+              <Text>Mount introduced in patch {selectedMount.patch}</Text>
+              <Text>
+                This mount is{' '}
+                <b>{selectedMount.tradeable ? 'tradable' : 'non-tradable'}</b>
+              </Text>
+
+              <Text pt={2}>
+                <u>Seats:</u> {selectedMount.seats}
+              </Text>
+              <Text>
+                <u>Movement:</u> {selectedMount.movement}
+              </Text>
+
+              {selectedMount?.description && (
+                <>
+                  <Heading
+                    pt={5}
+                    pb={2}
+                    as="h4"
+                    fontSize="2xl"
+                    color="brand.500"
+                  >
+                    Description
+                  </Heading>
+                  <Text>{selectedMount.description}</Text>
+                </>
+              )}
+
+              <Heading color="brand.500" fontSize="2xl" as="h4" pt={5} pb={2}>
+                Sources
+              </Heading>
+
+              {selectedMount.sources.length > 0 ? (
+                <SimpleGrid gap={1} pt={2}>
+                  {selectedMount.sources.map((item, i) => (
+                    <Text key={i}>
+                      <u>{item.type}:</u> {item.text}
+                    </Text>
+                  ))}
+                </SimpleGrid>
+              ) : (
+                <Text>No source(s) found for this mount</Text>
+              )}
+            </>
+          }
         />
       ) : null}
     </>

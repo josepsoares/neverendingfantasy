@@ -26,7 +26,7 @@ import EmptyData from '@components/common/feedback/emptyData';
 import Card from '@components/common/card';
 import BaseModal from '@components/common/modal';
 
-import { IAchievement } from '@ts/interfaces/api/ffxiv/ffxivCollectInterfaces';
+import { IAchievement } from '@ts/interfaces/ffxivCollectInterfaces';
 
 const Achievements: NextPage = () => {
   const router = useRouter();
@@ -139,9 +139,18 @@ const Achievements: NextPage = () => {
                         {achievement.name}
                       </Heading>
 
-                      {achievement.category?.id ? (
-                        <Text>Category: {achievement.category?.name}</Text>
-                      ) : null}
+                      <Box>
+                        {achievement.category?.id ? (
+                          <Text fontSize="16">
+                            Category: {achievement.category?.name}
+                          </Text>
+                        ) : null}
+                        {achievement.type?.id ? (
+                          <Text fontSize="16">
+                            Type: {achievement.type?.name}
+                          </Text>
+                        ) : null}
+                      </Box>
                     </Card>
                   ))}
                 </SimpleGrid>
@@ -160,20 +169,49 @@ const Achievements: NextPage = () => {
           whileClosing={() => router.push(router.pathname)}
           body={
             <>
-              <Image
-                width="110px"
-                height="150px"
-                mx="auto"
-                src={`${selectedAchievement.icon}`}
-                alt={`${selectedAchievement.name} Image`}
-              />
+              <Heading color="brand.500" fontSize="2xl" as="h4" pb={2}>
+                General Info
+              </Heading>
+              <Text>{selectedAchievement.owned} players achieved this</Text>
+              <Text>Introduced in patch {selectedAchievement.patch}</Text>
 
-              <SimpleGrid
-                pt={4}
-                color="brand.500"
-                justifyItems="center"
-                columns={[1, 2, null, 4]}
-              ></SimpleGrid>
+              <Text pt={2}>
+                <u>Points:</u> {selectedAchievement.points}
+              </Text>
+              <Text>
+                <u>Category:</u> {selectedAchievement.category.name}
+              </Text>
+              <Text>
+                <u>Type:</u> {selectedAchievement.type.name}
+              </Text>
+
+              {selectedAchievement?.description && (
+                <>
+                  <Heading
+                    pt={5}
+                    pb={2}
+                    as="h4"
+                    fontSize="2xl"
+                    color="brand.500"
+                  >
+                    Description
+                  </Heading>
+                  <Text>{selectedAchievement.description}</Text>
+                </>
+              )}
+
+              <Heading color="brand.500" fontSize="2xl" as="h4" pt={5} pb={2}>
+                Reward
+              </Heading>
+
+              {selectedAchievement?.reward ? (
+                <Text>
+                  <u>{selectedAchievement.reward.type}:</u>{' '}
+                  {selectedAchievement.reward.name}
+                </Text>
+              ) : (
+                <Text>This achievement has no reward</Text>
+              )}
             </>
           }
         />

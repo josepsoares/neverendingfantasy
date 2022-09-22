@@ -9,6 +9,8 @@ const Card: React.FC<{
   return (
     <Flex
       p={p}
+      w="full"
+      h="full"
       gap={4}
       as={isButton ? 'button' : 'div'}
       borderRadius="lg"

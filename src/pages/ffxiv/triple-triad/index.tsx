@@ -19,10 +19,16 @@ const TripleTriad: NextPage = () => {
 
         <Text fontSize="2xl">
           Triple Triad is a card battle mini-game originally from Final Fantasy
-          VIII. It was released alongside Gold Saucer in patch 2.51. Players can
-          collect Triple Triad Cards from various sources. Winning a Triple
-          Triad match against a Triple Triad NPC will earn the player
-          Manderville Gold Saucer Points and sometimes new cards.
+          VIII. They really went all on it, Triple Triad was, somewhat, a big
+          deal on FFVIII and FFIX, specially for the collectionist and
+          completionists. But yeah, I don't think a lot of people understood the
+          rules in the first place let alone play the actual minigame correctly.
+        </Text>
+        <Text pt={1} fontSize="2xl">
+          The minigame was released alongside Gold Saucer (the place of the
+          minigames) in the 2.51 patch, allowing players to collect cards
+          (completing instances and actually playing the minigame) and compete
+          against other players and NPCs around Eorza.
         </Text>
       </Box>
 
@@ -63,10 +69,16 @@ const TripleTriad: NextPage = () => {
                 imgAlt={`${name.toLowerCase()} Image`}
                 imgPosition={name === 'NPCs' ? 'top' : 'center'}
               >
-                <Heading textColor="white" as="h2">
+                <Heading
+                  as="h2"
+                  textColor="white"
+                  fontSize={['4xl', null, '6xl']}
+                >
                   {name}
                 </Heading>
-                <Text textColor="white">{description}</Text>
+                <Text fontSize={['xl', null, '2xl']} textColor="white">
+                  {description}
+                </Text>
               </CardBg>
             </Box>
           </Link>

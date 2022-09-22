@@ -27,6 +27,10 @@ export interface IAchievement {
     id: number;
     name: string;
   };
+  reward?: {
+    name: string;
+    type: string;
+  };
 }
 
 export interface IAchievementsResponse extends IFFXIVCollectApiResponse {
@@ -123,6 +127,7 @@ export interface IMinion {
       name: string;
     };
   };
+  tradeable: boolean;
 }
 
 export interface IMinionsResponse extends IFFXIVCollectApiResponse {
@@ -144,6 +149,7 @@ export interface IMount {
   owned: string;
   image: string;
   icon: string;
+  tradeable: boolean;
   sources: SourceProperty[];
 }
 

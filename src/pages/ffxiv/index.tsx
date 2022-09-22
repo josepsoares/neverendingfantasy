@@ -17,7 +17,7 @@ const FFXIVPage: NextPage = () => {
         <Heading color="brand.800" fontSize="8xl" as="h1" pb={8}>
           FFXIV stuff
         </Heading>
-        <Text fontSize="2xl" pb={4}>
+        <Text fontWeight="medium" fontSize="2xl" pb={4}>
           Did you know that the critically acclaimed MMORPG Final Fantasy XIV
           has a free trial, and includes the entirety of A Realm Reborn AND the
           award-winning Heavensward expansion up to level 60 with no
@@ -61,10 +61,15 @@ const FFXIVPage: NextPage = () => {
               imgAlt="Class Jobs"
               radii={false}
             >
-              <Heading zIndex="2" textColor="white" as="h2">
+              <Heading
+                zIndex="2"
+                textColor="white"
+                as="h2"
+                fontSize={['4xl', null, '6xl']}
+              >
                 Classes and Jobs
               </Heading>
-              <Text zIndex="2" textColor="white">
+              <Text zIndex="2" textColor="white" fontSize={['xl', null, '2xl']}>
                 explore all the cool class jobs your character can do
               </Text>
             </CardBg>
@@ -91,10 +96,15 @@ const FFXIVPage: NextPage = () => {
               imgAlt="Class Jobs"
               radii={false}
             >
-              <Heading zIndex="2" textColor="white" as="h2">
+              <Heading
+                zIndex="2"
+                textColor="white"
+                as="h2"
+                fontSize={['4xl', null, '6xl']}
+              >
                 Instances
               </Heading>
-              <Text zIndex="2" textColor="white">
+              <Text zIndex="2" textColor="white" fontSize={['xl', null, '2xl']}>
                 the raids, the dungeons, the excitment
               </Text>
             </CardBg>
@@ -121,10 +131,14 @@ const FFXIVPage: NextPage = () => {
               imgAlt="Fashion Image"
               radii={false}
             >
-              <Heading textColor="white" as="h2">
+              <Heading
+                textColor="white"
+                as="h2"
+                fontSize={['4xl', null, '6xl']}
+              >
                 Collectables and Fashion
               </Heading>
-              <Text textColor="white">
+              <Text textColor="white" fontSize={['xl', null, '2xl']}>
                 collectables, fashion things and a randomizer
               </Text>
             </CardBg>
@@ -151,10 +165,16 @@ const FFXIVPage: NextPage = () => {
               imgAlt="Triple Triad Image"
               radii={false}
             >
-              <Heading as="h2" textColor="white">
+              <Heading
+                as="h2"
+                textColor="white"
+                fontSize={['4xl', null, '6xl']}
+              >
                 Triple Triad
               </Heading>
-              <Text textColor="white">aim to be the ace of cards in ffxiv</Text>
+              <Text textColor="white" fontSize={['xl', null, '2xl']}>
+                aim to be the ace of cards in ffxiv
+              </Text>
             </CardBg>
           </Box>
         </Link>

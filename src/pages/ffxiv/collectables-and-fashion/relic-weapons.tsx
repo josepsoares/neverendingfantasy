@@ -27,12 +27,12 @@ import Card from '@components/common/card';
 import BaseModal from '@components/common/modal';
 import SEO from '@components/common/seo';
 
-import type { IRelicWeapon } from '@ts/interfaces/api/ffxiv/ffxivCollectInterfaces';
+import type { IRelicWeapon } from '@ts/interfaces/ffxivCollectInterfaces';
 
 const RelicWeapons: NextPage = () => {
   const router = useRouter();
-  const mounts = useIndexRelicWeaponsQuery({ limit: 20 });
-  const { data, error, isLoading } = mounts;
+  const relicWeapons = useIndexRelicWeaponsQuery({ limit: 20 });
+  const { data, error, isLoading } = relicWeapons;
 
   const { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose } =
     useFilterDrawer();
@@ -96,20 +96,10 @@ const RelicWeapons: NextPage = () => {
               {data.results?.length ? (
                 <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
                   {data.results.map((relicWeapon: IRelicWeapon, i) => (
-                    <Card
-                      p={6}
-                      key={i}
-                      isButton={true}
-                      onClick={() => {
-                        setSelectedRelicWeapon(relicWeapon);
-                        router.push(
-                          `${router.pathname}?relicweapon=${relicWeapon.id}`
-                        );
-                      }}
-                    >
+                    <Card p={6} key={i}>
                       <Image
-                        width="36"
-                        height="36"
+                        width="12"
+                        height="12"
                         src={relicWeapon.icon}
                         alt={relicWeapon.name}
                       />
@@ -121,6 +111,16 @@ const RelicWeapons: NextPage = () => {
                       >
                         {relicWeapon.name}
                       </Heading>
+
+                      <Text textAlign="center" fontSize="xl">
+                        {relicWeapon.type.name}
+                      </Text>
+
+                      <Box alignSelf="center">
+                        <Text textAlign="center" fontSize="16">
+                          {relicWeapon.owned} players own this weapon
+                        </Text>
+                      </Box>
                     </Card>
                   ))}
                 </SimpleGrid>

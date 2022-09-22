@@ -72,7 +72,7 @@ const ClassJob: NextPage = () => {
                   (classJob, i) => (
                     <Link key={i} href={`/ffxiv/classjobs/${classJob.ID}`}>
                       <a>
-                        <Card>
+                        <Card isButton={true}>
                           <Image
                             src={`${FFXIV_API}${classJob.Icon}`}
                             width="85px"
@@ -109,7 +109,7 @@ const ClassJob: NextPage = () => {
                   (classJob, i) => (
                     <Link key={i} href={`/ffxiv/classjobs/${classJob.ID}`}>
                       <a>
-                        <Card>
+                        <Card isButton={true}>
                           <Image
                             src={`${FFXIV_API}${classJob.Icon}`}
                             width="85px"

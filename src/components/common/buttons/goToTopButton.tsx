@@ -38,7 +38,7 @@ const GoToTopButton: React.FC = () => {
     >
       <IconButton
         aria-label="Go to Top"
-        bgColor="brand.500"
+        bgColor="brand.300"
         colorScheme="brand"
         rounded="full"
         boxShadow="dark-lg"

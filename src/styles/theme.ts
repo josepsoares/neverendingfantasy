@@ -36,7 +36,7 @@ export const nfTheme = extendTheme({
   styles: {
     global: {
       body: {
-        fontSize: '18px',
+        fontSize: '20px',
         padding: 0,
         margin: 0
       },

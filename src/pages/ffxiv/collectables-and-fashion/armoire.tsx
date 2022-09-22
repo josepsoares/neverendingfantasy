@@ -34,7 +34,7 @@ import Card from '@components/common/card';
 import BaseModal from '@components/common/modal';
 import SEO from '@components/common/seo';
 
-import { IArmoire } from '@ts/interfaces/api/ffxiv/ffxivCollectInterfaces';
+import { IArmoire } from '@ts/interfaces/ffxivCollectInterfaces';
 
 const Armoires: NextPage = () => {
   const router = useRouter();
@@ -139,7 +139,7 @@ const Armoires: NextPage = () => {
 
                     <Text>{armoire.category.name}</Text>
 
-                    <Box>
+                    <Box textAlign="center">
                       <Text fontSize="16">
                         {armoire.owned} players own this
                       </Text>
@@ -161,7 +161,7 @@ const Armoires: NextPage = () => {
                         bgColor: 'white'
                       }}
                     >
-                      Check sources
+                      Check source(s)
                     </Button>
                   </Card>
                 ))}
@@ -179,8 +179,8 @@ const Armoires: NextPage = () => {
           whileClosing={() => setSelectedArmoire(null)}
           body={
             <>
-              <Heading fontSize="2xl" as="h4" pb={2}>
-                Sources
+              <Heading color="brand.500" fontSize="2xl" as="h4" pb={2}>
+                Source(s)
               </Heading>
 
               {selectedArmoire.sources.length > 0 ? (
@@ -192,7 +192,7 @@ const Armoires: NextPage = () => {
                   ))}
                 </SimpleGrid>
               ) : (
-                <Text>There are no available sources for this armoire</Text>
+                <Text>No source(s) found for this armoire</Text>
               )}
             </>
           }

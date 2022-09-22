@@ -26,19 +26,24 @@ const Fashion: NextPage = () => {
         >
           FFXIV Collectables and Fashion Stuff
         </Heading>
-        <p>
-          It centers on a series of fantasy and science role-playing video
-          games. The first game in the series was released in 1987, but, even
-          thought it has final on its name, it already counts with 15 numbered
-          main entries having been released to date.
-        </p>
-        <p>
-          the franchise has since branched into other video game genres such as
-          tactical role-playing, action role-playing, massively multiplayer
-          online role-playing, racing, third-person shooter, fighting, and
-          rhythm, as well as branching into other media, including CGI films,
-          anime, manga, and novels.
-        </p>
+        <Text fontSize="2xl">
+          FFXIV has a lot of things to collect, a humongous amount of things to
+          get. Of course, you need to work hard to get all of these
+          collectables, these things don't come effortlessly from the aether
+          realm or something.
+        </Text>
+        <Text pt={1} fontSize="2xl">
+          The collectables presented bellow are only a sample of all available
+          collectables in the game, because, you could count and add to this
+          list fish, crafting recipes, sighseeings etc.. But, of course, that
+          would make the list giant, so I chose some of the "more relevant"
+          collectables in the game (yup, it won't work for everyone, I know).
+        </Text>
+        <Text pt={4} fontSize="2xl">
+          Well, for more info about collectables you can check FFXIV and for
+          each of items listed bellow there are a couple of websites recommended
+          in each page of the items.
+        </Text>
       </Box>
 
       <Grid templateColumns={['1fr', null, 'repeat(3, 1fr)']}>
@@ -83,10 +88,20 @@ const Fashion: NextPage = () => {
                 imgUrl={item.img}
                 imgAlt={`${capitalizeString(item.name)} Image`}
               >
-                <Heading as="h2" textColor="white">
-                  {capitalizeString(item.name)}
+                <Heading
+                  as="h2"
+                  textColor="white"
+                  fontSize={['4xl', null, '6xl']}
+                >
+                  {capitalizeString(item.name).replace('-', ' ')}
                 </Heading>
-                <Text textColor="white">{item.description}</Text>
+                <Text
+                  textAlign="center"
+                  textColor="white"
+                  fontSize={['xl', null, '2xl']}
+                >
+                  {item.description}
+                </Text>
               </CardBg>
             </Box>
           </Link>
@@ -106,7 +121,7 @@ const Fashion: NextPage = () => {
             img: 'fashion-alt.jpg'
           },
           {
-            name: 'relic weapons',
+            name: 'relic-weapons',
             description: 'shiny, precious and hard to obtain weapons',
             img: 'relic-weapons-alt.png'
           }
@@ -135,10 +150,20 @@ const Fashion: NextPage = () => {
                 imgUrl={`/assets/img/ffxiv/${item.img}`}
                 imgAlt={`${capitalizeString(item.name)} Image`}
               >
-                <Heading as="h2" textColor="white">
-                  {capitalizeString(item.name)}
+                <Heading
+                  as="h2"
+                  textColor="white"
+                  fontSize={['4xl', null, '6xl']}
+                >
+                  {capitalizeString(item.name).replace('-', ' ')}
                 </Heading>
-                <Text textColor="white">{item.description}</Text>
+                <Text
+                  textAlign="center"
+                  textColor="white"
+                  fontSize={['xl', null, '2xl']}
+                >
+                  {item.description}
+                </Text>
               </CardBg>
             </Box>
           </Link>
@@ -182,10 +207,20 @@ const Fashion: NextPage = () => {
                 imgUrl={item.img}
                 imgAlt={`${capitalizeString(item.name)} Image`}
               >
-                <Heading as="h2" textColor="white">
-                  {capitalizeString(item.name)}
+                <Heading
+                  as="h2"
+                  textColor="white"
+                  fontSize={['4xl', null, '6xl']}
+                >
+                  {capitalizeString(item.name).replace('-', ' ')}
                 </Heading>
-                <Text textColor="white">{item.description}</Text>
+                <Text
+                  textAlign="center"
+                  textColor="white"
+                  fontSize={['xl', null, '2xl']}
+                >
+                  {item.description}
+                </Text>
               </CardBg>
             </Box>
           </Link>

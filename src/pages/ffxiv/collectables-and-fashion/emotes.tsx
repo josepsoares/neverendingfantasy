@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import {
   Box,
+  Button,
   FormControl,
   Heading,
   Image,
@@ -27,7 +28,7 @@ import Card from '@components/common/card';
 import BaseModal from '@components/common/modal';
 import SEO from '@components/common/seo';
 
-import type { IEmote } from '@ts/interfaces/api/ffxiv/ffxivCollectInterfaces';
+import type { IEmote } from '@ts/interfaces/ffxivCollectInterfaces';
 
 const Emotes = () => {
   const router = useRouter();
@@ -95,18 +96,10 @@ const Emotes = () => {
               {data.results?.length ? (
                 <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
                   {data.results.map((emote: IEmote, i) => (
-                    <Card
-                      p={6}
-                      key={i}
-                      isButton={true}
-                      onClick={() => {
-                        setSelectedEmote(emote);
-                        router.push(`${router.pathname}?emote=${emote.id}`);
-                      }}
-                    >
+                    <Card p={6} key={i}>
                       <Image
-                        width="36"
-                        height="36"
+                        width="16"
+                        height="16"
                         src={emote.icon}
                         alt={emote.name}
                       />
@@ -118,6 +111,44 @@ const Emotes = () => {
                       >
                         {emote.name}
                       </Heading>
+
+                      <Box textAlign="center">
+                        <Text fontWeight="medium">{emote.command}</Text>
+                        <Text>{emote.category.name} Emote</Text>
+                      </Box>
+
+                      <Box textAlign="center">
+                        <Text fontSize="16">
+                          {emote.owned} players own this emote
+                        </Text>
+
+                        <Text fontSize="16">
+                          Introduced in patch {emote.patch}
+                        </Text>
+
+                        <Text fontSize="16">
+                          This emote is{' '}
+                          {emote.tradeable ? 'tradable' : 'non-tradable'}
+                        </Text>
+                      </Box>
+
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          setSelectedEmote(emote);
+                          router.push(`${router.pathname}?emote=${emote.id}`);
+                        }}
+                        _active={{
+                          color: 'brand.500',
+                          bgColor: 'white'
+                        }}
+                        _hover={{
+                          color: 'brand.500',
+                          bgColor: 'white'
+                        }}
+                      >
+                        Check source(s)
+                      </Button>
                     </Card>
                   ))}
                 </SimpleGrid>
@@ -133,7 +164,27 @@ const Emotes = () => {
           open={router.query?.emote ? true : false}
           title={selectedEmote.name}
           whileClosing={() => router.push(router.pathname)}
-          body={<></>}
+          body={
+            <>
+              <>
+                <Heading color="brand.500" fontSize="2xl" as="h4" pb={2}>
+                  Source(s)
+                </Heading>
+
+                {selectedEmote.sources.length > 0 ? (
+                  <SimpleGrid gap={1} pt={2}>
+                    {selectedEmote.sources.map((item, i) => (
+                      <Text key={i}>
+                        <u>{item.type}:</u> {item.text}
+                      </Text>
+                    ))}
+                  </SimpleGrid>
+                ) : (
+                  <Text>No source(s) found for this emote</Text>
+                )}
+              </>
+            </>
+          }
         />
       ) : null}
     </>

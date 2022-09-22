@@ -14,7 +14,7 @@ const GoBackButton = () => {
     >
       <IconButton
         aria-label="Go back"
-        bgColor="brand.500"
+        bgColor="brand.200"
         colorScheme="brand"
         rounded="full"
         boxShadow="dark-lg"

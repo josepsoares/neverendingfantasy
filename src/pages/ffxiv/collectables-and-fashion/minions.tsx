@@ -27,7 +27,7 @@ import EmptyData from '@components/common/feedback/emptyData';
 import Card from '@components/common/card';
 import SEO from '@components/common/seo';
 
-import { IMinion } from '@ts/interfaces/api/ffxiv/ffxivCollectInterfaces';
+import { IMinion } from '@ts/interfaces/ffxivCollectInterfaces';
 import BaseModal from '@components/common/modal';
 
 const Minions: NextPage = () => {
@@ -164,7 +164,114 @@ const Minions: NextPage = () => {
           open={router.query?.minion ? true : false}
           title={selectedMinion.name}
           whileClosing={() => router.push(router.pathname)}
-          body={<></>}
+          body={
+            <>
+              <Image
+                mx="auto"
+                width="28"
+                height="28"
+                borderRadius="lg"
+                src={`${selectedMinion.image}`}
+                alt={`${selectedMinion.name} Icon`}
+              />
+              <Text pt="2" pb="4" textAlign="center">
+                {selectedMinion.tooltip}
+              </Text>
+
+              <Heading color="brand.500" fontSize="2xl" as="h4" pt={5} pb={2}>
+                General Info
+              </Heading>
+              <Text>{selectedMinion.owned} players own this minion</Text>
+              <Text>Minion introduced in patch {selectedMinion.patch}</Text>
+              <Text>
+                This minion is{' '}
+                <b>{selectedMinion.tradeable ? 'tradable' : 'non-tradable'}</b>
+              </Text>
+
+              <Text pt={2}>
+                <u>Race:</u> {selectedMinion.race.name}
+              </Text>
+              <Text>
+                <u>Behavior:</u> {selectedMinion.behavior.name}
+              </Text>
+
+              {selectedMinion?.description && (
+                <>
+                  <Heading
+                    color="brand.500"
+                    fontSize="2xl"
+                    as="h4"
+                    pt={5}
+                    pb={2}
+                  >
+                    Description
+                  </Heading>
+                  <Text>{selectedMinion.description}</Text>
+                </>
+              )}
+
+              <Heading color="brand.500" fontSize="2xl" as="h4" pt={5} pb={2}>
+                Source(s)
+              </Heading>
+
+              {selectedMinion.sources.length > 0 ? (
+                <SimpleGrid gap={1} pt={2}>
+                  {selectedMinion.sources.map((item, i) => (
+                    <Text key={i}>
+                      <u>{item.type}:</u> {item.text}
+                    </Text>
+                  ))}
+                </SimpleGrid>
+              ) : (
+                <Text>There are no available sources for this minion</Text>
+              )}
+
+              <Heading color="brand.500" fontSize="2xl" as="h4" pt={5} pb={2}>
+                Lord of Verminion (Minigame)
+              </Heading>
+              <Box pt={2}>
+                <Text fontWeight="medium">Stats</Text>
+                <Text>
+                  <u>HP:</u> {selectedMinion.verminion.hp}
+                </Text>
+                <Text>
+                  <u>Attack:</u> {selectedMinion.verminion.attack}
+                </Text>
+                <Text>
+                  <u>Defense:</u> {selectedMinion.verminion.defense}
+                </Text>
+                <Text>
+                  <u>Speed:</u> {selectedMinion.verminion.speed}
+                </Text>
+                <Text>
+                  <u>Cost:</u> {selectedMinion.verminion.cost}
+                </Text>
+              </Box>
+
+              <Box pt={2}>
+                <Text fontWeight="medium">Skill</Text>
+                {selectedMinion.verminion?.skill ? (
+                  <>
+                    <Text>
+                      <u>Name:</u> {selectedMinion.verminion.skill}
+                    </Text>
+                    <Text>
+                      <u>Description:</u>{' '}
+                      {selectedMinion.verminion.skill_description}
+                    </Text>
+                    <Text>
+                      <u>Cost:</u> {selectedMinion.verminion.skill_cost}
+                    </Text>
+                    <Text>
+                      <u>Type:</u> {selectedMinion.verminion.skill_type.name}
+                    </Text>
+                  </>
+                ) : (
+                  <Text>No source(s) found for this minion</Text>
+                )}
+              </Box>
+            </>
+          }
         />
       ) : null}
     </>

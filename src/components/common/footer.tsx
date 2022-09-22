@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
         ALL FINAL FANTASY GAMES CONTENT IS PROPERTY OF SQUARE ENIX CO., LTD
       </Text>
       <Text>
-        made in {new Date().getFullYear()}, by{' '}
+        {new Date().getFullYear()} -{' '}
         <ExternalLink link="https://josepsoares.vercel.app/">
           josépsoares
         </ExternalLink>

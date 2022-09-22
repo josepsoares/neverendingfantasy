@@ -1,14 +1,16 @@
 import { NextPage } from 'next';
-
-import { useIndexInstancesQuery } from '@services/api/ffxivApi';
-import Error from '@components/common/feedback/error';
-import Loading from '@components/common/feedback/loading';
-import SEO from '@components/common/seo';
 import Link from 'next/link';
-import { capitalizeString } from '@utils/helpers/capitalizeString';
 import Image from 'next/image';
+import { useIndexInstancesQuery } from '@services/api/ffxivApi';
+
+import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
+
+import Loading from '@components/common/feedback/loading';
+import Error from '@components/common/feedback/error';
+import SEO from '@components/common/seo';
+import Card from '@components/common/card';
+import { capitalizeString } from '@utils/helpers/capitalizeString';
 import { FFXIV_API } from '@utils/constants';
-import { Box, Flex, Heading, SimpleGrid } from '@chakra-ui/react';
 
 const Instances: NextPage = () => {
   const instances = useIndexInstancesQuery({
@@ -39,26 +41,21 @@ const Instances: NextPage = () => {
             <Loading />
           ) : data ? (
             <SimpleGrid
-              minChildWidth={['400px', null, '250px']}
+              gridTemplateColumns={[
+                '1fr',
+                '1fr 1fr',
+                'repeat(3, 1fr)',
+                'repeat(4, 1fr)',
+                'repeat(5, 1fr)',
+                'repeat(6, 1fr)'
+              ]}
               gap={8}
-              alignItems="stretch"
-              justifyItems="stretch"
             >
               {data.Results.map((instance, i) =>
                 instance?.Name ? (
                   <Link key={i} href={`/ffxiv/instances/${instance.ID}`}>
                     <a>
-                      <Flex
-                        p={6}
-                        gap={4}
-                        borderRadius="lg"
-                        flexDir="column"
-                        justify="center"
-                        alignItems="center"
-                        bgColor="brand.600"
-                        textColor="white"
-                        boxShadow="md"
-                      >
+                      <Card isButton={true}>
                         <Image
                           src={`${FFXIV_API}${instance.Icon}`}
                           width="40px"
@@ -68,7 +65,7 @@ const Instances: NextPage = () => {
                         <Heading noOfLines={2} fontSize="2xl" as="h4">
                           {capitalizeString(instance.Name)}
                         </Heading>
-                      </Flex>
+                      </Card>
                     </a>
                   </Link>
                 ) : null

@@ -27,7 +27,7 @@ import Card from '@components/common/card';
 import BaseModal from '@components/common/modal';
 import SEO from '@components/common/seo';
 
-import type { IOrchestrion } from '@ts/interfaces/api/ffxiv/ffxivCollectInterfaces';
+import type { IOrchestrion } from '@ts/interfaces/ffxivCollectInterfaces';
 
 const Orchestrions: NextPage = () => {
   const router = useRouter();
@@ -96,20 +96,10 @@ const Orchestrions: NextPage = () => {
               {data.results?.length ? (
                 <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
                   {data.results.map((orchestrion: IOrchestrion, i) => (
-                    <Card
-                      p={6}
-                      key={i}
-                      isButton={true}
-                      onClick={() => {
-                        setSelectedOrchestrion(orchestrion);
-                        router.push(
-                          `${router.pathname}?orchestrion=${orchestrion.id}`
-                        );
-                      }}
-                    >
+                    <Card p={6} key={i}>
                       <Image
-                        width="36"
-                        height="36"
+                        width="16"
+                        height="16"
                         src={orchestrion.icon}
                         alt={orchestrion.name}
                       />
@@ -121,24 +111,31 @@ const Orchestrions: NextPage = () => {
                       >
                         {orchestrion.name}
                       </Heading>
+
+                      <Box textAlign="center">
+                        <Text fontSize="16">
+                          {orchestrion.owned} players own this
+                        </Text>
+
+                        <Text fontSize="16">
+                          Introduced in patch {orchestrion.patch}
+                        </Text>
+
+                        <Text fontSize="16">
+                          This orchestrion is{' '}
+                          {orchestrion.tradeable ? 'tradable' : 'non-tradable'}
+                        </Text>
+                      </Box>
                     </Card>
                   ))}
                 </SimpleGrid>
               ) : (
-                <EmptyData expression="mounts" />
+                <EmptyData expression="orchestrion" />
               )}
             </>
           ) : null}
         </Box>
       </Box>
-      {selectedOrchestrion !== null ? (
-        <BaseModal
-          open={router.query?.orchestrion ? true : false}
-          title={selectedOrchestrion.name}
-          whileClosing={() => router.push(router.pathname)}
-          body={<></>}
-        />
-      ) : null}
     </>
   );
 };

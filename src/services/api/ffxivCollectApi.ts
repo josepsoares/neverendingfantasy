@@ -61,9 +61,7 @@ export const ffxivCollectApi = createApi({
     }),
     indexRelicWeapons: builder.query<IRelicWeaponResponse, TGenericObject>({
       query: searchParams =>
-        `fashions?type_category_eq=weapons&${addParamsToGetRequest(
-          searchParams
-        )}`
+        `relics?type_category_eq=weapons&${addParamsToGetRequest(searchParams)}`
     }),
     indexEmotes: builder.query<IEmoteResponse, TGenericObject>({
       query: searchParams => `emotes?${addParamsToGetRequest(searchParams)}`

@@ -23,12 +23,15 @@ import { apiLinks, ffResourcesLinks, testimonials } from '@utils/constants';
 const Home: NextPage = () => {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const scrollToContent = () =>
+  const scrollToContent = () => {
     contentRef.current &&
-    contentRef.current.scrollTo({
-      top: contentRef.current.getBoundingClientRect().top - 20,
-      behavior: 'smooth'
-    });
+      window &&
+      window.scrollTo({
+        top: contentRef.current.getBoundingClientRect().top - 250,
+        left: 0,
+        behavior: 'smooth'
+      });
+  };
 
   return (
     <>
@@ -66,10 +69,9 @@ const Home: NextPage = () => {
         <Box>
           <Heading
             mb={10}
-            alignSelf="start"
-            borderBottom=" solid 10px"
+            borderBottom="solid 8px"
             borderColor="cornflowerblue"
-            fontSize={['7xl', '8xl', '9xl', '12rem']}
+            fontSize={['7xl', '8xl', '9xl', '14rem']}
             as="h1"
           >
             Neverending Fantasy
@@ -106,19 +108,22 @@ const Home: NextPage = () => {
 
         <Button
           size="lg"
+          p={10}
           colorScheme="whiteAlpha"
           textColor="brand"
           onClick={scrollToContent}
+          fontSize={['2xl', null, '3xl']}
+          alignItems="center"
           leftIcon={
             <Icon
+              width="40"
+              height="40"
               icon="bx:bx-down-arrow-alt"
               color="white"
-              height="25px"
-              width="25px"
             />
           }
         >
-          Start Exploring
+          <Text>Start Exploring</Text>
         </Button>
       </Flex>
 
@@ -214,14 +219,19 @@ const Home: NextPage = () => {
             >
               <Heading
                 fontFamily="FinalFantasyFont"
-                fontSize={['4xl', null, '5xl', '6xl']}
+                fontSize={['4xl', null, '6xl', '8xl']}
                 color="white"
                 zIndex="200"
                 as="h3"
               >
                 Games
               </Heading>
-              <Text color="white" zIndex="200" fontSize={['lg', null, '2xl']}>
+              <Text
+                color="white"
+                zIndex="200"
+                textAlign="center"
+                fontSize={['lg', null, '2xl', '3xl']}
+              >
                 find the gazillion games the series has
               </Text>
             </CardImgBg>
@@ -251,14 +261,19 @@ const Home: NextPage = () => {
             >
               <Heading
                 fontFamily="FinalFantasyFont"
-                fontSize={['4xl', null, '5xl', '6xl']}
+                fontSize={['4xl', null, '6xl', '8xl']}
                 color="white"
                 zIndex="2"
                 as="h3"
               >
                 FFXIV
               </Heading>
-              <Text color="white" zIndex="2" fontSize={['lg', null, '2xl']}>
+              <Text
+                color="white"
+                zIndex="2"
+                textAlign="center"
+                fontSize={['lg', null, '2xl', '3xl']}
+              >
                 explore info and stuff from the popular mmo
               </Text>
             </CardImgBg>
@@ -282,7 +297,7 @@ const Home: NextPage = () => {
           pb={10}
         >
           <Box>
-            <Text fontSize="xl" pb={4}>
+            <Text pb={4}>
               If you're wondering if someone had to make a big excel document
               and whole databases of the FF series, ye, someone had to do it,
               not me though. Even you can get all of the info in this website
@@ -299,7 +314,7 @@ const Home: NextPage = () => {
           </Box>
 
           <Box>
-            <Text fontSize="xl" pb={4}>
+            <Text pb={4}>
               If you feel like diving more in the franchising there are a couple
               of resources that could be helpful, both for the experts and
               noobs:
