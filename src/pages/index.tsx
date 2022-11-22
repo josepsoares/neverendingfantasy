@@ -47,7 +47,7 @@ const Home: NextPage = () => {
         minH="100vh"
         zIndex="100"
         color="white"
-        background="linear-gradient(-45deg,rgba(0, 0, 53, 1) 0%,rgba(0, 86, 175, 1) 100%)"
+        background="linear-gradient(-45deg,#000035 0%,#0056af 100%)"
         sx={{
           span: {
             zIndex: '-200'
@@ -82,13 +82,13 @@ const Home: NextPage = () => {
           <Text mt={10} fontSize={['md', '2xl', '3xl']} color="#dae8ff">
             Made by the japanese company -{' '}
             <Link href="https://en.wikipedia.org/wiki/Square_(video_game_company)">
-              <a>Square Enix (formerly Square)</a>
+              Square Enix (formerly Square)
             </Link>{' '}
             - known for its innovation, visuals, such as the inclusion of
             full-motion videos (FMVs), photorealistic character models, silly
             clothes and hairsyles, and music by{' '}
             <Link href="https://open.spotify.com/artist/3V79CTgRnsDdJSTqKitROv">
-              <a>Nobuo Uematsu</a>
+              Nobuo Uematsu
             </Link>
             .
           </Text>
@@ -198,7 +198,6 @@ const Home: NextPage = () => {
       <SimpleGrid ref={contentRef} columns={[1, null, null, 2]} pb={6}>
         <Link href="/games" passHref={true}>
           <Box
-            as="a"
             w="100%"
             opacity="0.9"
             display="block"
@@ -238,9 +237,8 @@ const Home: NextPage = () => {
           </Box>
         </Link>
 
-        <Link href="/ffxiv" passHref={true}>
+        <Link href="/ffxiv">
           <Box
-            as="a"
             w="100%"
             opacity="0.9"
             display="block"

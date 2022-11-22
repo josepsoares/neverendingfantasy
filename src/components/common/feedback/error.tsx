@@ -21,9 +21,8 @@ const Error = () => {
         <Heading as="h1">An error occurred</Heading>
         <Box py={10}>
           <Image
-            src={'/assets/img/error_tonberry.png'}
+            src="/assets/img/error_tonberry.png"
             alt="Tonberry Image"
-            placeholder="blur"
             width={100}
             height={100}
           />
@@ -33,16 +32,14 @@ const Error = () => {
         </Text>
         {router.pathname !== '/' && (
           <Link href="/">
-            <a>
-              <Box justifyContent="center">
-                <Button
-                  colorScheme="brand"
-                  leftIcon={<Icon icon="bx:bxs-home" />}
-                >
-                  Go back to Home
-                </Button>
-              </Box>
-            </a>
+            <Box justifyContent="center">
+              <Button
+                colorScheme="brand"
+                leftIcon={<Icon icon="bx:bxs-home" />}
+              >
+                Go back to Home
+              </Button>
+            </Box>
           </Link>
         )}
         <Button

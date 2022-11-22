@@ -1,22 +1,8 @@
-<p align="center">
-  <img src="/public/favicons/android-chrome-256x256.png"
-    alt="Neverending Fantasy Logo">
-</p>
+![Neverending fantasy logo](/public/favicons/android-chrome-256x256.png)
 
-<h1 align='center'>
-Neverending Fantasy
-</h1>
+# Neverending Fantasy
 
-<p align="center">
-  <img src='https://img.shields.io/badge/yarn-%232C8EBB.svg?style=for-the-badge&logo=yarn&logoColor=white' alt='Yarn' />
-  <img src='https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white' alt='Typescript' />
-  <img src='https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white' alt='Node.js' />
-  <img src='https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white' alt='Next.js' />
-  <img src='https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white' alt='Redux Toolkit' />
-  <img src='https://img.shields.io/badge/chakra-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white' alt='Chakra UI' />
-  <img src='https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white' alt='Eslint' />
-  <img src='https://img.shields.io/badge/code_style-prettier-18ffff.svg?style=for-the-badge&labelColor=grey' alt='Prettier' />
-</p>
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Yarn](https://img.shields.io/badge/yarn-%232C8EBB.svg?style=for-the-badge&logo=yarn&logoColor=white) ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) ![React Query](https://img.shields.io/badge/-React%20Query-FF4154?style=for-the-badge&logo=react%20query&logoColor=white) ![Chakra](https://img.shields.io/badge/chakra-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white) ![ESLint](https://img.shields.io/badge/ESLint-4B32C3.svg?style=for-the-badge&logo=ESLint&logoColor=white) ![Prettier](https://img.shields.io/badge/Prettier-F7B93E.svg?style=for-the-badge&logo=Prettier&logoColor=black)
 
 ## About
 
@@ -50,7 +36,6 @@ $ yarn build
 - 📁 /components
 - 📁 /hooks
 - 📁 /pages
-- 📁 /redux
 - 📁 /services
 - 📁 /styles
 - 📁 /ts
@@ -63,12 +48,10 @@ $ yarn build
   - [Rawg API](https://api.rawg.io/docs/)
   - [XIV API](https://xivapi.com)
   - [FFXIV Collect API](https://ffxivcollect.com)
-  - [Another Triple Triad API](https://triad.raelys.com)
-    &nbsp;
 
 - Typing with [TypeScript](https://github.com/microsoft/TypeScript)
 - [Next.js](https://nextjs.org) (React.js framework) frontend with optimized data fetching and [SEO](https://developers.google.com/search/docs/beginner/seo-starter-guide)
-- [RTK (Redux toolkit)](https://redux-toolkit.js.org) and [RTK Query](https://redux-toolkit.js.org/rtk-query/overview) usage for state manipulation and data fetching
+- Data fetching with [React-Query](https://react-query-v3.tanstack.com/)
 - [Chakra UI](https://chakra-ui.com) theming and [Iconify](https://iconify.design) for icons usage
 - Linting with [ESLint](https://eslint.org)
 - [Prettier](https://github.com/prettier/prettier) code formatter

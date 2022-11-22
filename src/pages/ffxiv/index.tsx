@@ -43,7 +43,6 @@ const FFXIVPage: NextPage = () => {
       <Grid templateColumns={['1fr', null, 'repeat(2, 1fr)']}>
         <Link href="/ffxiv/classjobs" passHref={true}>
           <Box
-            as="a"
             w="100%"
             opacity="0.9"
             display="block"
@@ -76,9 +75,8 @@ const FFXIVPage: NextPage = () => {
           </Box>
         </Link>
 
-        <Link href="/ffxiv/instances" passHref={true}>
+        <Link href="/ffxiv/instances">
           <Box
-            as="a"
             w="100%"
             opacity="0.9"
             display="block"
@@ -110,10 +108,11 @@ const FFXIVPage: NextPage = () => {
             </CardBg>
           </Box>
         </Link>
+      </Grid>
 
-        <Link href="/ffxiv/collectables-and-fashion" passHref={true}>
+      <Grid templateColumns={['1fr']}>
+        <Link href="/ffxiv/collectables-and-fashion">
           <Box
-            as="a"
             w="100%"
             opacity="0.9"
             display="block"
@@ -126,7 +125,7 @@ const FFXIVPage: NextPage = () => {
             }}
           >
             <CardBg
-              h={80}
+              h={'96'}
               imgUrl="/assets/img/ffxiv/fashion.jpg"
               imgAlt="Fashion Image"
               radii={false}
@@ -140,40 +139,6 @@ const FFXIVPage: NextPage = () => {
               </Heading>
               <Text textColor="white" fontSize={['xl', null, '2xl']}>
                 collectables, fashion things and a randomizer
-              </Text>
-            </CardBg>
-          </Box>
-        </Link>
-
-        <Link href="/ffxiv/triple-triad" passHref={true}>
-          <Box
-            as="a"
-            w="100%"
-            opacity="0.9"
-            display="block"
-            transition="background-color 0.5s linear"
-            background="#0064d7"
-            sx={{
-              '&:hover, &:active': {
-                background: '#2f93ff'
-              }
-            }}
-          >
-            <CardBg
-              h={80}
-              imgUrl="/assets/img/ffxiv/triple-triad.jpg"
-              imgAlt="Triple Triad Image"
-              radii={false}
-            >
-              <Heading
-                as="h2"
-                textColor="white"
-                fontSize={['4xl', null, '6xl']}
-              >
-                Triple Triad
-              </Heading>
-              <Text textColor="white" fontSize={['xl', null, '2xl']}>
-                aim to be the ace of cards in ffxiv
               </Text>
             </CardBg>
           </Box>

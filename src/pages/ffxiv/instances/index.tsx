@@ -54,19 +54,17 @@ const Instances: NextPage = () => {
               {data.Results.map((instance, i) =>
                 instance?.Name ? (
                   <Link key={i} href={`/ffxiv/instances/${instance.ID}`}>
-                    <a>
-                      <Card isButton={true}>
-                        <Image
-                          src={`${FFXIV_API}${instance.Icon}`}
-                          width="40px"
-                          height="40px"
-                          alt={`${instance.Name} Icon`}
-                        />
-                        <Heading noOfLines={2} fontSize="2xl" as="h4">
-                          {capitalizeString(instance.Name)}
-                        </Heading>
-                      </Card>
-                    </a>
+                    <Card isButton={true}>
+                      <Image
+                        src={`${FFXIV_API}${instance.Icon}`}
+                        width="40"
+                        height="40"
+                        alt={`${instance.Name} Icon`}
+                      />
+                      <Heading noOfLines={2} fontSize="2xl" as="h4">
+                        {capitalizeString(instance.Name)}
+                      </Heading>
+                    </Card>
                   </Link>
                 ) : null
               )}

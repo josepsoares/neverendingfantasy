@@ -57,9 +57,7 @@ const Breadcrumbs = () => {
               alignItems="center"
               fontSize={['initial', 'large', '2xl']}
             >
-              <Link href="/">
-                <a>home</a>
-              </Link>
+              <Link href="/">home</Link>
               <Icon
                 height="20px"
                 width="20px"
@@ -84,7 +82,7 @@ const Breadcrumbs = () => {
                       fontSize={['initial', 'large', '2xl']}
                     >
                       <Link href={breadcrumb.href}>
-                        <a>{breadcrumb.breadcrumb}</a>
+                        {breadcrumb.breadcrumb}
                       </Link>
                       {!isLastChild && (
                         <Icon

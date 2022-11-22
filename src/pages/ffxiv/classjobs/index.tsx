@@ -71,19 +71,17 @@ const ClassJob: NextPage = () => {
                 {data.Results.filter(item => item.ID < 8 || item.ID > 18).map(
                   (classJob, i) => (
                     <Link key={i} href={`/ffxiv/classjobs/${classJob.ID}`}>
-                      <a>
-                        <Card isButton={true}>
-                          <Image
-                            src={`${FFXIV_API}${classJob.Icon}`}
-                            width="85px"
-                            height="80px"
-                            alt={`${classJob.Name} Icon`}
-                          />
-                          <Heading noOfLines={1} fontSize="2xl" as="h4">
-                            {capitalizeString(classJob.Name)}
-                          </Heading>
-                        </Card>
-                      </a>
+                      <Card isButton={true}>
+                        <Image
+                          src={`${FFXIV_API}${classJob.Icon}`}
+                          width="85"
+                          height="80"
+                          alt={`${classJob.Name} Icon`}
+                        />
+                        <Heading noOfLines={1} fontSize="2xl" as="h4">
+                          {capitalizeString(classJob.Name)}
+                        </Heading>
+                      </Card>
                     </Link>
                   )
                 )}
@@ -108,19 +106,17 @@ const ClassJob: NextPage = () => {
                 {data.Results.filter(item => item.ID >= 8 && item.ID <= 18).map(
                   (classJob, i) => (
                     <Link key={i} href={`/ffxiv/classjobs/${classJob.ID}`}>
-                      <a>
-                        <Card isButton={true}>
-                          <Image
-                            src={`${FFXIV_API}${classJob.Icon}`}
-                            width="85px"
-                            height="80px"
-                            alt={`${classJob.Name} Icon`}
-                          />
-                          <Heading noOfLines={1} fontSize="2xl" as="h4">
-                            {capitalizeString(classJob.Name)}
-                          </Heading>
-                        </Card>
-                      </a>
+                      <Card isButton={true}>
+                        <Image
+                          src={`${FFXIV_API}${classJob.Icon}`}
+                          width="85"
+                          height="80"
+                          alt={`${classJob.Name} Icon`}
+                        />
+                        <Heading noOfLines={1} fontSize="2xl" as="h4">
+                          {capitalizeString(classJob.Name)}
+                        </Heading>
+                      </Card>
                     </Link>
                   )
                 )}

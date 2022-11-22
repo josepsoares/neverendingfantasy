@@ -57,19 +57,17 @@ const SimularGames: NextPage = () => {
           pad={{ vertical: 'medium' }}
         >
           <Link href="/games/simular" passHref={true}>
-            <Box as="a">
-              <Box
-                pad="medium"
-                height="20rem"
-                justify="center"
-                align="center"
-                background={{
-                  color: 'neutral-1'
-                }}
-              >
-                <h2>Simular Games</h2>
-                <p>explore simular ff games</p>
-              </Box>
+            <Box
+              pad="medium"
+              height="20rem"
+              justify="center"
+              align="center"
+              background={{
+                color: 'neutral-1'
+              }}
+            >
+              <h2>Simular Games</h2>
+              <p>explore simular ff games</p>
             </Box>
           </Link>
         </Box>
