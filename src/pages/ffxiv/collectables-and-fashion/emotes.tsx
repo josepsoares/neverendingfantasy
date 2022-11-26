@@ -5,7 +5,9 @@ import { useState } from 'react';
 import {
   Box,
   Button,
+  Flex,
   FormControl,
+  FormLabel,
   Heading,
   Image,
   Input,
@@ -45,10 +47,10 @@ const Emotes = () => {
 
   return (
     <>
-      <SEO title="Relic Weapons - FFXIV" />
+      <SEO title="Emotes - FFXIV" />
       <Box px={[12, null, 24, 32]} py={16}>
         <HeadingWithFilter
-          title="Relic Weapons"
+          title="Emotes"
           data={data}
           onOpen={onFilterDrawerOpen}
         />
@@ -66,9 +68,11 @@ const Emotes = () => {
                 filtersJSX={
                   <>
                     <FormControl label="Name">
-                      <Input placeholder="name of the weapon" />
+                      <FormLabel as="legend">Name</FormLabel>
+                      <Input placeholder="name of the emote" />
                     </FormControl>
-                    <FormControl label="Source">
+                    <FormControl label="Tradeable">
+                      <FormLabel as="legend">Tradeable</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
@@ -76,6 +80,7 @@ const Emotes = () => {
                       </Select>
                     </FormControl>
                     <FormControl label="Owned">
+                      <FormLabel as="legend">Owned</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
@@ -83,6 +88,7 @@ const Emotes = () => {
                       </Select>
                     </FormControl>
                     <FormControl label="Patch">
+                      <FormLabel as="legend">Patch</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>

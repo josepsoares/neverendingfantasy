@@ -5,7 +5,9 @@ import { useRouter } from 'next/router';
 import {
   Box,
   Button,
+  Flex,
   FormControl,
+  FormLabel,
   Heading,
   Image,
   Input,
@@ -64,32 +66,30 @@ const Accessories: NextPage = () => {
                 visible={isFilterDrawerOpen}
                 close={onFilterDrawerClose}
                 filtersJSX={
-                  <>
+                  <Flex flexDir="column" gap={4}>
                     <FormControl label="Name">
-                      <Input placeholder="name of the minion" />
-                    </FormControl>
-                    <FormControl label="Source">
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
+                      <FormLabel as="legend">Name</FormLabel>
+                      <Input placeholder="name of the acessory" />
                     </FormControl>
                     <FormControl label="Owned">
-                      <Select value={'one'}>
-                        <option value="one">one</option>
+                      <FormLabel as="legend">Owned</FormLabel>
+                      <Select bgColor="white" value={'one'}>
+                        <Box as="option" color="brand.500" value="one">
+                          one
+                        </Box>
                         <option value="two">two</option>
                         <option value="three">three</option>
                       </Select>
                     </FormControl>
                     <FormControl label="Patch">
+                      <FormLabel as="legend">Patch</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
                         <option value="three">three</option>
                       </Select>
                     </FormControl>
-                  </>
+                  </Flex>
                 }
               />
 

@@ -4,7 +4,9 @@ import { useState } from 'react';
 
 import {
   Box,
+  Flex,
   FormControl,
+  FormLabel,
   Heading,
   Image,
   Input,
@@ -65,9 +67,11 @@ const Mounts: NextPage = () => {
                 filtersJSX={
                   <>
                     <FormControl label="Name">
-                      <Input placeholder="name of the minion" />
+                      <FormLabel as="legend">Name</FormLabel>
+                      <Input placeholder="name of the mount" />
                     </FormControl>
                     <FormControl label="Movement">
+                      <FormLabel as="legend">Movement</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
@@ -75,13 +79,7 @@ const Mounts: NextPage = () => {
                       </Select>
                     </FormControl>
                     <FormControl label="Seats">
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Source">
+                      <FormLabel as="legend">Seats</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
@@ -89,6 +87,7 @@ const Mounts: NextPage = () => {
                       </Select>
                     </FormControl>
                     <FormControl label="Owned">
+                      <FormLabel as="legend">Owned</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
@@ -96,6 +95,7 @@ const Mounts: NextPage = () => {
                       </Select>
                     </FormControl>
                     <FormControl label="Patch">
+                      <FormLabel as="legend">Patch</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>

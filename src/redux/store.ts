@@ -3,7 +3,6 @@ import { createWrapper } from 'next-redux-wrapper';
 
 import { ffxivApi } from '@services/api/ffxivApi';
 import { ffxivCollectApi } from '@services/api/ffxivCollectApi';
-import { tripleTriadApi } from '@services/api/tripleTriadApi';
 import { rawgApi } from '@services/api/rawgApi';
 
 const initialState = {};
@@ -13,7 +12,6 @@ export const makeStore = (preloadedState = initialState) =>
     reducer: {
       [ffxivApi.reducerPath]: ffxivApi.reducer,
       [ffxivCollectApi.reducerPath]: ffxivCollectApi.reducer,
-      [tripleTriadApi.reducerPath]: tripleTriadApi.reducer,
       [rawgApi.reducerPath]: rawgApi.reducer
     },
     preloadedState,
@@ -21,7 +19,6 @@ export const makeStore = (preloadedState = initialState) =>
       defaultMiddleware().concat(
         ffxivApi.middleware,
         ffxivCollectApi.middleware,
-        tripleTriadApi.middleware,
         rawgApi.middleware
       )
   });

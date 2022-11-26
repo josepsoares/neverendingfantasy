@@ -1,8 +1,12 @@
 import { Fragment, useState } from 'react';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import axios, { AxiosResponse } from 'axios';
+import { useInfiniteQuery } from 'react-query';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 import {
   Box,
-  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -17,12 +21,8 @@ import {
   Image,
   Divider,
   Button,
-  Highlight,
   Center
 } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-
-import { useIndexCardsQuery } from '@services/api/tripleTriadApi';
 
 import {
   FilterDrawer,
@@ -35,21 +35,58 @@ import EmptyData from '@components/common/feedback/emptyData';
 import HeadingWithFilter from '@components/common/headingWithFilter';
 import Card from '@components/common/card';
 import BaseModal from '@components/common/modal';
-import { ICard } from '@ts/interfaces/api/ffxiv/tripleTriadInterfaces';
+
+import { ICard, ICardsResponse } from '@ts/interfaces/tripleTriadInterfaces';
+import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
+import { _add } from '@utils/helpers/add';
+import { _mutiply } from '@utils/helpers/mutiply';
+import { TRIPLE_TRIAD_API } from '@utils/constants';
 
 const Cards: NextPage = () => {
   const router = useRouter();
-
-  const cards = useIndexCardsQuery({
-    id_in: '1...21'
-  });
-  const { data, error, isLoading } = cards;
-
+  const [filters, setFilters] = useState('');
+  const [selectedCard, setSelectedCard] = useState<ICard | null>(null);
+  const [seeAllDescription, setSeeAllDescription] = useState(false);
   const { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose } =
     useFilterDrawer();
 
-  const [selectedCard, setSelectedCard] = useState<ICard | null>(null);
-  const [seeAllDescription, setSeeAllDescription] = useState(false);
+  //* in the pagination we start with 20 results, id_in=1...21
+  //* and then fetch 10 items and the user scrolls and hits a threshold
+  const {
+    data,
+    error,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    refetch
+  } = useInfiniteQuery(
+    'cards',
+    async ({ pageParam = { start: 1, end: 21 } }) => {
+      const { data }: AxiosResponse<ICardsResponse> = await axios.get(
+        `${TRIPLE_TRIAD_API}/cards?id_in=${pageParam.start}...${pageParam.end}&${filters}`
+      );
+
+      return data;
+    },
+    {
+      getNextPageParam: (lastPage, pages) => {
+        //* check if the last request has count=0
+        //* if so there are no more items to fetch
+        return lastPage.count > 0
+          ? {
+              //* eg. 2*10 = 20 and then 20 + 11 = 31
+              //* eg. 3*10 = 30 and then 30 + 11 = 41
+              start: _mutiply(pages.length, 10) + 11,
+              //* eg. 2*10 = 20 and then 20 + 21 = 41
+              //* eg. 3*10 = 30 and then 30 + 21 = 51
+              end: _mutiply(pages.length, 10) + 21
+            }
+          : undefined;
+      }
+    }
+  );
 
   return (
     <>
@@ -72,43 +109,35 @@ const Cards: NextPage = () => {
                 visible={isFilterDrawerOpen}
                 close={onFilterDrawerClose}
                 filtersJSX={
-                  <Flex flexDir="column" gap={6}>
+                  <>
                     <FormControl as="fieldset">
                       <FormLabel as="legend">Name</FormLabel>
                       <Input placeholder="name of the card" />
                     </FormControl>
-                    <FormControl as="fieldset">
-                      <FormLabel as="legend">Type</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl as="fieldset">
-                      <FormLabel as="legend">Stats</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
+
                     <FormControl as="fieldset">
                       <FormLabel as="legend">Stars</FormLabel>
                       <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
+                        {Array.from({ length: 5 }, (_, i) => i + 1).map(
+                          item => (
+                            <option key={item} value={item}>
+                              {item}
+                            </option>
+                          )
+                        )}
                       </Select>
                     </FormControl>
+
                     <FormControl as="fieldset">
                       <FormLabel as="legend">Sell Price</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
+                      <Slider aria-label="slider-ex-1" defaultValue={30}>
+                        <SliderTrack>
+                          <SliderFilledTrack />
+                        </SliderTrack>
+                        <SliderThumb />
+                      </Slider>
                     </FormControl>
+
                     <FormControl as="fieldset">
                       <FormLabel as="legend">Owned</FormLabel>
                       <Slider aria-label="slider-ex-1" defaultValue={30}>
@@ -118,46 +147,75 @@ const Cards: NextPage = () => {
                         <SliderThumb />
                       </Slider>
                     </FormControl>
+
                     <FormControl as="fieldset">
-                      <FormLabel as="legend">Source</FormLabel>
+                      <FormLabel as="legend">Patch</FormLabel>
                       <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
+                        {Array.from({ length: 6 }, (_, i) => i + 1).map(
+                          item => (
+                            <option key={item} value={item}>
+                              {item}
+                            </option>
+                          )
+                        )}
                       </Select>
                     </FormControl>
-                  </Flex>
+                  </>
                 }
               />
 
-              {data.results?.length ? (
-                <SimpleGrid columns={[1, null, 2, 3, 4, 5]} gap={8}>
-                  {data.results.map((card, i) => (
-                    <Card
-                      p={6}
-                      key={i}
-                      isButton={true}
-                      onClick={() => {
-                        setSelectedCard(card);
-                        router.push(`${router.pathname}?card=${card.id}`);
-                      }}
-                    >
-                      <Image
-                        src={`${card.image}`}
-                        width="75px"
-                        height="80px"
-                        alt={`${card.name} Image`}
-                      />
-                      <Heading noOfLines={1} fontSize="2xl" as="h4">
-                        {card.name}
-                      </Heading>
-                      <Text>
-                        {card.type.name} - {card.stars}{' '}
-                        {card.stars === 1 ? 'Star' : 'Stars'}
-                      </Text>
-                    </Card>
-                  ))}
-                </SimpleGrid>
+              {data.pages?.length ? (
+                <InfiniteScroll
+                  dataLength={data.pages.length}
+                  next={() => {
+                    fetchNextPage();
+                  }}
+                  hasMore={hasNextPage}
+                  loader={<h4>Loading...</h4>}
+                  endMessage={
+                    <Box pt={8}>
+                      <p>
+                        <b>Fantasy</b>tastic, you have seen them all!
+                      </p>
+                    </Box>
+                  }
+                >
+                  <SimpleGrid columns={[1, null, 2, 3, 4, 5]} gap={8}>
+                    {data.pages.map((cardList, i) => {
+                      return (
+                        <Fragment key={i}>
+                          {cardList.results.map((card, i) => (
+                            <Card
+                              p={6}
+                              key={i}
+                              isButton={true}
+                              onClick={() => {
+                                setSelectedCard(card);
+                                router.push(
+                                  `${router.pathname}?card=${card.id}`
+                                );
+                              }}
+                            >
+                              <Image
+                                src={`${card.image}`}
+                                width="75px"
+                                height="80px"
+                                alt={`${card.name} Image`}
+                              />
+                              <Heading noOfLines={1} fontSize="2xl" as="h4">
+                                {card.name}
+                              </Heading>
+                              <Text>
+                                {card.type.name} - {card.stars}{' '}
+                                {card.stars === 1 ? 'Star' : 'Stars'}
+                              </Text>
+                            </Card>
+                          ))}
+                        </Fragment>
+                      );
+                    })}
+                  </SimpleGrid>
+                </InfiniteScroll>
               ) : (
                 <EmptyData expression="cards" />
               )}
@@ -170,7 +228,7 @@ const Cards: NextPage = () => {
         <BaseModal
           open={router.query?.card ? true : false}
           title={selectedCard.name}
-          whileClosing={() => router.push('/ffxiv/triple-triad/cards')}
+          whileClosing={() => router.push(router.pathname)}
           body={
             <>
               <Image

@@ -47,7 +47,13 @@ const Breadcrumbs = () => {
         alignItems="center"
         gap={[2, null, 4]}
       >
-        <Image src="/favicons/favicon-32x32.png" alt="Neverendingfantsy logo" />
+        <Link href="/">
+          <Image
+            borderRadius="4px"
+            src="/favicons/favicon-32x32.png"
+            alt="Neverendingfantsy logo"
+          />
+        </Link>
         <nav aria-label="breadcrumbs">
           <ol>
             <Box

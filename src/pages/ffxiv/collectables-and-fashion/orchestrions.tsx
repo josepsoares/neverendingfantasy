@@ -98,8 +98,8 @@ const Orchestrions: NextPage = () => {
                   {data.results.map((orchestrion: IOrchestrion, i) => (
                     <Card p={6} key={i}>
                       <Image
-                        width="16"
-                        height="16"
+                        width="12"
+                        height="12"
                         src={orchestrion.icon}
                         alt={orchestrion.name}
                       />

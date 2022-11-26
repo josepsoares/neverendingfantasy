@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import axios, { AxiosResponse } from 'axios';
+import { useInfiniteQuery } from 'react-query';
 
 import {
   Box,
@@ -12,8 +14,6 @@ import {
   SimpleGrid,
   Text
 } from '@chakra-ui/react';
-
-import { useIndexRelicWeaponsQuery } from '@services/api/ffxivCollectApi';
 
 import Error from '@components/common/feedback/error';
 import Loading from '@components/common/feedback/loading';
@@ -27,21 +27,56 @@ import Card from '@components/common/card';
 import BaseModal from '@components/common/modal';
 import SEO from '@components/common/seo';
 
-import type { IRelicWeapon } from '@ts/interfaces/ffxivCollectInterfaces';
+import type {
+  IRelicWeapon,
+  IRelicWeaponResponse
+} from '@ts/interfaces/ffxivCollectInterfaces';
+import { _mutiply } from '@utils/helpers/mutiply';
+import { FFXIV_COLLECT_API } from '@utils/constants';
 
 const RelicWeapons: NextPage = () => {
-  const router = useRouter();
-  const relicWeapons = useIndexRelicWeaponsQuery({ limit: 20 });
-  const { data, error, isLoading } = relicWeapons;
-
+  const [filters, setFilters] = useState('');
+  const [seeAllDescription, setSeeAllDescription] = useState(false);
   const { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose } =
     useFilterDrawer();
 
-  const [selectedRelicWeapon, setSelectedRelicWeapon] =
-    useState<IRelicWeapon | null>(null);
-  const [seeAllDescription, setSeeAllDescription] = useState(false);
+  //* in the pagination we start with 20 results, id_in=1...21
+  //* and then fetch 10 items and the user scrolls and hits a threshold
+  const {
+    data,
+    error,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    refetch
+  } = useInfiniteQuery(
+    'relics',
+    async ({ pageParam = { start: 1, end: 21 } }) => {
+      const { data }: AxiosResponse<IRelicWeaponResponse> = await axios.get(
+        `${FFXIV_COLLECT_API}/relics?id_in=${pageParam.start}...${pageParam.end}&${filters}`
+      );
 
-  console.log(data);
+      return data;
+    },
+    {
+      getNextPageParam: (lastPage, pages) => {
+        //* check if the last request has count=0
+        //* if so there are no more items to fetch
+        return lastPage.count > 0
+          ? {
+              //* eg. 2*10 = 20 and then 20 + 11 = 31
+              //* eg. 3*10 = 30 and then 30 + 11 = 41
+              start: _mutiply(pages.length, 10) + 11,
+              //* eg. 2*10 = 20 and then 20 + 21 = 41
+              //* eg. 3*10 = 30 and then 30 + 21 = 51
+              end: _mutiply(pages.length, 10) + 21
+            }
+          : undefined;
+      }
+    }
+  );
 
   return (
     <>
@@ -131,14 +166,6 @@ const RelicWeapons: NextPage = () => {
           ) : null}
         </Box>
       </Box>
-      {selectedRelicWeapon !== null ? (
-        <BaseModal
-          open={router.query?.relicweapon ? true : false}
-          title={selectedRelicWeapon.name}
-          whileClosing={() => router.push(router.pathname)}
-          body={<></>}
-        />
-      ) : null}
     </>
   );
 };

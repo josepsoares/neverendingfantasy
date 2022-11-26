@@ -1,7 +1,9 @@
-const RAWG_API = 'https://api.rawg.io/api';
-const FFXIV_API = 'https://xivapi.com';
+export const RAWG_API = 'https://api.rawg.io/api';
+export const FFXIV_API = 'https://xivapi.com';
+export const TRIPLE_TRIAD_API = 'https://triad.raelys.com/api';
+export const FFXIV_COLLECT_API = 'https://ffxivcollect.com/api';
 
-const apiLinks = [
+export const apiLinks = [
   { url: 'https://rawg.io', text: 'Rawg' },
   { url: 'https://xivapi.com', text: 'XIV Api' },
   {
@@ -18,7 +20,7 @@ const apiLinks = [
   }
 ];
 
-const ffResourcesLinks = [
+export const ffResourcesLinks = [
   { url: 'https://square-enix-games.com/en_EU/home', text: 'Square Enix' },
   {
     url: 'https://finalfantasy.fandom.com/wiki/Final_Fantasy_Wiki',
@@ -43,7 +45,7 @@ const ffResourcesLinks = [
   }
 ];
 
-const testimonials = [
+export const testimonials = [
   {
     name: 'Jirard "The Completionist" Khalil',
     img: 'testimonials/jirard.png',
@@ -140,5 +142,3 @@ const testimonials = [
       "But what do we care about the most in Final Fantasy? Waifus and Husbandos! You'll always have that golden honey character, the pinnacle of all existance, the best of the best!"
   }
 ];
-
-export { RAWG_API, FFXIV_API, apiLinks, ffResourcesLinks, testimonials };

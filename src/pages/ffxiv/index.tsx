@@ -68,7 +68,12 @@ const FFXIVPage: NextPage = () => {
               >
                 Classes and Jobs
               </Heading>
-              <Text zIndex="2" textColor="white" fontSize={['xl', null, '2xl']}>
+              <Text
+                zIndex="2"
+                textColor="white"
+                textAlign="center"
+                fontSize={['xl', null, '2xl']}
+              >
                 explore all the cool class jobs your character can do
               </Text>
             </CardBg>
@@ -102,7 +107,12 @@ const FFXIVPage: NextPage = () => {
               >
                 Instances
               </Heading>
-              <Text zIndex="2" textColor="white" fontSize={['xl', null, '2xl']}>
+              <Text
+                zIndex="2"
+                textColor="white"
+                textAlign="center"
+                fontSize={['xl', null, '2xl']}
+              >
                 the raids, the dungeons, the excitment
               </Text>
             </CardBg>
@@ -125,7 +135,7 @@ const FFXIVPage: NextPage = () => {
             }}
           >
             <CardBg
-              h={'96'}
+              h="30rem"
               imgUrl="/assets/img/ffxiv/fashion.jpg"
               imgAlt="Fashion Image"
               radii={false}
@@ -137,8 +147,13 @@ const FFXIVPage: NextPage = () => {
               >
                 Collectables and Fashion
               </Heading>
-              <Text textColor="white" fontSize={['xl', null, '2xl']}>
-                collectables, fashion things and a randomizer
+              <Text
+                zIndex="2"
+                textColor="white"
+                textAlign="center"
+                fontSize={['xl', null, '2xl']}
+              >
+                collectables, fashion things and stuff
               </Text>
             </CardBg>
           </Box>

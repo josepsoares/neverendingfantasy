@@ -8,6 +8,7 @@ import {
   Button,
   Flex,
   FormControl,
+  FormLabel,
   Heading,
   Image,
   Input,
@@ -83,18 +84,19 @@ const Armoires: NextPage = () => {
                 filtersJSX={
                   <>
                     <FormControl label="Name">
+                      <FormLabel as="legend">Name</FormLabel>
                       <Input placeholder="name of the armor" />
                     </FormControl>
                     <FormControl label="Category">
-                      <Select value={'one'}></Select>
-                    </FormControl>
-                    <FormControl label="Source">
+                      <FormLabel as="legend">Category</FormLabel>
                       <Select value={'one'}></Select>
                     </FormControl>
                     <FormControl label="Owned">
+                      <FormLabel as="legend">Owned</FormLabel>
                       <Select value={'one'}></Select>
                     </FormControl>
                     <FormControl label="Patch">
+                      <FormLabel as="legend">Patch</FormLabel>
                       <Select value={'one'}></Select>
                     </FormControl>
                   </>

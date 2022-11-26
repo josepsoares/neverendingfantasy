@@ -6,6 +6,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
   useDisclosure
 } from '@chakra-ui/react';
 
@@ -40,7 +41,9 @@ const FilterDrawer: React.FC<{
         <DrawerHeader mt={4}>Filters</DrawerHeader>
 
         <DrawerBody>
-          {filtersJSX}
+          <Flex flexDir="column" gap={4}>
+            {filtersJSX}
+          </Flex>
           <Button mt={8} colorScheme="whiteAlpha">
             Reset filters
           </Button>

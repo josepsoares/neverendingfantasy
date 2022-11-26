@@ -38,7 +38,7 @@ const Home: NextPage = () => {
       <SEO title="Home" />
 
       <Flex
-        p={[12, null, 24, 32]}
+        p={[12, 16, 24, 32]}
         position="relative"
         flexDir="column"
         alignItems="center"
@@ -60,59 +60,43 @@ const Home: NextPage = () => {
           h="full"
           objectFit="cover"
           objectPosition="center"
-          opacity={0.1}
+          opacity={0.15}
           zIndex="-100"
           position="absolute"
           alt="Final Fantasy Illustration"
           src="/assets/img/ffxiv/free-trial-promo-art.jpg"
         />
-        <Box>
-          <Heading
-            mb={10}
-            borderBottom="solid 8px"
-            borderColor="cornflowerblue"
-            fontSize={['7xl', '8xl', '9xl', '14rem']}
-            as="h1"
-          >
-            Neverending Fantasy
+        <Flex justifyContent="center" alignItems="center" flexDir="column">
+          <Image
+            alt="Neverending Fantasy Logo"
+            src="/assets/logo/nef-logo-hero-bg.png"
+          />
+          <Heading fontWeight="medium" fontSize="4xl" as="h2">
+            the neverending franchise with final in its name
           </Heading>
-          <Heading fontSize={['5xl', '6xl', '7xl']} as="h2">
-            the franchise, with final in its name, which never ends
-          </Heading>
-          <Text mt={10} fontSize={['md', '2xl', '3xl']} color="#dae8ff">
-            Made by the japanese company -{' '}
-            <Link href="https://en.wikipedia.org/wiki/Square_(video_game_company)">
-              Square Enix (formerly Square)
-            </Link>{' '}
-            - known for its innovation, visuals, such as the inclusion of
-            full-motion videos (FMVs), photorealistic character models, silly
-            clothes and hairsyles, and music by{' '}
-            <Link href="https://open.spotify.com/artist/3V79CTgRnsDdJSTqKitROv">
-              Nobuo Uematsu
-            </Link>
-            .
-          </Text>
           <Text
-            mt={2}
-            fontSize={['md', '2xl', '3xl']}
-            fontWeight="bold"
+            mt="6"
+            textAlign="center"
+            fontSize={['md', '2xl']}
+            fontWeight="normal"
             color="#dae8ff"
           >
             This is just a silly fan, tribute and informative page of the FF
             games.
           </Text>
-          <Text my={10} fontSize="md" color="#dae8ff">
+          <Text fontSize="md" textAlign="center" color="#dae8ff">
             ALL FINAL FANTASY GAMES CONTENT IS PROPERTY OF SQUARE ENIX CO., LTD
           </Text>
-        </Box>
+        </Flex>
 
         <Button
           size="lg"
-          p={10}
+          p={8}
+          mt="8"
           colorScheme="whiteAlpha"
           textColor="brand"
           onClick={scrollToContent}
-          fontSize={['2xl', null, '3xl']}
+          fontSize={'2xl'}
           alignItems="center"
           leftIcon={
             <Icon
@@ -128,9 +112,9 @@ const Home: NextPage = () => {
       </Flex>
 
       {/* place quotes of famous people who talked about the ff franchise here */}
-      <Box pt={[20, null, null, 32]} px={[8, 12, 24, 32]} pb={20}>
+      <Box pt={[20, null, null, 32]} px={[8, 12, 24, 32]} pb={32}>
         <Heading
-          textAlign="center"
+          textAlign={['left', null, 'center']}
           textColor="brand.500"
           as="h1"
           fontSize="8xl"
@@ -139,16 +123,26 @@ const Home: NextPage = () => {
           What truly is Final Fantasy?
         </Heading>
 
-        <Box pb={12} px={[2, 8, 10, 28, null]}>
+        <Box pb={12} px={[null, null, 10, 28, null]}>
           <Text fontSize="2xl">
             Well, repeating a little bit the intro above, Final Fantasy is a
-            Japanese anthology media franchise created by{' '}
+            Japanese anthology media franchise made by{' '}
+            <Link href="https://en.wikipedia.org/wiki/Square_(video_game_company)">
+              Square Enix (formerly Square)
+            </Link>{' '}
+            and created by{' '}
             <a href="https://en.wikipedia.org/wiki/Hironobu_Sakaguchi">
               Hironobu Sakaguchi
             </a>
             , which centers on a series of fantasy and sci-fi role-playing video
-            games. The franchise has also branched into different game genres
-            and medias including CGI films, anime, etc.
+            games. It is known for its innovation, visuals, such as the
+            inclusion of full-motion videos (FMVs), photorealistic character
+            models, silly clothes and hairsyles, and music by{' '}
+            <Link href="https://open.spotify.com/artist/3V79CTgRnsDdJSTqKitROv">
+              Nobuo Uematsu
+            </Link>
+            . The franchise has also branched into different game genres and
+            medias including CGI films, anime, etc.
           </Text>
 
           <Text fontSize="2xl" mt={2}>
@@ -195,7 +189,7 @@ const Home: NextPage = () => {
         </SimpleGrid>
       </Box>
 
-      <SimpleGrid ref={contentRef} columns={[1, null, null, 2]} pb={6}>
+      <SimpleGrid ref={contentRef} columns={[1, null, null, null, 2]}>
         <Link href="/games" passHref={true}>
           <Box
             w="100%"
@@ -281,7 +275,7 @@ const Home: NextPage = () => {
 
       <Box pt={[32, null, null]} px={[8, 12, 24, 32]}>
         <Heading
-          textAlign="center"
+          textAlign={['left', null, 'center']}
           textColor="brand.500"
           as="h1"
           fontSize="8xl"

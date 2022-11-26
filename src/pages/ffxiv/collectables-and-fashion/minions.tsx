@@ -4,7 +4,9 @@ import { useState } from 'react';
 
 import {
   Box,
+  Flex,
   FormControl,
+  FormLabel,
   Grid,
   Heading,
   Image,
@@ -65,9 +67,11 @@ const Minions: NextPage = () => {
                 filtersJSX={
                   <>
                     <FormControl label="Name">
+                      <FormLabel as="legend">Name</FormLabel>
                       <Input placeholder="name of the minion" />
                     </FormControl>
                     <FormControl label="Race">
+                      <FormLabel as="legend">Race</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
@@ -75,20 +79,15 @@ const Minions: NextPage = () => {
                       </Select>
                     </FormControl>
                     <FormControl label="Behaviour">
+                      <FormLabel as="legend">Behaviour</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
                         <option value="three">three</option>
                       </Select>
                     </FormControl>
-                    <FormControl label="Skill Type">
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Source">
+                    <FormControl label="Tradeable">
+                      <FormLabel as="legend">Tradeable</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
@@ -96,6 +95,7 @@ const Minions: NextPage = () => {
                       </Select>
                     </FormControl>
                     <FormControl label="Owned">
+                      <FormLabel as="legend">Owned</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
@@ -103,6 +103,7 @@ const Minions: NextPage = () => {
                       </Select>
                     </FormControl>
                     <FormControl label="Patch">
+                      <FormLabel as="legend">Patch</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>

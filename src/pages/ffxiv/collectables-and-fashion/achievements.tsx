@@ -10,7 +10,9 @@ import {
   Select,
   Image,
   Text,
-  SimpleGrid
+  SimpleGrid,
+  Flex,
+  FormLabel
 } from '@chakra-ui/react';
 
 import { useIndexAchievementsQuery } from '@services/api/ffxivCollectApi';
@@ -67,23 +69,19 @@ const Achievements: NextPage = () => {
                 filtersJSX={
                   <>
                     <FormControl label="Name">
-                      <Input placeholder="name of the minion" />
+                      <FormLabel as="legend">Name</FormLabel>
+                      <Input placeholder="name of the achievement" />
                     </FormControl>
                     <FormControl label="Category">
+                      <FormLabel as="legend">Category</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
                         <option value="three">three</option>
                       </Select>
                     </FormControl>
-                    <FormControl label="Type">
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Reward">
+                    <FormControl label="Points Rewarded">
+                      <FormLabel as="legend">Points Rewarded</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
@@ -91,6 +89,7 @@ const Achievements: NextPage = () => {
                       </Select>
                     </FormControl>
                     <FormControl label="Completed Percentage">
+                      <FormLabel as="legend">Completed Percentage</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
@@ -98,6 +97,7 @@ const Achievements: NextPage = () => {
                       </Select>
                     </FormControl>
                     <FormControl label="Patch">
+                      <FormLabel as="legend">Patch</FormLabel>
                       <Select value={'one'}>
                         <option value="one">one</option>
                         <option value="two">two</option>
