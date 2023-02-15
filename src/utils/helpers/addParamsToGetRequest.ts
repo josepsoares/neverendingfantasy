@@ -1,4 +1,4 @@
-import { _add } from '@utils/helpers/add';
+import { _add } from '@utils/helpers/math';
 import { TGenericObject } from '@ts/TGenericObject';
 
 export const addParamsToGetRequest = (queries: TGenericObject) => {

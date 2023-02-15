@@ -73,21 +73,6 @@ export interface IFashionResponse extends IFFXIVCollectApiResponse {
   results: IFashion[];
 }
 
-export interface IHairstyle {
-  id: number;
-  name: string;
-  description?: string;
-  patch: string;
-  item_id?: number;
-  owned: string;
-  icon?: string;
-  sources?: SourceProperty[];
-}
-
-export interface IHairstylesResponse extends IFFXIVCollectApiResponse {
-  results: IHairstyle[];
-}
-
 export interface IMinion {
   id: number;
   name: string;
@@ -178,7 +163,7 @@ export interface IOrchestrionResponse extends IFFXIVCollectApiResponse {
   results: IOrchestrion[];
 }
 
-export interface IRelicWeapon {
+export interface IRelic {
   id: number;
   name: string;
   order: number;
@@ -195,8 +180,8 @@ export interface IRelicWeapon {
   sources: SourceProperty[];
 }
 
-export interface IRelicWeaponResponse extends IFFXIVCollectApiResponse {
-  results: IRelicWeapon[];
+export interface IRelicResponse extends IFFXIVCollectApiResponse {
+  results: IRelic[];
 }
 
 export interface IEmote {

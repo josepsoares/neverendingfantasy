@@ -31,16 +31,6 @@ To build the webapp:
 $ yarn build
 ```
 
-## File Structure
-
-- 📁 /components
-- 📁 /hooks
-- 📁 /pages
-- 📁 /services
-- 📁 /styles
-- 📁 /ts
-- 📁 /utils
-
 ## Features
 
 - View and filter data about the [Final Fantasy franchise video games](https://eu.finalfantasy.com), specially the MMORPG [Final Fantasy XIV](https://eu.finalfantasyxiv.com), via APIs:

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 
@@ -13,10 +13,9 @@ import {
 } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
-import SEO from '@components/common/seo';
-import ExternalLink from '@components/common/externalLink';
-import CardImgBg from '@components/common/cardImgBg';
-import TestimonialItem from '@components/common/testimonialItem';
+import SEO from '@components/seo';
+import CardImgBg from '@components/cardBgImg';
+import TestimonialItem from '@components/misc/testimonialItem';
 
 import { apiLinks, ffResourcesLinks, testimonials } from '@utils/constants';
 
@@ -27,7 +26,7 @@ const Home: NextPage = () => {
     contentRef.current &&
       window &&
       window.scrollTo({
-        top: contentRef.current.getBoundingClientRect().top - 250,
+        top: contentRef.current.getBoundingClientRect().top,
         left: 0,
         behavior: 'smooth'
       });
@@ -38,16 +37,16 @@ const Home: NextPage = () => {
       <SEO title="Home" />
 
       <Flex
-        p={[12, 16, 24, 32]}
-        position="relative"
-        flexDir="column"
-        alignItems="center"
-        justifyContent="space-between"
         boxShadow="lg"
         minH="100vh"
         zIndex="100"
         color="white"
-        background="linear-gradient(-45deg,#000035 0%,#0056af 100%)"
+        flexDir="column"
+        position="relative"
+        alignItems="center"
+        justifyContent="center"
+        px={['10', null, '0']}
+        bgGradient="linear(to-bl,#000035 0%,#0056af 100%)"
         sx={{
           span: {
             zIndex: '-200'
@@ -58,11 +57,11 @@ const Home: NextPage = () => {
           top={0}
           w="full"
           h="full"
-          objectFit="cover"
-          objectPosition="center"
-          opacity={0.15}
           zIndex="-100"
+          opacity={0.15}
+          objectFit="cover"
           position="absolute"
+          objectPosition="center"
           alt="Final Fantasy Illustration"
           src="/assets/img/ffxiv/free-trial-promo-art.jpg"
         />
@@ -71,59 +70,75 @@ const Home: NextPage = () => {
             alt="Neverending Fantasy Logo"
             src="/assets/logo/nef-logo-hero-bg.png"
           />
-          <Heading fontWeight="medium" fontSize="4xl" as="h2">
+          <Heading
+            as="h2"
+            fontSize="5xl"
+            textAlign="center"
+            fontWeight="medium"
+            letterSpacing="wider"
+          >
             the neverending franchise with final in its name
           </Heading>
           <Text
             mt="6"
-            textAlign="center"
-            fontSize={['md', '2xl']}
-            fontWeight="normal"
             color="#dae8ff"
+            textAlign="center"
+            fontWeight="normal"
+            fontSize={['md', 'lg', '2xl']}
           >
             This is just a silly fan, tribute and informative page of the FF
             games.
           </Text>
-          <Text fontSize="md" textAlign="center" color="#dae8ff">
+          <Text
+            color="#dae8ff"
+            textAlign="center"
+            mt={['4', null, '2']}
+            fontSize={['sm', null, 'md']}
+          >
             ALL FINAL FANTASY GAMES CONTENT IS PROPERTY OF SQUARE ENIX CO., LTD
           </Text>
-        </Flex>
 
-        <Button
-          size="lg"
-          p={8}
-          mt="8"
-          colorScheme="whiteAlpha"
-          textColor="brand"
-          onClick={scrollToContent}
-          fontSize={'2xl'}
-          alignItems="center"
-          leftIcon={
-            <Icon
-              width="40"
-              height="40"
-              icon="bx:bx-down-arrow-alt"
-              color="white"
-            />
-          }
-        >
-          <Text>Start Exploring</Text>
-        </Button>
+          <Button
+            p="8"
+            mt="8"
+            size="lg"
+            fontSize="2xl"
+            textColor="brand"
+            alignItems="center"
+            colorScheme="whiteAlpha"
+            onClick={scrollToContent}
+            leftIcon={
+              <Icon
+                width="40"
+                height="40"
+                icon="bx:bx-down-arrow-alt"
+                color="white"
+              />
+            }
+          >
+            <Text>Start Exploring</Text>
+          </Button>
+        </Flex>
       </Flex>
 
       {/* place quotes of famous people who talked about the ff franchise here */}
-      <Box pt={[20, null, null, 32]} px={[8, 12, 24, 32]} pb={32}>
+      <Box
+        mx="auto"
+        pb="32"
+        pt={['20', null, null, '32']}
+        maxW={['91.666667%%', '83.333333%', null, '75%']}
+      >
         <Heading
-          textAlign={['left', null, 'center']}
-          textColor="brand.500"
           as="h1"
+          pb="8"
           fontSize="8xl"
-          pb={8}
+          textColor="brand.500"
+          textAlign={['left', null, 'center']}
         >
           What truly is Final Fantasy?
         </Heading>
 
-        <Box pb={12} px={[null, null, 10, 28, null]}>
+        <Box pb="12" px={[null, null, '10']}>
           <Text fontSize="2xl">
             Well, repeating a little bit the intro above, Final Fantasy is a
             Japanese anthology media franchise made by{' '}
@@ -145,7 +160,7 @@ const Home: NextPage = () => {
             medias including CGI films, anime, etc.
           </Text>
 
-          <Text fontSize="2xl" mt={2}>
+          <Text fontSize="2xl" pt="2">
             But yeah, the games of the franchise can address various themes and{' '}
             <Box as="span" fontWeight="semibold" color="brand.500">
               convey different feelings and messages to the human masses
@@ -160,8 +175,8 @@ const Home: NextPage = () => {
 
         <SimpleGrid
           gap={4}
-          px={[null, 6, 8, 18, null]}
           alignItems="center"
+          px={[null, null, '8', '18']}
           gridTemplateColumns={[
             '1fr',
             null,
@@ -181,115 +196,76 @@ const Home: NextPage = () => {
               gridColSm={item?.gridColSm}
               gridColMd={item?.gridColMd}
               gridColLg={item?.gridColLg}
-              gridCol4K={item?.gridCol4K}
-              rowLg={item.rowLg}
               profession={item.profession}
             />
           ))}
         </SimpleGrid>
       </Box>
 
-      <SimpleGrid ref={contentRef} columns={[1, null, null, null, 2]}>
-        <Link href="/games" passHref={true}>
-          <Box
-            w="100%"
-            opacity="0.9"
-            display="block"
-            transition="background-color 0.5s linear"
-            background="#0050ac"
-            _hover={{
-              bgColor: '#1763b4'
-            }}
-            _active={{
-              bgColor: '#1763b4'
-            }}
+      <SimpleGrid ref={contentRef} columns={1}>
+        <Link href="/games">
+          <CardImgBg
+            h="lg"
+            imgUrl="/assets/img/ffx-opening-art.png"
+            imgAlt="Final Fantasy Games"
           >
-            <CardImgBg
-              h="lg"
-              imgUrl="/assets/img/ffx-opening-art.png"
-              imgAlt="Final Fantasy Games"
-              radii={false}
+            <Heading
+              as="h3"
+              zIndex="200"
+              color="white"
+              fontSize={['6xl', '8xl']}
             >
-              <Heading
-                fontFamily="FinalFantasyFont"
-                fontSize={['4xl', null, '6xl', '8xl']}
-                color="white"
-                zIndex="200"
-                as="h3"
-              >
-                Games
-              </Heading>
-              <Text
-                color="white"
-                zIndex="200"
-                textAlign="center"
-                fontSize={['lg', null, '2xl', '3xl']}
-              >
-                find the gazillion games the series has
-              </Text>
-            </CardImgBg>
-          </Box>
+              All Games
+            </Heading>
+            <Text
+              color="white"
+              zIndex="200"
+              textAlign="center"
+              fontSize={['2xl', '3xl']}
+            >
+              find the gazillion games the series has
+            </Text>
+          </CardImgBg>
         </Link>
 
         <Link href="/ffxiv">
-          <Box
-            w="100%"
-            opacity="0.9"
-            display="block"
-            transition="background-color 0.5s linear"
-            background="#0050ac"
-            _hover={{
-              bgColor: '#1763b4'
-            }}
-            _active={{
-              bgColor: '#1763b4'
-            }}
+          <CardImgBg
+            h="lg"
+            imgUrl="/assets/img/ffxiv/data-center-travel-system.jpg"
+            imgAlt="Final Fantasy XIV"
           >
-            <CardImgBg
-              h="lg"
-              imgUrl="/assets/img/ffxiv/data-center-travel-system.jpg"
-              imgAlt="Final Fantasy XIV"
-              radii={false}
+            <Heading fontSize={['6xl', '8xl']} color="white" zIndex="2" as="h3">
+              FFXIV Stuff
+            </Heading>
+            <Text
+              zIndex="2"
+              color="white"
+              textAlign="center"
+              fontSize={['2xl', '3xl']}
             >
-              <Heading
-                fontFamily="FinalFantasyFont"
-                fontSize={['4xl', null, '6xl', '8xl']}
-                color="white"
-                zIndex="2"
-                as="h3"
-              >
-                FFXIV
-              </Heading>
-              <Text
-                color="white"
-                zIndex="2"
-                textAlign="center"
-                fontSize={['lg', null, '2xl', '3xl']}
-              >
-                explore info and stuff from the popular mmo
-              </Text>
-            </CardImgBg>
-          </Box>
+              explore info and stuff from the popular mmo
+            </Text>
+          </CardImgBg>
         </Link>
       </SimpleGrid>
 
-      <Box pt={[32, null, null]} px={[8, 12, 24, 32]}>
+      <Box pt="32" mx="auto" maxW={['91.666667%%', '83.333333%', null, '75%']}>
         <Heading
-          textAlign={['left', null, 'center']}
-          textColor="brand.500"
+          pb="8"
           as="h1"
           fontSize="8xl"
-          pb={8}
+          textColor="brand.500"
+          textAlign={['left', null, 'center']}
         >
           But...? where all this data came from?
         </Heading>
         <SimpleGrid
-          gap={[8, 10, null, 12, 20]}
+          pb="10"
           columns={[1, null, null, 2]}
-          pb={10}
+          gap={['8', '10', null, '12', '20']}
         >
           <Box>
-            <Text pb={4}>
+            <Text pb="4">
               If you're wondering if someone had to make a big excel document
               and whole databases of the FF series, ye, someone had to do it,
               not me though. Even you can get all of the info in this website
@@ -299,14 +275,16 @@ const Home: NextPage = () => {
             <ul>
               {apiLinks.map(({ url, text }, i) => (
                 <li key={i}>
-                  <ExternalLink link={url}>{text}</ExternalLink>
+                  <Link target="_blank" rel="noopener noreferrer" href={url}>
+                    {text}
+                  </Link>
                 </li>
               ))}
             </ul>
           </Box>
 
           <Box>
-            <Text pb={4}>
+            <Text pb="4">
               If you feel like diving more in the franchising there are a couple
               of resources that could be helpful, both for the experts and
               noobs:
@@ -314,7 +292,9 @@ const Home: NextPage = () => {
             <ul>
               {ffResourcesLinks.map(({ url, text }, i) => (
                 <li key={i}>
-                  <ExternalLink link={url}>{text}</ExternalLink>
+                  <Link target="_blank" rel="noopener noreferrer" href={url}>
+                    {text}
+                  </Link>
                 </li>
               ))}
             </ul>

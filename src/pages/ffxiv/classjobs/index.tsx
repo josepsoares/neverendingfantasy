@@ -1,42 +1,21 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay
-} from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 
-import { useIndexClassJobsQuery } from '@services/api/ffxivApi';
-import Loading from '@components/common/feedback/loading';
-import Error from '@components/common/feedback/error';
-import SEO from '@components/common/seo';
-import { FFXIV_API } from '@utils/constants';
+import { Box, Grid, Heading } from '@chakra-ui/react';
+
+import Card from '@components/card';
+import Loading from '@components/feedback/loading';
+import Error from '@components/feedback/error';
+import SEO from '@components/seo';
+
+import { indexClassJobs } from '@services/ffxivApi';
 import { capitalizeString } from '@utils/helpers/capitalizeString';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import Card from '@components/common/card';
+import { FFXIV_API } from '@utils/constants';
 
 const ClassJob: NextPage = () => {
-  const router = useRouter();
-
-  const classJobs = useIndexClassJobsQuery();
-  const { data, error, isLoading } = classJobs;
-
-  // console.log(data);
-
-  console.log(data);
-
-  console.log(router.query.item);
+  const { data, error, isLoading } = useQuery('classJobs', indexClassJobs);
 
   return (
     <>

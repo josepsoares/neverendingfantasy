@@ -9,8 +9,8 @@ import {
   useIndexGenresQuery,
   useIndexSimilarTagsQuery
 } from '@services/api/rawgApi';
-import Error from '@components/common/feedback/error';
-import Loading from '@components/common/feedback/loading';
+import Error from '@components/feedback/error';
+import Loading from '@components/feedback/loading';
 
 import { IGame } from '@ts/interfaces/api/rawgInterfaces';
 import { Box, Grid, Heading } from '@chakra-ui/react';

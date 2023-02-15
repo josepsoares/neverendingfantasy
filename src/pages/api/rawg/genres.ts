@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { RAWG_API } from '@utils/constants';
-import { ITagsGenresResponse } from '@ts/interfaces/api/rawgInterfaces';
+import { ITagsGenresResponse } from '@ts/interfaces/rawgInterfaces';
 
 export default async (_: NextApiRequest, res: NextApiResponse) => {
   try {

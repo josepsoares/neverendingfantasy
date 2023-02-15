@@ -1,4 +1,4 @@
-import { ITagGenre } from '@ts/interfaces/api/rawgInterfaces';
+import { ITagGenre } from '@ts/interfaces/rawgInterfaces';
 import { RAWG_API } from '@utils/constants';
 import { NextApiRequest, NextApiResponse } from 'next';
 

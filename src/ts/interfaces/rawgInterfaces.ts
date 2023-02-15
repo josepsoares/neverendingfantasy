@@ -125,6 +125,40 @@ export interface IGameDetail extends IGame {
   publishers: IDeveloperPublisher[];
 }
 
+export interface IGameStore {
+  id: number;
+  game_id: number;
+  store_id: number;
+  url: string;
+}
+
+export interface IGameStoresResponse extends IRawgApiResponse {
+  results: IGameStore[] | [];
+}
+
+export interface IGameScreenshot {
+  id: number;
+  image: string;
+  width: number;
+  height: number;
+  is_deleted: boolean;
+}
+
+export interface IGameScreenshotsResponse extends IRawgApiResponse {
+  results: IGameScreenshot[] | [];
+}
+
+export interface IGameMovie {
+  id: number;
+  name: string;
+  preview: string;
+  data: { '480': string; max: string };
+}
+
+export interface IGameMoviesResponse extends IRawgApiResponse {
+  results: IGameMovie[] | [];
+}
+
 export interface IDeveloperPublisher {
   id: number;
   name: string;

@@ -72,10 +72,6 @@ export interface INpc {
   rewards?: ICard[];
 }
 
-export interface INpcsResponse extends ITripleTriadApiResponse {
-  results: INpc[];
-}
-
 export interface IPack {
   id: number;
   name: string;
