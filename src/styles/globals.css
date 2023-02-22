@@ -59,6 +59,7 @@ nav ol {
 
 #nprogress .bar {
   height: 10px !important;
+  background-color: linear(90deg, #4a6db9 0%, #173a86 100%);
 }
 
 .overlay-img {

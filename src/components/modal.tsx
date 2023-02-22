@@ -41,7 +41,12 @@ const BaseModal: React.FC<{
         backdropFilter="blur(10px) hue-rotate(0deg)"
       />
       <ModalContent>
-        <ModalHeader as="h1" color="brand.500" fontSize="4xl">
+        <ModalHeader
+          fontFamily="heading"
+          as="h1"
+          color="brand.500"
+          fontSize="5xl"
+        >
           {title}
         </ModalHeader>
         <ModalCloseButton mt={3} color="brand.500" />

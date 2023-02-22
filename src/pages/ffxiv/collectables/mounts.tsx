@@ -16,14 +16,10 @@ import {
 
 import Error from '@components/feedback/error';
 import Loading from '@components/feedback/loading';
-import {
-  FilterDrawer,
-  useFilterDrawer
-} from '@components/common/forms/filterDrawer';
 import EmptyData from '@components/feedback/emptyData';
 import Card from '@components/card';
 import BaseModal from '@components/modal';
-import SEO from '@components/seo';
+import CollectablesLayout from '@components/layouts/collectables';
 
 import { IMount } from '@ts/interfaces/ffxivCollectInterfaces';
 import { indexMounts } from '@services/ffxivCollectApi';
@@ -36,9 +32,6 @@ const Mounts: NextPage = () => {
   const [filters, setFilters] = useState('');
   const [selectedMount, setSelectedMount] = useState<IMount | null>(null);
   const [seeAllDescription, setSeeAllDescription] = useState(false);
-
-  const { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose } =
-    useFilterDrawer();
 
   // id_in: '1...21'
   const { data, error, isLoading, refetch, fetchNextPage, hasNextPage } =
@@ -59,130 +52,87 @@ const Mounts: NextPage = () => {
       }
     });
 
+  /*
+  <FormControl label="Name">
+  <FormControl label="Movement">
+  <FormControl label="Seats">
+  <FormControl label="Owned">
+  <FormControl label="Patch">
+  */
+
   return (
-    <>
-      <SEO title="Mounts - FFXIV" />
-      <Box px={[12, null, 24, 32]} py={16}>
-        <Heading fontSize="8xl" as="h1" pt={2} m={0} color="brand.800">
-          Mounts
-        </Heading>
+    <CollectablesLayout
+      seo="Mounts - FFXIV Colectables"
+      title="Mounts"
+      description=" Look at all the final fantasies bellow! Do they even end?"
+    >
+      {error ? (
+        <Error />
+      ) : isLoading ? (
+        <Loading />
+      ) : data ? (
+        <>
+          {data.pages?.length ? (
+            <InfiniteScroll
+              dataLength={data.pages.length}
+              next={() => {
+                fetchNextPage();
+              }}
+              hasMore={hasNextPage}
+              loader={<h4>Loading...</h4>}
+              endMessage={
+                <Box pt={8}>
+                  <p>
+                    <b>Fantasy</b>tastic, you have seen them all!
+                  </p>
+                </Box>
+              }
+            >
+              <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
+                {data.pages.map((pages, i) => (
+                  <Fragment key={i}>
+                    {pages.results.map((mount: IMount, i) => (
+                      <Card
+                        p={6}
+                        key={i}
+                        isButton={true}
+                        onClick={() => {
+                          setSelectedMount(mount);
+                          router.push(`${router.pathname}?mount=${mount.id}`);
+                        }}
+                      >
+                        <Image
+                          width="36"
+                          height="36"
+                          src={mount.image}
+                          alt={mount.name}
+                        />
+                        <Heading
+                          textAlign="center"
+                          noOfLines={2}
+                          fontSize="2xl"
+                          as="h4"
+                        >
+                          {mount.name}
+                        </Heading>
 
-        <Box>
-          {error ? (
-            <Error />
-          ) : isLoading ? (
-            <Loading />
-          ) : data ? (
-            <>
-              <FilterDrawer
-                visible={isFilterDrawerOpen}
-                close={onFilterDrawerClose}
-                filtersJSX={
-                  <>
-                    <FormControl label="Name">
-                      <FormLabel as="legend">Name</FormLabel>
-                      <Input placeholder="name of the mount" />
-                    </FormControl>
-                    <FormControl label="Movement">
-                      <FormLabel as="legend">Movement</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Seats">
-                      <FormLabel as="legend">Seats</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Owned">
-                      <FormLabel as="legend">Owned</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Patch">
-                      <FormLabel as="legend">Patch</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                  </>
-                }
-              />
+                        <Text>{mount.movement}</Text>
 
-              {data.pages?.length ? (
-                <InfiniteScroll
-                  dataLength={data.pages.length}
-                  next={() => {
-                    fetchNextPage();
-                  }}
-                  hasMore={hasNextPage}
-                  loader={<h4>Loading...</h4>}
-                  endMessage={
-                    <Box pt={8}>
-                      <p>
-                        <b>Fantasy</b>tastic, you have seen them all!
-                      </p>
-                    </Box>
-                  }
-                >
-                  <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
-                    {data.pages.map((pages, i) => (
-                      <Fragment key={i}>
-                        {pages.results.map((mount: IMount, i) => (
-                          <Card
-                            p={6}
-                            key={i}
-                            isButton={true}
-                            onClick={() => {
-                              setSelectedMount(mount);
-                              router.push(
-                                `${router.pathname}?mount=${mount.id}`
-                              );
-                            }}
-                          >
-                            <Image
-                              width="36"
-                              height="36"
-                              src={mount.image}
-                              alt={mount.name}
-                            />
-                            <Heading
-                              textAlign="center"
-                              noOfLines={2}
-                              fontSize="2xl"
-                              as="h4"
-                            >
-                              {mount.name}
-                            </Heading>
-
-                            <Text>{mount.movement}</Text>
-
-                            <Text textAlign="left" noOfLines={2}>
-                              {mount.tooltip}
-                            </Text>
-                          </Card>
-                        ))}
-                      </Fragment>
+                        <Text textAlign="left" noOfLines={2}>
+                          {mount.tooltip}
+                        </Text>
+                      </Card>
                     ))}
-                  </SimpleGrid>
-                </InfiniteScroll>
-              ) : (
-                <EmptyData expression="mounts" />
-              )}
-            </>
-          ) : null}
-        </Box>
-      </Box>
+                  </Fragment>
+                ))}
+              </SimpleGrid>
+            </InfiniteScroll>
+          ) : (
+            <EmptyData expression="mounts" />
+          )}
+        </>
+      ) : null}
+
       {selectedMount !== null ? (
         <BaseModal
           open={router.query?.mount ? true : false}
@@ -253,7 +203,7 @@ const Mounts: NextPage = () => {
           }
         />
       ) : null}
-    </>
+    </CollectablesLayout>
   );
 };
 

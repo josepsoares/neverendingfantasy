@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useAnimation, motion, useInView } from 'framer-motion';
+import { Box } from '@chakra-ui/react';
 
-const BoxVariants = {
+const ShowOnIntersectBoxVariants = {
   visible: {
     opacity: 1,
     y: 0,
@@ -14,9 +15,11 @@ const BoxVariants = {
   hidden: { opacity: 0, y: 75 }
 };
 
-const MotionBox: React.FC<{ children?: JSX.Element | JSX.Element[] }> = ({
-  children
-}) => {
+const MotionBoxEl = motion(Box);
+
+const ShowOnIntersectBox: React.FC<{
+  children?: JSX.Element | JSX.Element[];
+}> = ({ children }) => {
   const ref = useRef(null);
   const intersectionObject = {
     triggerOnce: true,
@@ -35,16 +38,16 @@ const MotionBox: React.FC<{ children?: JSX.Element | JSX.Element[] }> = ({
   }, [controls, inView]);
 
   return (
-    <motion.div
+    <MotionBoxEl
       ref={ref}
-      style={{ position: 'relative' }}
-      animate={controls}
       initial="hidden"
-      variants={BoxVariants}
+      position="relative"
+      animate={controls}
+      variants={ShowOnIntersectBoxVariants}
     >
       {children}
-    </motion.div>
+    </MotionBoxEl>
   );
 };
 
-export default MotionBox;
+export default ShowOnIntersectBox;

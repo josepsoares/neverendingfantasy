@@ -1,33 +1,25 @@
-import type { GetServerSideProps, NextPage } from 'next';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-
-import {
-  Box,
-  FormControl,
-  Heading,
-  Input,
-  Select,
-  Image,
-  Text,
-  SimpleGrid,
-  FormLabel
-} from '@chakra-ui/react';
-
-import Error from '@components/feedback/error';
-import Loading from '@components/feedback/loading';
-import {
-  FilterDrawer,
-  useFilterDrawer
-} from '@components/common/forms/filterDrawer';
-import SEO from '@components/seo';
-import EmptyData from '@components/feedback/emptyData';
-import Card from '@components/card';
-import BaseModal from '@components/modal';
-
-import { IAchievement } from '@ts/interfaces/ffxivCollectInterfaces';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { Box, Heading, Image, Text } from '@chakra-ui/react';
+
+import BaseModal from '@components/modal';
+import Error from '@components/feedback/error';
+import {
+  InfiniteScroll,
+  InfiniteScrollItemsWrapper
+} from '@components/infiniteScroll';
+import {
+  CollectableCard,
+  CollectableCardSkeleton
+} from '@components/cards/collectableCard';
+import CollectablesLayout from '@components/layouts/collectables';
+
 import { indexAchievements } from '@services/ffxivCollectApi';
+import { _mutiply } from '@utils/helpers/math';
+
+import type { GetServerSideProps, NextPage } from 'next';
+import type { IAchievement } from '@ts/interfaces/ffxivCollectInterfaces';
 
 const Achievements: NextPage = () => {
   const router = useRouter();
@@ -36,83 +28,65 @@ const Achievements: NextPage = () => {
   const [selectedAchievement, setSelectedAchievement] =
     useState<IAchievement | null>(null);
 
-  const { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose } =
-    useFilterDrawer();
-
   // id_in: '1...21'
-  const { data, error, isLoading, refetch } = useInfiniteQuery(
-    ['achievements', filters],
-    indexAchievements,
-    {
-      getNextPageParam: (lastPage, pages) => lastPage.nextCursor
+  const {
+    data,
+    error,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch
+  } = useInfiniteQuery(['achievements', filters], indexAchievements, {
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.count > 0
+        ? {
+            //* eg. 2*10 = 20 and then 20 + 11 = 31
+            //* eg. 3*10 = 30 and then 30 + 11 = 41
+            start: _mutiply(pages.length, 10) + 11,
+            //* eg. 2*10 = 20 and then 20 + 21 = 41
+            //* eg. 3*10 = 30 and then 30 + 21 = 51
+            end: _mutiply(pages.length, 10) + 21
+          }
+        : undefined;
     }
-  );
+  });
+
+  /* 
+  <FormControl label="Name">
+  <FormControl label="Category">
+  <FormControl label="Points Rewarded">
+  <FormControl label="Completed Percentage">
+  <FormControl label="Patch">
+  */
 
   return (
-    <>
-      <SEO title="Achievements - FFXIV" />
-
-      <Box px={[12, null, 24, 32]} py={16}>
-        <Heading fontSize="8xl" as="h1" pt={2} m={0} color="brand.800">
-          Achievements
-        </Heading>
-
-        <Box>
-          {error ? (
-            <Error />
-          ) : isLoading ? (
-            <Loading />
-          ) : data ? (
-            <>
-              <FilterDrawer
-                visible={isFilterDrawerOpen}
-                close={onFilterDrawerClose}
-                filtersJSX={
-                  <>
-                    <FormControl label="Name">
-                      <FormLabel as="legend">Name</FormLabel>
-                      <Input placeholder="name of the achievement" />
-                    </FormControl>
-                    <FormControl label="Category">
-                      <FormLabel as="legend">Category</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Points Rewarded">
-                      <FormLabel as="legend">Points Rewarded</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Completed Percentage">
-                      <FormLabel as="legend">Completed Percentage</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Patch">
-                      <FormLabel as="legend">Patch</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                  </>
-                }
-              />
-              <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
-                {data.results.map((achievement, i) => (
-                  <Card
-                    p={6}
-                    key={i}
+    <CollectablesLayout
+      seo="Achievements - FFXIV Colectables"
+      title="Achievements"
+      description="Look at all the final fantasies bellow! Do they even end?"
+    >
+      {error ? (
+        <Error />
+      ) : (
+        <InfiniteScroll
+          data={data}
+          isLoading={isLoading}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          skeleton={<CollectableCardSkeleton />}
+          endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
+        >
+          {data?.pages.map((page, pageI) =>
+            page?.results.map((achievement: IAchievement, i: number) => {
+              return (
+                <InfiniteScrollItemsWrapper
+                  key={i}
+                  hasNextPage={hasNextPage}
+                  fetchNextPage={fetchNextPage}
+                  isLastAvailablePage={pageI === data.pages.length - 1}
+                >
+                  <CollectableCard
                     isButton={true}
                     onClick={() => {
                       setSelectedAchievement(achievement);
@@ -151,15 +125,13 @@ const Achievements: NextPage = () => {
                         </Text>
                       ) : null}
                     </Box>
-                  </Card>
-                ))}
-              </SimpleGrid>
-            </>
-          ) : (
-            <EmptyData expression="achievements" />
+                  </CollectableCard>
+                </InfiniteScrollItemsWrapper>
+              );
+            })
           )}
-        </Box>
-      </Box>
+        </InfiniteScroll>
+      )}
 
       {selectedAchievement !== null ? (
         <BaseModal
@@ -215,7 +187,7 @@ const Achievements: NextPage = () => {
           }
         />
       ) : null}
-    </>
+    </CollectablesLayout>
   );
 };
 

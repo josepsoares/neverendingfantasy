@@ -1,6 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import { useState } from 'react';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import {
   Box,
@@ -19,11 +19,7 @@ import Card from '@components/card';
 import BaseModal from '@components/modal';
 import Loading from '@components/feedback/loading';
 import Error from '@components/feedback/error';
-import SEO from '@components/seo';
-import {
-  FilterDrawer,
-  useFilterDrawer
-} from '@components/common/forms/filterDrawer';
+import CollectablesLayout from '@components/layouts/collectables';
 
 import { indexArmoires } from '@services/ffxivCollectApi';
 import { IArmoire } from '@ts/interfaces/ffxivCollectInterfaces';
@@ -40,30 +36,19 @@ const Armoires: NextPage = () => {
     }
   );
 
-  const { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose } =
-    useFilterDrawer();
-
   return (
-    <>
-      <SEO title="Armoire - FFXIV" />
-      <Box px={[12, null, 24, 32]} py={16}>
-        <Heading fontSize="8xl" as="h1" pt={2} m={0} color="brand.800">
-          Armoires
-        </Heading>
-
-        <Box>
-          {error ? (
-            <Error />
-          ) : isLoading ? (
-            <Loading />
-          ) : data ? (
-            <>
-              <FilterDrawer
-                visible={isFilterDrawerOpen}
-                close={onFilterDrawerClose}
-                filtersJSX={
-                  <>
-                    <FormControl label="Name">
+    <CollectablesLayout
+      seo="Armoire - FFXIV Colectables"
+      title="Armoire"
+      description="Look at all the final fantasies bellow! Do they even end?"
+    >
+      {error ? (
+        <Error />
+      ) : isLoading ? (
+        <Loading />
+      ) : data ? (
+        <>
+          {/* <FormControl label="Name">
                       <FormLabel as="legend">Name</FormLabel>
                       <Input placeholder="name of the armor" />
                     </FormControl>
@@ -78,62 +63,48 @@ const Armoires: NextPage = () => {
                     <FormControl label="Patch">
                       <FormLabel as="legend">Patch</FormLabel>
                       <Select value={'one'}></Select>
-                    </FormControl>
-                  </>
-                }
-              />
+                    </FormControl> */}
 
-              <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
-                {data.results.map((armoire, i) => (
-                  <Card p={6} key={i}>
-                    <Image
-                      w={12}
-                      h={12}
-                      src={armoire.icon}
-                      alt={armoire.name}
-                    />
-                    <Heading
-                      textAlign="center"
-                      noOfLines={2}
-                      fontSize="2xl"
-                      as="h4"
-                    >
-                      {armoire.name}
-                    </Heading>
+          <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
+            {data.results.map((armoire, i) => (
+              <Card p={6} key={i}>
+                <Image w={12} h={12} src={armoire.icon} alt={armoire.name} />
+                <Heading
+                  textAlign="center"
+                  noOfLines={2}
+                  fontSize="2xl"
+                  as="h4"
+                >
+                  {armoire.name}
+                </Heading>
 
-                    <Text>{armoire.category.name}</Text>
+                <Text>{armoire.category.name}</Text>
 
-                    <Box textAlign="center">
-                      <Text fontSize="16">
-                        {armoire.owned} players own this
-                      </Text>
+                <Box textAlign="center">
+                  <Text fontSize="16">{armoire.owned} players own this</Text>
 
-                      <Text fontSize="16">
-                        Introduced in patch {armoire.patch}
-                      </Text>
-                    </Box>
+                  <Text fontSize="16">Introduced in patch {armoire.patch}</Text>
+                </Box>
 
-                    <Button
-                      variant="ghost"
-                      onClick={() => setSelectedArmoire(armoire)}
-                      _active={{
-                        color: 'brand.500',
-                        bgColor: 'white'
-                      }}
-                      _hover={{
-                        color: 'brand.500',
-                        bgColor: 'white'
-                      }}
-                    >
-                      Check source(s)
-                    </Button>
-                  </Card>
-                ))}
-              </SimpleGrid>
-            </>
-          ) : null}
-        </Box>
-      </Box>
+                <Button
+                  variant="ghost"
+                  onClick={() => setSelectedArmoire(armoire)}
+                  _active={{
+                    color: 'brand.500',
+                    bgColor: 'white'
+                  }}
+                  _hover={{
+                    color: 'brand.500',
+                    bgColor: 'white'
+                  }}
+                >
+                  Check source(s)
+                </Button>
+              </Card>
+            ))}
+          </SimpleGrid>
+        </>
+      ) : null}
 
       {selectedArmoire !== null ? (
         <BaseModal
@@ -161,7 +132,7 @@ const Armoires: NextPage = () => {
           }
         />
       ) : null}
-    </>
+    </CollectablesLayout>
   );
 };
 

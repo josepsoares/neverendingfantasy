@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { Box, Grid, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 
-import CardBg from '@components/cardBgImg';
+import CardBg from '@components/cards/bgImgCard';
 import SEO from '@components/seo';
 
 import { capitalizeString } from '@utils/helpers/capitalizeString';

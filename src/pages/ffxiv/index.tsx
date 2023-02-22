@@ -1,10 +1,10 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
 
-import { Box, Container, Grid, Heading, Text } from '@chakra-ui/react';
+import { Container, Grid, Heading, Text } from '@chakra-ui/react';
 
 import SEO from '@components/seo';
-import CardBg from '@components/cardBgImg';
+import CardBg from '@components/cards/bgImgCard';
 
 const FFXIVPage: NextPage = () => {
   return (
@@ -56,7 +56,6 @@ const FFXIVPage: NextPage = () => {
             h={80}
             imgUrl="/assets/img/ffxiv/classjobs.jpg"
             imgAlt="Class Jobs"
-            radii={false}
           >
             <Heading
               zIndex="2"
@@ -77,40 +76,11 @@ const FFXIVPage: NextPage = () => {
           </CardBg>
         </Link>
 
-        <Link href="/ffxiv/instances">
-          <CardBg
-            h={80}
-            imgUrl="/assets/img/ffxiv/midgardsormr.webp"
-            imgAlt="Class Jobs"
-            radii={false}
-          >
-            <Heading
-              zIndex="2"
-              textColor="white"
-              as="h2"
-              fontSize={['4xl', null, '6xl']}
-            >
-              Instances
-            </Heading>
-            <Text
-              zIndex="2"
-              textColor="white"
-              textAlign="center"
-              fontSize={['xl', null, '2xl']}
-            >
-              the raids, the dungeons, the excitment
-            </Text>
-          </CardBg>
-        </Link>
-      </Grid>
-
-      <Grid templateColumns="1fr">
         <Link href="/ffxiv/collectables">
           <CardBg
-            h="30rem"
+            h={80}
             imgUrl="/assets/img/ffxiv/fashion.jpg"
-            imgAlt="Fashion Image"
-            radii={false}
+            imgAlt="FFXIV Collectables Image"
           >
             <Heading textColor="white" as="h2" fontSize={['4xl', null, '6xl']}>
               Collectables, Fashion, etc.

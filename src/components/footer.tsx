@@ -1,5 +1,5 @@
-import { Flex, Text } from '@chakra-ui/react';
 import Link from 'next/link';
+import { Flex, Text } from '@chakra-ui/react';
 
 const Footer: React.FC = () => {
   return (
@@ -12,9 +12,9 @@ const Footer: React.FC = () => {
       width="100%"
       flexDir="column"
       alignItems="center"
-      justifyContent="flex-end"
       fontSize="xx-small"
       textAlign="center"
+      justifyContent="flex-end"
     >
       <Text>
         ALL FINAL FANTASY GAMES CONTENT IS PROPERTY OF SQUARE ENIX CO., LTD

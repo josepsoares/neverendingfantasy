@@ -14,7 +14,7 @@ import {
 import { Icon } from '@iconify/react';
 
 import SEO from '@components/seo';
-import CardImgBg from '@components/cardBgImg';
+import CardImgBg from '@components/cards/bgImgCard';
 import TestimonialItem from '@components/misc/testimonialItem';
 
 import { apiLinks, ffResourcesLinks, testimonials } from '@utils/constants';

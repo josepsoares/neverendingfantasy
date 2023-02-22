@@ -17,13 +17,9 @@ import {
 
 import Error from '@components/feedback/error';
 import Loading from '@components/feedback/loading';
-import {
-  FilterDrawer,
-  useFilterDrawer
-} from '@components/common/forms/filterDrawer';
 import EmptyData from '@components/feedback/emptyData';
 import Card from '@components/card';
-import SEO from '@components/seo';
+import CollectablesLayout from '@components/layouts/collectables';
 
 import { IMinion } from '@ts/interfaces/ffxivCollectInterfaces';
 import BaseModal from '@components/modal';
@@ -36,9 +32,6 @@ const Minions: NextPage = () => {
   const [selectedMinion, setSelectedMinion] = useState<IMinion | null>(null);
   const [seeAllDescription, setSeeAllDescription] = useState(false);
 
-  const { isFilterDrawerOpen, onFilterDrawerOpen, onFilterDrawerClose } =
-    useFilterDrawer();
-
   // id_in: '1...21'
   const { data, error, isLoading, refetch } = useInfiniteQuery(
     ['minions', filters],
@@ -48,119 +41,72 @@ const Minions: NextPage = () => {
     }
   );
 
+  /*
+  <FormControl label="Name">
+  <FormControl label="Race">
+  <FormControl label="Behaviour">
+  <FormControl label="Tradeable">
+  <FormControl label="Owned">
+  <FormControl label="Patch">
+  */
+
   return (
-    <>
-      <SEO title="Minions - FFXIV" />
-      <Box px={[12, null, 24, 32]} py={16}>
-        <Heading fontSize="8xl" as="h1" pt={2} m={0} color="brand.800">
-          Minions
-        </Heading>
-        <Box>
-          {error ? (
-            <Error />
-          ) : isLoading ? (
-            <Loading />
-          ) : data ? (
-            <>
-              <FilterDrawer
-                visible={isFilterDrawerOpen}
-                close={onFilterDrawerClose}
-                filtersJSX={
-                  <>
-                    <FormControl label="Name">
-                      <FormLabel as="legend">Name</FormLabel>
-                      <Input placeholder="name of the minion" />
-                    </FormControl>
-                    <FormControl label="Race">
-                      <FormLabel as="legend">Race</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Behaviour">
-                      <FormLabel as="legend">Behaviour</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Tradeable">
-                      <FormLabel as="legend">Tradeable</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Owned">
-                      <FormLabel as="legend">Owned</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                    <FormControl label="Patch">
-                      <FormLabel as="legend">Patch</FormLabel>
-                      <Select value={'one'}>
-                        <option value="one">one</option>
-                        <option value="two">two</option>
-                        <option value="three">three</option>
-                      </Select>
-                    </FormControl>
-                  </>
-                }
-              />
+    <CollectablesLayout
+      seo="Minions - FFXIV Colectables"
+      title="Minions"
+      description=" Look at all the final fantasies bellow! Do they even end?"
+    >
+      {error ? (
+        <Error />
+      ) : isLoading ? (
+        <Loading />
+      ) : data ? (
+        <>
+          {data.results?.length ? (
+            <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
+              {data.results.map((minion, i) => (
+                <Card
+                  p={6}
+                  key={i}
+                  isButton={true}
+                  onClick={() => {
+                    setSelectedMinion(minion);
+                    router.push(`${router.pathname}?minion=${minion.id}`);
+                  }}
+                >
+                  <Image
+                    src={`${minion.image}`}
+                    width="28"
+                    height="28"
+                    borderRadius="lg"
+                    alt={`${minion.name} Icon`}
+                  />
 
-              {data.results?.length ? (
-                <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
-                  {data.results.map((minion, i) => (
-                    <Card
-                      p={6}
-                      key={i}
-                      isButton={true}
-                      onClick={() => {
-                        setSelectedMinion(minion);
-                        router.push(`${router.pathname}?minion=${minion.id}`);
-                      }}
-                    >
-                      <Image
-                        src={`${minion.image}`}
-                        width="28"
-                        height="28"
-                        borderRadius="lg"
-                        alt={`${minion.name} Icon`}
-                      />
+                  <Heading
+                    textAlign="center"
+                    noOfLines={2}
+                    fontSize="2xl"
+                    as="h4"
+                  >
+                    {minion.name}
+                  </Heading>
 
-                      <Heading
-                        textAlign="center"
-                        noOfLines={2}
-                        fontSize="2xl"
-                        as="h4"
-                      >
-                        {minion.name}
-                      </Heading>
+                  <Text>
+                    {minion.race.name} - {minion.behavior.name}
+                  </Text>
 
-                      <Text>
-                        {minion.race.name} - {minion.behavior.name}
-                      </Text>
+                  <Text textAlign="left" noOfLines={2}>
+                    {minion.description.split('. ')[1]}
+                  </Text>
+                </Card>
+              ))}
+            </SimpleGrid>
+          ) : (
+            <EmptyData expression="minions" />
+          )}
+        </>
+      ) : null}
 
-                      <Text textAlign="left" noOfLines={2}>
-                        {minion.description.split('. ')[1]}
-                      </Text>
-                    </Card>
-                  ))}
-                </SimpleGrid>
-              ) : (
-                <EmptyData expression="minions" />
-              )}
-            </>
-          ) : null}
-        </Box>
-      </Box>
       {selectedMinion !== null ? (
         <BaseModal
           open={router.query?.minion ? true : false}
@@ -276,7 +222,7 @@ const Minions: NextPage = () => {
           }
         />
       ) : null}
-    </>
+    </CollectablesLayout>
   );
 };
 

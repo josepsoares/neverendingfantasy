@@ -1,6 +1,7 @@
 import Router from 'next/router';
 import NProgress from 'nprogress';
 
+NProgress.configure({ showSpinner: false });
 let timer: NodeJS.Timeout;
 let state: string;
 let activeRequests = 0;

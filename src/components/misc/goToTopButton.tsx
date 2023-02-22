@@ -42,7 +42,7 @@ const GoToTopButton: React.FC = () => {
         colorScheme="brand"
         rounded="full"
         boxShadow="dark-lg"
-        boxSize={16}
+        boxSize="16"
         position="fixed"
         top="90%"
         right="5%"
