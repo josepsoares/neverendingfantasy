@@ -1,6 +1,9 @@
+import type { IEmote } from '@ts/interfaces/ffxivCollectInterfaces';
+
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { useInfiniteQuery } from '@tanstack/react-query';
 import {
   Box,
   Button,
@@ -15,16 +18,20 @@ import {
   Text
 } from '@chakra-ui/react';
 
-import Error from '@components/feedback/error';
-import Loading from '@components/feedback/loading';
+import {
+  CollectableCard,
+  CollectableCardSkeleton
+} from '@components/cards/collectableCard';
 import EmptyData from '@components/feedback/emptyData';
-import Card from '@components/card';
-import BaseModal from '@components/modal';
+import Error from '@components/feedback/error';
+import {
+  InfiniteScroll,
+  InfiniteScrollItemsWrapper
+} from '@components/infiniteScroll';
 import CollectablesLayout from '@components/layouts/collectables';
-
-import type { IEmote } from '@ts/interfaces/ffxivCollectInterfaces';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import BaseModal from '@components/modal';
 import { indexEmotes } from '@services/ffxivCollectApi';
+import { _mutiply } from '@utils/helpers/math';
 
 const Emotes = () => {
   const router = useRouter();
@@ -33,14 +40,26 @@ const Emotes = () => {
   const [selectedEmote, setSelectedEmote] = useState<IEmote | null>(null);
   const [seeAllDescription, setSeeAllDescription] = useState(false);
 
-  // id_in: '1...21'
-  const { data, error, isLoading, refetch } = useInfiniteQuery(
-    ['emotes', filters],
-    indexEmotes,
-    {
-      getNextPageParam: (lastPage, pages) => lastPage.nextCursor
+  const {
+    data,
+    error,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch
+  } = useInfiniteQuery({
+    queryKey: ['emotes', filters],
+    queryFn: indexEmotes,
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.count > 0
+        ? {
+            start: _mutiply(pages.length, 10) + 11,
+            end: _mutiply(pages.length, 10) + 21
+          }
+        : undefined;
     }
-  );
+  });
 
   /*
   <FormControl label="Name">
@@ -57,71 +76,83 @@ const Emotes = () => {
     >
       {error ? (
         <Error />
-      ) : isLoading ? (
-        <Loading />
       ) : data ? (
-        <>
-          {data.results?.length ? (
-            <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
-              {data.results.map((emote: IEmote, i) => (
-                <Card p={6} key={i}>
-                  <Image
-                    width="16"
-                    height="16"
-                    src={emote.icon}
-                    alt={emote.name}
-                  />
-                  <Heading
-                    textAlign="center"
-                    noOfLines={2}
-                    fontSize="2xl"
-                    as="h4"
-                  >
-                    {emote.name}
-                  </Heading>
+        <InfiniteScroll
+          data={data}
+          isLoading={isLoading}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          skeleton={<CollectableCardSkeleton />}
+          endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
+        >
+          {data?.pages.map((page, pageI) =>
+            page?.results.map((emote: IEmote, i: number) => {
+              return (
+                <InfiniteScrollItemsWrapper
+                  key={i}
+                  hasNextPage={hasNextPage}
+                  fetchNextPage={fetchNextPage}
+                  isLastAvailablePage={pageI === data.pages.length - 1}
+                >
+                  <CollectableCard isButton={false}>
+                    <Image
+                      width="16"
+                      height="16"
+                      src={emote.icon}
+                      alt={emote.name}
+                    />
+                    <Heading
+                      textAlign="center"
+                      noOfLines={2}
+                      fontSize="2xl"
+                      as="h4"
+                    >
+                      {emote.name}
+                    </Heading>
 
-                  <Box textAlign="center">
-                    <Text fontWeight="medium">{emote.command}</Text>
-                    <Text>{emote.category.name} Emote</Text>
-                  </Box>
+                    <Box textAlign="center">
+                      <Text fontWeight="medium">{emote.command}</Text>
+                      <Text>{emote.category.name} Emote</Text>
+                    </Box>
 
-                  <Box textAlign="center">
-                    <Text fontSize="16">
-                      {emote.owned} players own this emote
-                    </Text>
+                    <Box textAlign="center">
+                      <Text fontSize="16">
+                        {emote.owned} players own this emote
+                      </Text>
 
-                    <Text fontSize="16">Introduced in patch {emote.patch}</Text>
+                      <Text fontSize="16">
+                        Introduced in patch {emote.patch}
+                      </Text>
 
-                    <Text fontSize="16">
-                      This emote is{' '}
-                      {emote.tradeable ? 'tradable' : 'non-tradable'}
-                    </Text>
-                  </Box>
+                      <Text fontSize="16">
+                        This emote is{' '}
+                        {emote.tradeable ? 'tradable' : 'non-tradable'}
+                      </Text>
+                    </Box>
 
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      setSelectedEmote(emote);
-                      router.push(`${router.pathname}?emote=${emote.id}`);
-                    }}
-                    _active={{
-                      color: 'brand.500',
-                      bgColor: 'white'
-                    }}
-                    _hover={{
-                      color: 'brand.500',
-                      bgColor: 'white'
-                    }}
-                  >
-                    Check source(s)
-                  </Button>
-                </Card>
-              ))}
-            </SimpleGrid>
-          ) : (
-            <EmptyData expression="emotes" />
-          )}
-        </>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        setSelectedEmote(emote);
+                        router.push(`${router.pathname}?emote=${emote.id}`);
+                      }}
+                      _active={{
+                        color: 'brand.500',
+                        bgColor: 'white'
+                      }}
+                      _hover={{
+                        color: 'brand.500',
+                        bgColor: 'white'
+                      }}
+                    >
+                      Check source(s)
+                    </Button>
+                  </CollectableCard>
+                </InfiniteScrollItemsWrapper>
+              );
+            })
+          ) || <EmptyData expression="emotes" />}
+        </InfiniteScroll>
       ) : null}
 
       {selectedEmote !== null ? (

@@ -1,8 +1,10 @@
-import { GetServerSideProps, NextPage } from 'next';
+import type { IMinion } from '@ts/interfaces/ffxivCollectInterfaces';
+import type { GetServerSideProps, NextPage } from 'next';
+
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import {
   Box,
   FormControl,
@@ -15,15 +17,21 @@ import {
   Text
 } from '@chakra-ui/react';
 
+import {
+  CollectableCard,
+  CollectableCardSkeleton
+} from '@components/cards/collectableCard';
+import EmptyData from '@components/feedback/emptyData';
 import Error from '@components/feedback/error';
 import Loading from '@components/feedback/loading';
-import EmptyData from '@components/feedback/emptyData';
-import Card from '@components/card';
+import {
+  InfiniteScroll,
+  InfiniteScrollItemsWrapper
+} from '@components/infiniteScroll';
 import CollectablesLayout from '@components/layouts/collectables';
-
-import { IMinion } from '@ts/interfaces/ffxivCollectInterfaces';
 import BaseModal from '@components/modal';
 import { indexMinions } from '@services/ffxivCollectApi';
+import { _mutiply } from '@utils/helpers/math';
 
 const Minions: NextPage = () => {
   const router = useRouter();
@@ -32,14 +40,26 @@ const Minions: NextPage = () => {
   const [selectedMinion, setSelectedMinion] = useState<IMinion | null>(null);
   const [seeAllDescription, setSeeAllDescription] = useState(false);
 
-  // id_in: '1...21'
-  const { data, error, isLoading, refetch } = useInfiniteQuery(
-    ['minions', filters],
-    indexMinions,
-    {
-      getNextPageParam: (lastPage, pages) => lastPage.nextCursor
+  const {
+    data,
+    error,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch
+  } = useInfiniteQuery({
+    queryKey: ['minions', filters],
+    queryFn: indexMinions,
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.count > 0
+        ? {
+            start: _mutiply(pages.length, 10) + 11,
+            end: _mutiply(pages.length, 10) + 21
+          }
+        : undefined;
     }
-  );
+  });
 
   /*
   <FormControl label="Name">
@@ -61,57 +81,73 @@ const Minions: NextPage = () => {
       ) : isLoading ? (
         <Loading />
       ) : data ? (
-        <>
-          {data.results?.length ? (
-            <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
-              {data.results.map((minion, i) => (
-                <Card
-                  p={6}
+        <InfiniteScroll
+          data={data}
+          isLoading={isLoading}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          skeleton={<CollectableCardSkeleton />}
+          endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
+        >
+          {data?.pages.map((page, pageI) =>
+            page?.results.map((minion: IMinion, i: number) => {
+              return (
+                <InfiniteScrollItemsWrapper
                   key={i}
-                  isButton={true}
-                  onClick={() => {
-                    setSelectedMinion(minion);
-                    router.push(`${router.pathname}?minion=${minion.id}`);
-                  }}
+                  hasNextPage={hasNextPage}
+                  fetchNextPage={fetchNextPage}
+                  isLastAvailablePage={pageI === data.pages.length - 1}
                 >
-                  <Image
-                    src={`${minion.image}`}
-                    width="28"
-                    height="28"
-                    borderRadius="lg"
-                    alt={`${minion.name} Icon`}
-                  />
-
-                  <Heading
-                    textAlign="center"
-                    noOfLines={2}
-                    fontSize="2xl"
-                    as="h4"
+                  <CollectableCard
+                    isButton={true}
+                    onClick={() => {
+                      setSelectedMinion(minion);
+                      router.push(
+                        `${router.pathname}?minion=${minion.id}`,
+                        {},
+                        { scroll: false }
+                      );
+                    }}
                   >
-                    {minion.name}
-                  </Heading>
+                    <Image
+                      src={`${minion.image}`}
+                      width="28"
+                      height="28"
+                      borderRadius="lg"
+                      alt={`${minion.name} Icon`}
+                    />
 
-                  <Text>
-                    {minion.race.name} - {minion.behavior.name}
-                  </Text>
+                    <Heading
+                      textAlign="center"
+                      noOfLines={2}
+                      fontSize="2xl"
+                      as="h4"
+                    >
+                      {minion.name}
+                    </Heading>
 
-                  <Text textAlign="left" noOfLines={2}>
-                    {minion.description.split('. ')[1]}
-                  </Text>
-                </Card>
-              ))}
-            </SimpleGrid>
-          ) : (
-            <EmptyData expression="minions" />
-          )}
-        </>
+                    <Text>
+                      {minion.race.name} - {minion.behavior.name}
+                    </Text>
+
+                    <Text textAlign="left" noOfLines={2}>
+                      {minion.description.split('. ')[1]}
+                    </Text>
+                  </CollectableCard>
+                </InfiniteScrollItemsWrapper>
+              );
+            })
+          ) || <EmptyData expression="minions" />}
+        </InfiniteScroll>
       ) : null}
 
       {selectedMinion !== null ? (
         <BaseModal
           open={router.query?.minion ? true : false}
           title={selectedMinion.name}
-          whileClosing={() => router.push(router.pathname)}
+          whileClosing={() =>
+            router.push(router.pathname, {}, { scroll: false })
+          }
           body={
             <>
               <Image

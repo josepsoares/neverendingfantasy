@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+
 import { Button, Flex, Heading } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 

@@ -29,7 +29,7 @@ const GoToTopButton: React.FC = () => {
   return (
     <motion.div
       initial={{ opacity: 0, display: 'none' }}
-      transition={{ duration: 0.8, ease: 'easeInOut' }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
       animate={
         threshold
           ? { display: 'flex', opacity: 1 }
@@ -42,19 +42,14 @@ const GoToTopButton: React.FC = () => {
         colorScheme="brand"
         rounded="full"
         boxShadow="dark-lg"
-        boxSize="16"
+        boxSize="12"
         position="fixed"
         top="90%"
         right="5%"
         zIndex="101"
         onClick={() => scrollToTop()}
         icon={
-          <Icon
-            icon="bx:bx-arrow-from-bottom"
-            color="white"
-            width="25px"
-            height="25px"
-          />
+          <Icon icon="bx:chevron-up" color="white" width="25px" height="25px" />
         }
       />
     </motion.div>

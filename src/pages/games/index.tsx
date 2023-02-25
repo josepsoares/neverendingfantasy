@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { Icon } from '@iconify/react';
+import type { IGamesResponse } from '@ts/interfaces/rawgInterfaces';
+import type { GetServerSideProps, NextPage } from 'next';
 
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { AnimatePresence } from 'framer-motion';
 import {
   Box,
   Button,
@@ -17,22 +19,15 @@ import {
   SimpleGrid,
   Skeleton,
   SkeletonText,
-  Text,
-  useToast
+  Text
 } from '@chakra-ui/react';
+import { Icon } from '@iconify/react';
 
-import SEO from '@components/seo';
 import Error from '@components/feedback/error';
-import Loading from '@components/feedback/loading';
-
+import SEO from '@components/seo';
 import { indexGames } from '@services/rawgApi';
-
 import { server } from '@utils/config/server';
 import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
-
-import type { GetServerSideProps, NextPage } from 'next';
-import type { IGame, IGamesResponse } from '@ts/interfaces/rawgInterfaces';
-import { AnimatePresence } from 'framer-motion';
 
 const filters = [
   { name: 'Date Released ↓', val: '-released' },

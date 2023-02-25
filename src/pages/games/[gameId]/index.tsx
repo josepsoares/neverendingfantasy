@@ -1,10 +1,9 @@
-import { GetServerSideProps, NextPage } from 'next';
-import Link from 'next/link';
-import { useQuery } from '@tanstack/react-query';
+import type { IGameDetail } from '@ts/interfaces/rawgInterfaces';
+import type { GetServerSideProps, NextPage } from 'next';
 
-import Loading from '@components/feedback/loading';
-import Error from '@components/feedback/error';
-import SEO from '@components/seo';
+import Link from 'next/link';
+
+import { useQuery } from '@tanstack/react-query';
 import {
   Avatar,
   Box,
@@ -18,17 +17,17 @@ import {
 } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
+import Error from '@components/feedback/error';
+import Loading from '@components/feedback/loading';
+import SEO from '@components/seo';
 import {
   getGame,
   getGameScreenshots,
   getGameStoreLinks,
   getGameTrailers
 } from '@services/rawgApi';
-
-import { capitalizeString } from '@utils/helpers/capitalizeString';
 import { server } from '@utils/config/server';
-
-import type { IGameDetail } from '@ts/interfaces/rawgInterfaces';
+import { capitalizeString } from '@utils/helpers/capitalizeString';
 
 const GamePage: NextPage<{ gameId: number; game: IGameDetail }> = ({
   gameId,

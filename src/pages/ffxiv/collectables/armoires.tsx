@@ -1,7 +1,9 @@
+import type { IArmoire } from '@ts/interfaces/ffxivCollectInterfaces';
 import type { GetServerSideProps, NextPage } from 'next';
-import { useState } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
 
+import { useState } from 'react';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
 import {
   Box,
   Button,
@@ -15,26 +17,51 @@ import {
   Text
 } from '@chakra-ui/react';
 
-import Card from '@components/card';
-import BaseModal from '@components/modal';
-import Loading from '@components/feedback/loading';
+import {
+  CollectableCard,
+  CollectableCardSkeleton
+} from '@components/cards/collectableCard';
 import Error from '@components/feedback/error';
+import {
+  InfiniteScroll,
+  InfiniteScrollItemsWrapper
+} from '@components/infiniteScroll';
 import CollectablesLayout from '@components/layouts/collectables';
-
+import BaseModal from '@components/modal';
 import { indexArmoires } from '@services/ffxivCollectApi';
-import { IArmoire } from '@ts/interfaces/ffxivCollectInterfaces';
+import { _mutiply } from '@utils/helpers/math';
 
 const Armoires: NextPage = () => {
   const [filters, setFilters] = useState('');
   const [selectedArmoire, setSelectedArmoire] = useState<IArmoire | null>(null);
 
-  const { data, error, isLoading, refetch } = useInfiniteQuery(
-    ['armoires', filters],
-    indexArmoires,
-    {
-      getNextPageParam: (lastPage, pages) => lastPage.nextCursor
+  const {
+    data,
+    error,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch
+  } = useInfiniteQuery({
+    queryKey: ['armoires', filters],
+    queryFn: indexArmoires,
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.count > 0
+        ? {
+            start: _mutiply(pages.length, 10) + 11,
+            end: _mutiply(pages.length, 10) + 21
+          }
+        : undefined;
     }
-  );
+  });
+
+  /*
+  <FormControl label="Name">                  
+  <FormControl label="Category">
+  <FormControl label="Owned">                  
+  <FormControl label="Patch">
+  */
 
   return (
     <CollectablesLayout
@@ -44,66 +71,72 @@ const Armoires: NextPage = () => {
     >
       {error ? (
         <Error />
-      ) : isLoading ? (
-        <Loading />
       ) : data ? (
-        <>
-          {/* <FormControl label="Name">
-                      <FormLabel as="legend">Name</FormLabel>
-                      <Input placeholder="name of the armor" />
-                    </FormControl>
-                    <FormControl label="Category">
-                      <FormLabel as="legend">Category</FormLabel>
-                      <Select value={'one'}></Select>
-                    </FormControl>
-                    <FormControl label="Owned">
-                      <FormLabel as="legend">Owned</FormLabel>
-                      <Select value={'one'}></Select>
-                    </FormControl>
-                    <FormControl label="Patch">
-                      <FormLabel as="legend">Patch</FormLabel>
-                      <Select value={'one'}></Select>
-                    </FormControl> */}
-
-          <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
-            {data.results.map((armoire, i) => (
-              <Card p={6} key={i}>
-                <Image w={12} h={12} src={armoire.icon} alt={armoire.name} />
-                <Heading
-                  textAlign="center"
-                  noOfLines={2}
-                  fontSize="2xl"
-                  as="h4"
+        <InfiniteScroll
+          data={data}
+          isLoading={isLoading}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          skeleton={<CollectableCardSkeleton />}
+          endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
+        >
+          {data?.pages.map((page, pageI) =>
+            page?.results.map((armoire: IArmoire, i: number) => {
+              return (
+                <InfiniteScrollItemsWrapper
+                  key={i}
+                  hasNextPage={hasNextPage}
+                  fetchNextPage={fetchNextPage}
+                  isLastAvailablePage={pageI === data.pages.length - 1}
                 >
-                  {armoire.name}
-                </Heading>
+                  <CollectableCard isButton={false}>
+                    <Image
+                      w={12}
+                      h={12}
+                      src={armoire.icon}
+                      alt={armoire.name}
+                    />
+                    <Heading
+                      textAlign="center"
+                      noOfLines={2}
+                      fontSize="2xl"
+                      as="h4"
+                    >
+                      {armoire.name}
+                    </Heading>
 
-                <Text>{armoire.category.name}</Text>
+                    <Text>{armoire.category.name}</Text>
 
-                <Box textAlign="center">
-                  <Text fontSize="16">{armoire.owned} players own this</Text>
+                    <Box textAlign="center">
+                      <Text fontSize="16">
+                        {armoire.owned} players own this
+                      </Text>
 
-                  <Text fontSize="16">Introduced in patch {armoire.patch}</Text>
-                </Box>
+                      <Text fontSize="16">
+                        Introduced in patch {armoire.patch}
+                      </Text>
+                    </Box>
 
-                <Button
-                  variant="ghost"
-                  onClick={() => setSelectedArmoire(armoire)}
-                  _active={{
-                    color: 'brand.500',
-                    bgColor: 'white'
-                  }}
-                  _hover={{
-                    color: 'brand.500',
-                    bgColor: 'white'
-                  }}
-                >
-                  Check source(s)
-                </Button>
-              </Card>
-            ))}
-          </SimpleGrid>
-        </>
+                    <Button
+                      variant="ghost"
+                      onClick={() => setSelectedArmoire(armoire)}
+                      _active={{
+                        color: 'brand.500',
+                        bgColor: 'white'
+                      }}
+                      _hover={{
+                        color: 'brand.500',
+                        bgColor: 'white'
+                      }}
+                    >
+                      Check source(s)
+                    </Button>
+                  </CollectableCard>
+                </InfiniteScrollItemsWrapper>
+              );
+            })
+          )}
+        </InfiniteScroll>
       ) : null}
 
       {selectedArmoire !== null ? (

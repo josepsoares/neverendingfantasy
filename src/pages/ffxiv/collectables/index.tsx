@@ -1,15 +1,14 @@
-import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { Box, Grid, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import { Heading, SimpleGrid, Text } from '@chakra-ui/react';
 
-import CardBg from '@components/cards/bgImgCard';
+import BgImgCard from '@components/cards/bgImgCard';
+import Container from '@components/container';
 import SEO from '@components/seo';
-
 import { capitalizeString } from '@utils/helpers/capitalizeString';
 
-const CollectablesAndFashion: NextPage = () => {
+const CollectablesAndFashion = () => {
   const router = useRouter();
 
   return (
@@ -19,9 +18,8 @@ const CollectablesAndFashion: NextPage = () => {
         description="Check lots of stuff related to the hottest FF MMORPG ever in the block, FFXIV"
       />
 
-      <Box mx="auto" maxW={['91.666667%%', '83.333333%', null, '75%']} py="16">
+      <Container py="16">
         <Heading
-          pb="6"
           as="h1"
           color="brand.800"
           fontSize={['5xl', null, null, '8xl']}
@@ -60,9 +58,9 @@ const CollectablesAndFashion: NextPage = () => {
           </Link>{' '}
           (specific for triple triad) websites
         </Text>
-      </Box>
+      </Container>
 
-      <SimpleGrid templateColumns={['1fr', null, 'repeat(2, 1fr)']}>
+      <SimpleGrid columns={[1, null, 2]}>
         {[
           {
             name: 'mounts',
@@ -76,7 +74,7 @@ const CollectablesAndFashion: NextPage = () => {
           }
         ].map((item, i) => (
           <Link key={i} href={`${router.pathname}/${item.name}`}>
-            <CardBg
+            <BgImgCard
               h={64}
               radii={false}
               imgUrl={`/assets/img/ffxiv/${item.img}`}
@@ -90,27 +88,15 @@ const CollectablesAndFashion: NextPage = () => {
               >
                 {item.name.replaceAll('-', ' ')}
               </Heading>
-              <Text
-                textAlign="center"
-                textColor="white"
-                fontSize={['xl', null, '2xl']}
-              >
+              <Text textAlign="center" textColor="white" fontSize="xl">
                 {item.description}
               </Text>
-            </CardBg>
+            </BgImgCard>
           </Link>
         ))}
       </SimpleGrid>
 
-      <SimpleGrid
-        templateColumns={[
-          '1fr',
-          null,
-          'repeat(2, 1fr)',
-          null,
-          'repeat(3, 1fr)'
-        ]}
-      >
+      <SimpleGrid columns={[1, null, 2, null, 3]}>
         {[
           {
             name: 'armoire',
@@ -123,14 +109,14 @@ const CollectablesAndFashion: NextPage = () => {
             img: 'umbrellas.jpg'
           },
           {
+            name: 'hairstyles',
+            description: 'gotta take care of your hair',
+            img: 'lodestone.jpeg'
+          },
+          {
             name: 'emotes',
             description: 'expressing yourself is the key for success',
             img: 'emote-collage.jpg'
-          },
-          {
-            name: 'achievements',
-            description: "gotta achieve 'em all",
-            img: 'lodestone.jpeg'
           },
           {
             name: 'triple-triad-cards',
@@ -144,7 +130,7 @@ const CollectablesAndFashion: NextPage = () => {
           }
         ].map((item, i) => (
           <Link key={i} href={`${router.pathname}/${item.name}`}>
-            <CardBg
+            <BgImgCard
               h={64}
               radii={false}
               imgUrl={`/assets/img/ffxiv/${item.img}`}
@@ -158,14 +144,10 @@ const CollectablesAndFashion: NextPage = () => {
               >
                 {item.name.replaceAll('-', ' ')}
               </Heading>
-              <Text
-                textAlign="center"
-                textColor="white"
-                fontSize={['xl', null, '2xl']}
-              >
+              <Text textAlign="center" textColor="white" fontSize="xl">
                 {item.description}
               </Text>
-            </CardBg>
+            </BgImgCard>
           </Link>
         ))}
       </SimpleGrid>

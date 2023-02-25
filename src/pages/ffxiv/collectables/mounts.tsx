@@ -1,7 +1,10 @@
+import type { IMount } from '@ts/interfaces/ffxivCollectInterfaces';
 import type { GetServerSideProps, NextPage } from 'next';
+
 import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
 
+import { useInfiniteQuery } from '@tanstack/react-query';
 import {
   Box,
   FormControl,
@@ -14,16 +17,20 @@ import {
   Text
 } from '@chakra-ui/react';
 
+import {
+  CollectableCard,
+  CollectableCardSkeleton
+} from '@components/cards/collectableCard';
+import EmptyData from '@components/feedback/emptyData';
 import Error from '@components/feedback/error';
 import Loading from '@components/feedback/loading';
-import EmptyData from '@components/feedback/emptyData';
-import Card from '@components/card';
-import BaseModal from '@components/modal';
+import {
+  InfiniteScroll,
+  InfiniteScrollItemsWrapper
+} from '@components/infiniteScroll';
 import CollectablesLayout from '@components/layouts/collectables';
-
-import { IMount } from '@ts/interfaces/ffxivCollectInterfaces';
+import BaseModal from '@components/modal';
 import { indexMounts } from '@services/ffxivCollectApi';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { _mutiply } from '@utils/helpers/math';
 
 const Mounts: NextPage = () => {
@@ -33,24 +40,26 @@ const Mounts: NextPage = () => {
   const [selectedMount, setSelectedMount] = useState<IMount | null>(null);
   const [seeAllDescription, setSeeAllDescription] = useState(false);
 
-  // id_in: '1...21'
-  const { data, error, isLoading, refetch, fetchNextPage, hasNextPage } =
-    useInfiniteQuery(['mounts', filters], indexMounts, {
-      getNextPageParam: (lastPage, pages) => {
-        //* check if the last request has count=0
-        //* if so there are no more items to fetch
-        return lastPage.count > 0
-          ? {
-              //* eg. 2*10 = 20 and then 20 + 11 = 31
-              //* eg. 3*10 = 30 and then 30 + 11 = 41
-              start: _mutiply(pages.length, 10) + 11,
-              //* eg. 2*10 = 20 and then 20 + 21 = 41
-              //* eg. 3*10 = 30 and then 30 + 21 = 51
-              end: _mutiply(pages.length, 10) + 21
-            }
-          : undefined;
-      }
-    });
+  const {
+    data,
+    error,
+    isLoading,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    refetch
+  } = useInfiniteQuery({
+    queryKey: ['mounts', filters],
+    queryFn: indexMounts,
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.count > 0
+        ? {
+            start: _mutiply(pages.length, 10) + 11,
+            end: _mutiply(pages.length, 10) + 21
+          }
+        : undefined;
+    }
+  });
 
   /*
   <FormControl label="Name">
@@ -71,73 +80,69 @@ const Mounts: NextPage = () => {
       ) : isLoading ? (
         <Loading />
       ) : data ? (
-        <>
-          {data.pages?.length ? (
-            <InfiniteScroll
-              dataLength={data.pages.length}
-              next={() => {
-                fetchNextPage();
-              }}
-              hasMore={hasNextPage}
-              loader={<h4>Loading...</h4>}
-              endMessage={
-                <Box pt={8}>
-                  <p>
-                    <b>Fantasy</b>tastic, you have seen them all!
-                  </p>
-                </Box>
-              }
-            >
-              <SimpleGrid gap={8} columns={[1, null, 2, 3, 4, 5]}>
-                {data.pages.map((pages, i) => (
-                  <Fragment key={i}>
-                    {pages.results.map((mount: IMount, i) => (
-                      <Card
-                        p={6}
-                        key={i}
-                        isButton={true}
-                        onClick={() => {
-                          setSelectedMount(mount);
-                          router.push(`${router.pathname}?mount=${mount.id}`);
-                        }}
-                      >
-                        <Image
-                          width="36"
-                          height="36"
-                          src={mount.image}
-                          alt={mount.name}
-                        />
-                        <Heading
-                          textAlign="center"
-                          noOfLines={2}
-                          fontSize="2xl"
-                          as="h4"
-                        >
-                          {mount.name}
-                        </Heading>
+        <InfiniteScroll
+          data={data}
+          isLoading={isLoading}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          skeleton={<CollectableCardSkeleton />}
+          endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
+        >
+          {data?.pages.map((page, pageI) =>
+            page?.results.map((mount: IMount, i: number) => {
+              return (
+                <InfiniteScrollItemsWrapper
+                  key={i}
+                  hasNextPage={hasNextPage}
+                  fetchNextPage={fetchNextPage}
+                  isLastAvailablePage={pageI === data.pages.length - 1}
+                >
+                  <CollectableCard
+                    isButton={true}
+                    onClick={() => {
+                      setSelectedMount(mount);
+                      router.push(
+                        `${router.pathname}?mount=${mount.id}`,
+                        {},
+                        { scroll: false }
+                      );
+                    }}
+                  >
+                    <Image
+                      width="36"
+                      height="36"
+                      src={mount.image}
+                      alt={mount.name}
+                    />
+                    <Heading
+                      textAlign="center"
+                      noOfLines={2}
+                      fontSize="2xl"
+                      as="h4"
+                    >
+                      {mount.name}
+                    </Heading>
 
-                        <Text>{mount.movement}</Text>
+                    <Text>{mount.movement}</Text>
 
-                        <Text textAlign="left" noOfLines={2}>
-                          {mount.tooltip}
-                        </Text>
-                      </Card>
-                    ))}
-                  </Fragment>
-                ))}
-              </SimpleGrid>
-            </InfiniteScroll>
-          ) : (
-            <EmptyData expression="mounts" />
-          )}
-        </>
+                    <Text textAlign="left" noOfLines={2}>
+                      {mount.tooltip}
+                    </Text>
+                  </CollectableCard>
+                </InfiniteScrollItemsWrapper>
+              );
+            })
+          ) || <EmptyData expression="mounts" />}
+        </InfiniteScroll>
       ) : null}
 
       {selectedMount !== null ? (
         <BaseModal
           open={router.query?.mount ? true : false}
           title={selectedMount.name}
-          whileClosing={() => router.push(router.pathname)}
+          whileClosing={() =>
+            router.push(router.pathname, {}, { scroll: false })
+          }
           body={
             <>
               <Image

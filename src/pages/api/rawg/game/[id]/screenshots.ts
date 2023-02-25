@@ -1,5 +1,5 @@
+import type { IGameScreenshotsResponse } from '@ts/interfaces/rawgInterfaces';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { IGameMoviesResponse } from '@ts/interfaces/rawgInterfaces';
 
 import { RAWG_API } from '@utils/constants';
 
@@ -8,9 +8,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const response = await fetch(
-      `${RAWG_API}/games/${query.id}/movies?key=${process.env.RAWG_API_KEY}`
+      `${RAWG_API}/games/${query.id}/stores?key=${process.env.RAWG_API_KEY}`
     );
-    const data: IGameMoviesResponse = await response.json();
+    const data: IGameScreenshotsResponse = await response.json();
     res.status(200).json(data);
   } catch (err: any) {
     res.status(400).json({ error: err });

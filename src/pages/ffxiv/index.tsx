@@ -1,12 +1,11 @@
-import { NextPage } from 'next';
 import Link from 'next/link';
 
 import { Container, Grid, Heading, Text } from '@chakra-ui/react';
 
+import BgImgCard from '@components/cards/bgImgCard';
 import SEO from '@components/seo';
-import CardBg from '@components/cards/bgImgCard';
 
-const FFXIVPage: NextPage = () => {
+const FFXIVPage = () => {
   return (
     <>
       <SEO
@@ -20,7 +19,6 @@ const FFXIVPage: NextPage = () => {
         maxW={['91.666667%%', '83.333333%', null, '75%']}
       >
         <Heading
-          pb="6"
           as="h1"
           color="brand.800"
           fontSize={['5xl', null, null, '8xl']}
@@ -52,7 +50,7 @@ const FFXIVPage: NextPage = () => {
 
       <Grid templateColumns={['1fr', null, 'repeat(2, 1fr)']}>
         <Link href="/ffxiv/classjobs" passHref={true}>
-          <CardBg
+          <BgImgCard
             h={80}
             imgUrl="/assets/img/ffxiv/classjobs.jpg"
             imgAlt="Class Jobs"
@@ -71,13 +69,13 @@ const FFXIVPage: NextPage = () => {
               textAlign="center"
               fontSize={['xl', null, '2xl']}
             >
-              explore all the cool class jobs your character can do
+              explore all the cool classes/jobs your character can do
             </Text>
-          </CardBg>
+          </BgImgCard>
         </Link>
 
         <Link href="/ffxiv/collectables">
-          <CardBg
+          <BgImgCard
             h={80}
             imgUrl="/assets/img/ffxiv/fashion.jpg"
             imgAlt="FFXIV Collectables Image"
@@ -93,7 +91,7 @@ const FFXIVPage: NextPage = () => {
             >
               collectables, fashion things and other stuff
             </Text>
-          </CardBg>
+          </BgImgCard>
         </Link>
       </Grid>
     </>

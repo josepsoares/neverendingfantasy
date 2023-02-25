@@ -1,41 +1,40 @@
-import { Fragment, useState } from 'react';
+import type {
+  ICard,
+  ICardsResponse
+} from '@ts/interfaces/tripleTriadInterfaces';
 import type { GetServerSideProps, NextPage } from 'next';
-import { useRouter } from 'next/router';
-import axios, { AxiosResponse } from 'axios';
-import { useInfiniteQuery } from '@tanstack/react-query';
 
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+
+import { useInfiniteQuery } from '@tanstack/react-query';
+import axios, { AxiosResponse } from 'axios';
 import {
   Box,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  Select,
-  SimpleGrid,
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
-  Text,
-  Image,
-  Divider,
   Button,
-  Center
+  Center,
+  Divider,
+  Heading,
+  Image,
+  SimpleGrid,
+  Text
 } from '@chakra-ui/react';
 
-import Loading from '@components/feedback/loading';
-import Error from '@components/feedback/error';
-import SEO from '@components/seo';
+import {
+  CollectableCard,
+  CollectableCardSkeleton
+} from '@components/cards/collectableCard';
 import EmptyData from '@components/feedback/emptyData';
-import Card from '@components/card';
-import BaseModal from '@components/modal';
-import Container from '@components/container';
-
-import { ICard, ICardsResponse } from '@ts/interfaces/tripleTriadInterfaces';
-import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
-import { _add, _mutiply } from '@utils/helpers/math';
-import { TRIPLE_TRIAD_API } from '@utils/constants';
+import Error from '@components/feedback/error';
+import {
+  InfiniteScroll,
+  InfiniteScrollItemsWrapper
+} from '@components/infiniteScroll';
 import CollectablesLayout from '@components/layouts/collectables';
+import BaseModal from '@components/modal';
+import { TRIPLE_TRIAD_API } from '@utils/constants';
+//import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
+import { _add, _mutiply } from '@utils/helpers/math';
 
 const Cards: NextPage = () => {
   const router = useRouter();
@@ -54,32 +53,30 @@ const Cards: NextPage = () => {
     isFetching,
     isFetchingNextPage,
     refetch
-  } = useInfiniteQuery(
-    'cards',
-    async ({ pageParam = { start: 1, end: 21 } }) => {
+  } = useInfiniteQuery({
+    queryKey: ['cards'],
+    queryFn: async ({ pageParam = { start: 1, end: 21 } }) => {
       const { data }: AxiosResponse<ICardsResponse> = await axios.get(
         `${TRIPLE_TRIAD_API}/cards?id_in=${pageParam.start}...${pageParam.end}&${filters}`
       );
 
       return data;
     },
-    {
-      getNextPageParam: (lastPage, pages) => {
-        //* check if the last request has count=0
-        //* if so there are no more items to fetch
-        return lastPage.count > 0
-          ? {
-              //* eg. 2*10 = 20 and then 20 + 11 = 31
-              //* eg. 3*10 = 30 and then 30 + 11 = 41
-              start: _mutiply(pages.length, 10) + 11,
-              //* eg. 2*10 = 20 and then 20 + 21 = 41
-              //* eg. 3*10 = 30 and then 30 + 21 = 51
-              end: _mutiply(pages.length, 10) + 21
-            }
-          : undefined;
-      }
+    getNextPageParam: (lastPage, pages) => {
+      //* check if the last request has count=0
+      //* if so there are no more items to fetch
+      return lastPage.count > 0
+        ? {
+            //* eg. 2*10 = 20 and then 20 + 11 = 31
+            //* eg. 3*10 = 30 and then 30 + 11 = 41
+            start: _mutiply(pages.length, 10) + 11,
+            //* eg. 2*10 = 20 and then 20 + 21 = 41
+            //* eg. 3*10 = 30 and then 30 + 21 = 51
+            end: _mutiply(pages.length, 10) + 21
+          }
+        : undefined;
     }
-  );
+  });
 
   /*
   <FormLabel as="legend">Name</FormLabel>
@@ -97,71 +94,63 @@ const Cards: NextPage = () => {
     >
       {error ? (
         <Error />
-      ) : isLoading ? (
-        <Loading />
       ) : data ? (
-        <>
-          {data.pages?.length ? (
-            <InfiniteScroll
-              dataLength={data.pages.length}
-              next={() => {
-                fetchNextPage();
-              }}
-              hasMore={hasNextPage}
-              loader={<h4>Loading...</h4>}
-              endMessage={
-                <Box pt={8}>
-                  <p>
-                    <b>Fantasy</b>tastic, you have seen them all!
-                  </p>
-                </Box>
-              }
-            >
-              <SimpleGrid columns={[1, null, 2, 3, 4, 5]} gap={8}>
-                {data.pages.map((cardList, i) => {
-                  return (
-                    <Fragment key={i}>
-                      {cardList.results.map((card, i) => (
-                        <Card
-                          p={6}
-                          key={i}
-                          isButton={true}
-                          onClick={() => {
-                            setSelectedCard(card);
-                            router.push(`${router.pathname}?card=${card.id}`);
-                          }}
-                        >
-                          <Image
-                            src={`${card.image}`}
-                            width="75px"
-                            height="80px"
-                            alt={`${card.name} Image`}
-                          />
-                          <Heading noOfLines={1} fontSize="2xl" as="h4">
-                            {card.name}
-                          </Heading>
-                          <Text>
-                            {card.type.name} - {card.stars}{' '}
-                            {card.stars === 1 ? 'Star' : 'Stars'}
-                          </Text>
-                        </Card>
-                      ))}
-                    </Fragment>
-                  );
-                })}
-              </SimpleGrid>
-            </InfiniteScroll>
-          ) : (
-            <EmptyData expression="cards" />
-          )}
-        </>
+        <InfiniteScroll
+          data={data}
+          isLoading={isLoading}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          skeleton={<CollectableCardSkeleton />}
+          endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
+        >
+          {data?.pages.map((page, pageI) =>
+            page?.results.map((card: ICard, i: number) => {
+              return (
+                <InfiniteScrollItemsWrapper
+                  key={i}
+                  hasNextPage={hasNextPage}
+                  fetchNextPage={fetchNextPage}
+                  isLastAvailablePage={pageI === data.pages.length - 1}
+                >
+                  <CollectableCard
+                    isButton={true}
+                    onClick={() => {
+                      setSelectedCard(card);
+                      router.push(
+                        `${router.pathname}?card=${card.id}`,
+                        {},
+                        { scroll: false }
+                      );
+                    }}
+                  >
+                    <Image
+                      src={`${card.image}`}
+                      width="75px"
+                      height="80px"
+                      alt={`${card.name} Image`}
+                    />
+                    <Heading noOfLines={1} fontSize="2xl" as="h4">
+                      {card.name}
+                    </Heading>
+                    <Text>
+                      {card.type.name} - {card.stars}{' '}
+                      {card.stars === 1 ? 'Star' : 'Stars'}
+                    </Text>
+                  </CollectableCard>
+                </InfiniteScrollItemsWrapper>
+              );
+            })
+          ) || <EmptyData expression="emotes" />}
+        </InfiniteScroll>
       ) : null}
 
       {selectedCard !== null ? (
         <BaseModal
           open={router.query?.card ? true : false}
           title={selectedCard.name}
-          whileClosing={() => router.push(router.pathname)}
+          whileClosing={() =>
+            router.push(router.pathname, {}, { scroll: false })
+          }
           body={
             <>
               <Image
@@ -229,52 +218,28 @@ const Cards: NextPage = () => {
 
                 {selectedCard.sources.drops.length > 0 ? (
                   <Text pt={2}>
-                    <u>Drops:</u> [
-                    {selectedCard.sources.drops.map((item, i) =>
-                      selectedCard.sources.drops.length > 1 &&
-                      i < selectedCard.sources.drops.length - 1 ? (
-                        <Fragment key={i}>{item}, </Fragment>
-                      ) : (
-                        <Fragment key={i}>{item}</Fragment>
-                      )
-                    )}
-                    ]
+                    <u>Drops:</u>
+                    {selectedCard.sources.drops
+                      .map((item, _) => item)
+                      .join(', ')}
                   </Text>
                 ) : null}
                 {selectedCard.sources.npcs.length > 0 ? (
                   <Text pt={2}>
-                    <u>NPCs:</u> [
-                    {selectedCard.sources.npcs.map((item, i) =>
-                      selectedCard.sources.npcs.length > 1 &&
-                      i < selectedCard.sources.npcs.length - 1 ? (
-                        <Fragment key={i}>
-                          {item.name} (in {item.location.name}),{' '}
-                        </Fragment>
-                      ) : (
-                        <Fragment key={i}>
-                          {item.name} (in {item.location.name})
-                        </Fragment>
+                    <u>NPCs:</u>
+                    {selectedCard.sources.npcs
+                      .map(
+                        (item, i) => `${item.name} (in ${item.location.name})`
                       )
-                    )}
-                    ]
+                      .join(', ')}
                   </Text>
                 ) : null}
                 {selectedCard.sources.packs.length > 0 ? (
                   <Text pt={2}>
-                    <u>Packs:</u> [
-                    {selectedCard.sources.packs.map((item, i) =>
-                      selectedCard.sources.packs.length > 1 &&
-                      i < selectedCard.sources.packs.length - 1 ? (
-                        <Fragment key={i}>
-                          {item.name} - {item.cost} MGP,{' '}
-                        </Fragment>
-                      ) : (
-                        <Fragment key={i}>
-                          {item.name} - {item.cost} MGP
-                        </Fragment>
-                      )
-                    )}
-                    ]
+                    <u>Packs:</u>
+                    {selectedCard.sources.packs
+                      .map((item, _) => `${item.name} - ${item.cost} MGP`)
+                      .join(', ')}
                   </Text>
                 ) : null}
               </Box>

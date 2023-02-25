@@ -1,6 +1,7 @@
-import { ITagGenre } from '@ts/interfaces/rawgInterfaces';
+import type { ITagGenre } from '@ts/interfaces/rawgInterfaces';
+import type { NextApiRequest, NextApiResponse } from 'next';
+
 import { RAWG_API } from '@utils/constants';
-import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async (_: NextApiRequest, res: NextApiResponse) => {
   const targetedTags = [

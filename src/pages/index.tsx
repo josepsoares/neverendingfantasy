@@ -1,6 +1,5 @@
-import { useRef } from 'react';
-import { NextPage } from 'next';
 import Link from 'next/link';
+import { useRef } from 'react';
 
 import {
   Box,
@@ -13,13 +12,13 @@ import {
 } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
-import SEO from '@components/seo';
 import CardImgBg from '@components/cards/bgImgCard';
+import Container from '@components/container';
 import TestimonialItem from '@components/misc/testimonialItem';
-
+import SEO from '@components/seo';
 import { apiLinks, ffResourcesLinks, testimonials } from '@utils/constants';
 
-const Home: NextPage = () => {
+const Home = () => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   const scrollToContent = () => {
@@ -121,13 +120,7 @@ const Home: NextPage = () => {
         </Flex>
       </Flex>
 
-      {/* place quotes of famous people who talked about the ff franchise here */}
-      <Box
-        mx="auto"
-        pb="32"
-        pt={['20', null, null, '32']}
-        maxW={['91.666667%%', '83.333333%', null, '75%']}
-      >
+      <Container pb="32" pt={['20', null, null, '32']}>
         <Heading
           as="h1"
           pb="8"
@@ -200,7 +193,7 @@ const Home: NextPage = () => {
             />
           ))}
         </SimpleGrid>
-      </Box>
+      </Container>
 
       <SimpleGrid ref={contentRef} columns={1}>
         <Link href="/games">
@@ -249,7 +242,7 @@ const Home: NextPage = () => {
         </Link>
       </SimpleGrid>
 
-      <Box pt="32" mx="auto" maxW={['91.666667%%', '83.333333%', null, '75%']}>
+      <Container pt="32">
         <Heading
           pb="8"
           as="h1"
@@ -300,7 +293,7 @@ const Home: NextPage = () => {
             </ul>
           </Box>
         </SimpleGrid>
-      </Box>
+      </Container>
     </>
   );
 };

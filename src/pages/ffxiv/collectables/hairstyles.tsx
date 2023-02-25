@@ -1,39 +1,33 @@
-import type { IOrchestrion } from '@ts/interfaces/ffxivCollectInterfaces';
+import type { IHairstyle } from '@ts/interfaces/ffxivCollectInterfaces';
 import type { GetServerSideProps, NextPage } from 'next';
 
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import {
-  Box,
-  FormControl,
-  Heading,
-  Image,
-  Input,
-  Select,
-  SimpleGrid,
-  Text
-} from '@chakra-ui/react';
+import { Box, Heading, Image, Text } from '@chakra-ui/react';
 
 import {
   CollectableCard,
   CollectableCardSkeleton
 } from '@components/cards/collectableCard';
-import EmptyData from '@components/feedback/emptyData';
 import Error from '@components/feedback/error';
-import Loading from '@components/feedback/loading';
 import {
   InfiniteScroll,
   InfiniteScrollItemsWrapper
 } from '@components/infiniteScroll';
 import CollectablesLayout from '@components/layouts/collectables';
-import { indexOrchestrions } from '@services/ffxivCollectApi';
+import { indexHairstyles } from '@services/ffxivCollectApi';
 import { _mutiply } from '@utils/helpers/math';
 
-const Orchestrions: NextPage = () => {
-  const [filters, setFilters] = useState('');
-  const [seeAllDescription, setSeeAllDescription] = useState(false);
+const Achievements: NextPage = () => {
+  const router = useRouter();
 
+  const [filters, setFilters] = useState('');
+  const [selectedAchievement, setSelectedAchievement] =
+    useState<IHairstyle | null>(null);
+
+  // id_in: '1...21'
   const {
     data,
     error,
@@ -43,36 +37,39 @@ const Orchestrions: NextPage = () => {
     fetchNextPage,
     refetch
   } = useInfiniteQuery({
-    queryKey: ['orchestrions', filters],
-    queryFn: indexOrchestrions,
+    queryKey: ['hairstyles', filters],
+    queryFn: indexHairstyles,
     getNextPageParam: (lastPage, pages) => {
       return lastPage.count > 0
         ? {
+            //* eg. 2*10 = 20 and then 20 + 11 = 31
+            //* eg. 3*10 = 30 and then 30 + 11 = 41
             start: _mutiply(pages.length, 10) + 11,
+            //* eg. 2*10 = 20 and then 20 + 21 = 41
+            //* eg. 3*10 = 30 and then 30 + 21 = 51
             end: _mutiply(pages.length, 10) + 21
           }
         : undefined;
     }
   });
 
-  /*
+  /* 
   <FormControl label="Name">
-  <FormControl label="Source">
-  <FormControl label="Owned">
+  <FormControl label="Category">
+  <FormControl label="Points Rewarded">
+  <FormControl label="Completed Percentage">
   <FormControl label="Patch">
   */
 
   return (
     <CollectablesLayout
-      seo="Orchestrions - FFXIV Colectables"
-      title="Orchestrions"
-      description=" Look at all the final fantasies bellow! Do they even end?"
+      seo="Achievements - FFXIV Colectables"
+      title="Achievements"
+      description="Look at all the final fantasies bellow! Do they even end?"
     >
       {error ? (
         <Error />
-      ) : isLoading ? (
-        <Loading />
-      ) : data ? (
+      ) : (
         <InfiniteScroll
           data={data}
           isLoading={isLoading}
@@ -82,7 +79,7 @@ const Orchestrions: NextPage = () => {
           endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
         >
           {data?.pages.map((page, pageI) =>
-            page?.results.map((orchestrion: IOrchestrion, i: number) => {
+            page?.results.map((hairstyle: IHairstyle, i: number) => {
               return (
                 <InfiniteScrollItemsWrapper
                   key={i}
@@ -91,42 +88,30 @@ const Orchestrions: NextPage = () => {
                   isLastAvailablePage={pageI === data.pages.length - 1}
                 >
                   <CollectableCard isButton={false}>
-                    <Image
-                      width="12"
-                      height="12"
-                      src={orchestrion.icon}
-                      alt={orchestrion.name}
-                    />
-                    <Heading
-                      textAlign="center"
-                      noOfLines={2}
-                      fontSize="2xl"
-                      as="h4"
+                    <Box
+                      borderRadius="lg"
+                      borderWidth="thin"
+                      borderColor="white"
                     >
-                      {orchestrion.name}
-                    </Heading>
-
-                    <Box textAlign="center">
-                      <Text fontSize="16">
-                        {orchestrion.owned} players own this
-                      </Text>
-
-                      <Text fontSize="16">
-                        Introduced in patch {orchestrion.patch}
-                      </Text>
-
-                      <Text fontSize="16">
-                        This orchestrion is{' '}
-                        {orchestrion.tradeable ? 'tradable' : 'non-tradable'}
-                      </Text>
+                      <Image
+                        src={`${hairstyle.icon}`}
+                        width="full"
+                        height="full"
+                        borderRadius="lg"
+                        alt={`Achievement ${hairstyle.name} Icon`}
+                      />
                     </Box>
+
+                    <Heading noOfLines={2} fontSize="2xl" as="h4">
+                      {hairstyle.name}
+                    </Heading>
                   </CollectableCard>
                 </InfiniteScrollItemsWrapper>
               );
             })
-          ) || <EmptyData expression="orchestrions" />}
+          )}
         </InfiniteScroll>
-      ) : null}
+      )}
     </CollectablesLayout>
   );
 };
@@ -137,4 +122,4 @@ export const getServerSideProps: GetServerSideProps = async context => {
   };
 };
 
-export default Orchestrions;
+export default Achievements;

@@ -1,17 +1,18 @@
-import axios, { AxiosResponse } from 'axios';
-import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
-import { _add } from '@utils/helpers/math';
-
 import type {
-  IAchievementsResponse,
   IArmoiresResponse,
   IEmoteResponse,
   IFashionResponse,
+  IHairstyleResponse,
   IMinionsResponse,
   IMountsResponse,
   IOrchestrionResponse,
   IRelicResponse
 } from '@ts/interfaces/ffxivCollectInterfaces';
+
+import axios, { AxiosResponse } from 'axios';
+
+import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
+import { _add } from '@utils/helpers/math';
 
 const FFXIV_COLLECT_API_URL = 'https://ffxivcollect.com/api';
 const FFXIV_COLLECT_CLIENT = axios.create({
@@ -20,21 +21,19 @@ const FFXIV_COLLECT_CLIENT = axios.create({
 });
 
 export const ffxivCollectApiEndpoints = {
-  indexAccessories: async ({ filters }) => {
+  indexAccessories: async () => {
     const { data }: AxiosResponse<IFashionResponse> =
-      await FFXIV_COLLECT_CLIENT.get(
-        `/fashions?${addParamsToGetRequest(filters)}`
-      );
+      await FFXIV_COLLECT_CLIENT.get(`/fashions`);
 
     return data;
   },
-  indexAchievements: async ({
+  indexHairstyles: async ({
     pageParam = { start: 1, end: 21 },
     filters = {}
   }) => {
-    const { data }: AxiosResponse<IAchievementsResponse> =
+    const { data }: AxiosResponse<IHairstyleResponse> =
       await FFXIV_COLLECT_CLIENT.get(
-        `/achievements?id_in=${pageParam.start}...${
+        `/hairstyles?id_in=${pageParam.start}...${
           pageParam.end
         }&${addParamsToGetRequest(filters)}`
       );
@@ -109,11 +108,11 @@ export const ffxivCollectApiEndpoints = {
 
 export const {
   indexAccessories,
-  indexAchievements,
+  indexArmoires,
+  indexEmotes,
+  indexHairstyles,
   indexMounts,
   indexMinions,
-  indexArmoires,
   indexOrchestrions,
-  indexRelics,
-  indexEmotes
+  indexRelics
 } = ffxivCollectApiEndpoints;

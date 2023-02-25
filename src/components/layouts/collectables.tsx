@@ -16,7 +16,7 @@ const CollectablesLayout: React.FC<{
           {title}
         </Heading>
 
-        <Text mt="-1" mb="5">
+        <Text mt="-1" mb="10">
           {description}
         </Text>
 

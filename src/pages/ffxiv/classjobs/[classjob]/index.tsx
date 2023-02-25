@@ -1,20 +1,18 @@
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useQuery } from '@tanstack/react-query';
+import type { NextPage } from 'next';
 
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+import { useQuery } from '@tanstack/react-query';
 import { Box, Flex, Grid, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 
 import Error from '@components/feedback/error';
 import Loading from '@components/feedback/loading';
 import SEO from '@components/seo';
-
 import { getClassJob, indexClassJobs } from '@services/ffxivApi';
-
-import { _add } from '@utils/helpers/math';
 import { FFXIV_API } from '@utils/constants';
-
-import type { GetServerSideProps, NextPage } from 'next';
+import { _add } from '@utils/helpers/math';
 
 const ClassJob: NextPage = () => {
   const router = useRouter();
@@ -279,12 +277,5 @@ export async function getStaticPaths() {
     fallback: true
   };
 }
-
-export const getServerSideProps: GetServerSideProps = async context => {
-  // TODO => finish ssr
-  return {
-    props: {}
-  };
-};
 
 export default ClassJob;

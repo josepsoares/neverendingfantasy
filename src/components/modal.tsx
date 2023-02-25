@@ -22,7 +22,10 @@ const BaseModal: React.FC<{
 
   return (
     <Modal
+      size="xl"
+      isCentered
       scrollBehavior="inside"
+      motionPreset="slideInBottom"
       closeOnOverlayClick={true}
       closeOnEsc={true}
       isOpen={isOpen}
@@ -33,8 +36,6 @@ const BaseModal: React.FC<{
           onClose();
         }
       }}
-      size="xl"
-      isCentered
     >
       <ModalOverlay
         bg="blackAlpha.300"
@@ -42,10 +43,12 @@ const BaseModal: React.FC<{
       />
       <ModalContent>
         <ModalHeader
-          fontFamily="heading"
           as="h1"
-          color="brand.500"
+          pb="0"
+          w="95%"
           fontSize="5xl"
+          fontFamily="heading"
+          color="brand.500"
         >
           {title}
         </ModalHeader>

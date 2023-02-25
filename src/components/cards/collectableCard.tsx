@@ -17,6 +17,7 @@ const CollectableCard: React.FC<{
       top="0"
       h="auto"
       p="6"
+      gap="4"
       textColor="white"
       border="2px"
       boxShadow="md"
@@ -31,8 +32,7 @@ const CollectableCard: React.FC<{
       whiteSpace="normal"
       position="relative"
       bgGradient="linear(to-br, brand.300, brand.700)"
-      transition="all"
-      transitionDuration="0.2s"
+      transition="all ease-in-out 0.2s"
       as={!isButton ? 'div' : 'button'}
       onClick={onClick || null}
       _hover={{
@@ -59,6 +59,7 @@ const CollectableCardSkeleton: React.FC<{
 }> = ({ imgH = '48', imgW = '28' }) => {
   return (
     <Box
+      p="6"
       gap="4"
       border="2px"
       boxShadow="md"
@@ -69,10 +70,10 @@ const CollectableCardSkeleton: React.FC<{
       borderColor="blue.300"
       bgGradient="linear(to-br, brand.300, brand.700)"
     >
-      <Skeleton w={imgW} height={imgH} />
+      <Skeleton mx="auto" w={imgW} height={imgH} />
       <Box gap="2" w="100%">
-        <SkeletonText h="90px" pb="4" noOfLines={2} />
-        <Skeleton height="28" w="full" />
+        <SkeletonText skeletonHeight="6" h="72px" noOfLines={2} />
+        <SkeletonText noOfLines={9} h="36" w="full" />
       </Box>
     </Box>
   );

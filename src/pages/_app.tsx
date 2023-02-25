@@ -1,33 +1,35 @@
 import type { AppProps } from 'next/app';
+
 import dynamic from 'next/dynamic';
+import { Karla } from 'next/font/google';
+import localFont from 'next/font/local';
 import { useState } from 'react';
+
+import { nfTheme } from '@styles/theme';
 import {
   Hydrate,
   QueryClient,
   QueryClientProvider
 } from '@tanstack/react-query';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Karla } from '@next/font/google';
-import localFont from '@next/font/local';
-
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Box, ChakraProvider, SimpleGrid } from '@chakra-ui/react';
 
-import { nfTheme } from '@styles/theme';
-
-import Footer from '@components/footer';
 import Breadcrumbs from '@components/breadcumbs';
+import Footer from '@components/footer';
 import GoToTopButton from '@components/misc/goToTopButton';
 
 import '@styles/globals.css';
 import 'nprogress/nprogress.css';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const karla = Karla({
   subsets: ['latin'],
   variable: '--font-karla'
 });
 
-const ffFont = localFont({ src: './_ff-font.ttf', variable: '--font-ff' });
+const ffFont = localFont({
+  src: '../styles/fonts/highwind.ttf',
+  variable: '--font-ff'
+});
 
 const TopProgressBar = dynamic(
   () => {

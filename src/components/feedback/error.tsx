@@ -2,7 +2,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Flex,
+  Heading,
+  Text
+} from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
 import SEO from '@components/seo';
@@ -13,13 +20,10 @@ const Error = () => {
   return (
     <>
       <SEO title="Error" />
-      <Flex
-        pt={20}
-        flexDir="column"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Heading as="h1">An error occurred</Heading>
+      <Flex flexDir="column" alignItems="center" justifyContent="center">
+        <Heading color="brand.700" fontSize="4xl" as="h1">
+          An error occurred
+        </Heading>
         <Box py={10}>
           <Image
             src="/assets/img/error_tonberry.png"
@@ -28,28 +32,27 @@ const Error = () => {
             height={100}
           />
         </Box>
-        <Text textAlign="center" mb={8}>
+        <Text textAlign="center" mb="8">
           Something went wrong... Run before Tonberry goes after you...
         </Text>
-        {router.pathname !== '/' && (
-          <Link href="/">
-            <Box justifyContent="center">
+        <ButtonGroup gap="4" flexWrap="wrap">
+          {router.pathname !== '/' && (
+            <Link href="/">
               <Button
                 colorScheme="brand"
                 leftIcon={<Icon icon="bx:bxs-home" />}
               >
                 Go back to Home
               </Button>
-            </Box>
-          </Link>
-        )}
-        <Button
-          mt={4}
-          leftIcon={<Icon icon="bx:bx-refresh" />}
-          onClick={() => window !== undefined && window.location.reload()}
-        >
-          Refresh
-        </Button>
+            </Link>
+          )}
+          <Button
+            leftIcon={<Icon icon="bx:bx-refresh" />}
+            onClick={() => window !== undefined && window.location.reload()}
+          >
+            Refresh
+          </Button>
+        </ButtonGroup>
       </Flex>
     </>
   );

@@ -10,33 +10,6 @@ export interface IFFXIVCollectApiResponse {
   count: number;
 }
 
-export interface IAchievement {
-  id: number;
-  name: string;
-  description: string;
-  points: number;
-  order: number;
-  patch: string;
-  owned: string;
-  icon?: string;
-  category?: {
-    id: number;
-    name: string;
-  };
-  type?: {
-    id: number;
-    name: string;
-  };
-  reward?: {
-    name: string;
-    type: string;
-  };
-}
-
-export interface IAchievementsResponse extends IFFXIVCollectApiResponse {
-  results: IAchievement[];
-}
-
 export interface IArmoire {
   id: number;
   name: string;
@@ -71,6 +44,22 @@ export interface IFashion {
 
 export interface IFashionResponse extends IFFXIVCollectApiResponse {
   results: IFashion[];
+}
+
+export interface IHairstyle {
+  id: number;
+  name: string;
+  description: string;
+  icon?: string;
+  owned: string;
+  item_id?: number;
+  tradeable: boolean;
+  patch: string;
+  sources?: SourceProperty[];
+}
+
+export interface IHairstyleResponse extends IFFXIVCollectApiResponse {
+  results: IHairstyle[];
 }
 
 export interface IMinion {

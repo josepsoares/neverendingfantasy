@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { IGamesResponse } from '@ts/interfaces/rawgInterfaces';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { RAWG_API } from '@utils/constants';
-import { IGamesResponse } from '@ts/interfaces/rawgInterfaces';
 import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
