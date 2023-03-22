@@ -38,10 +38,11 @@ $ yarn build
   - [Rawg API](https://api.rawg.io/docs/)
   - [XIV API](https://xivapi.com)
   - [FFXIV Collect API](https://ffxivcollect.com)
+  - [Another Triple Triad Tracker](https://triad.raelys.com/)
 
 - Typing with [TypeScript](https://github.com/microsoft/TypeScript)
 - [Next.js](https://nextjs.org) (React.js framework) frontend with optimized data fetching and [SEO](https://developers.google.com/search/docs/beginner/seo-starter-guide)
-- Data fetching with [React-Query](https://react-query-v3.tanstack.com/)
+- Data fetching with [Tan-Query](https://tanstack.com/query/latest)
 - [Chakra UI](https://chakra-ui.com) theming and [Iconify](https://iconify.design) for icons usage
 - Linting with [ESLint](https://eslint.org)
 - [Prettier](https://github.com/prettier/prettier) code formatter

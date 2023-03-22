@@ -4,10 +4,10 @@ import type {
 } from '@ts/interfaces/tripleTriadInterfaces';
 import type { GetServerSideProps, NextPage } from 'next';
 
-import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 import {
   Box,
@@ -27,33 +27,34 @@ import {
 import EmptyData from '@components/feedback/emptyData';
 import Error from '@components/feedback/error';
 import {
-  InfiniteScroll,
-  InfiniteScrollItemsWrapper
-} from '@components/infiniteScroll';
+  InfiniteScrollClient,
+  InfiniteScrollClientItemsWrapper
+} from '@components/infiniteScrollClient';
 import CollectablesLayout from '@components/layouts/collectables';
 import BaseModal from '@components/modal';
 import { TRIPLE_TRIAD_API } from '@utils/constants';
+import { _chunk } from '@utils/helpers/arr';
 //import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
 import { _add, _mutiply } from '@utils/helpers/math';
 
 const Cards: NextPage = () => {
   const router = useRouter();
+
+  const [cards, setCards] = useState({
+    all: [],
+    current: [],
+    currentPage: 0,
+    pages: 1,
+    hasNextPage: true
+  });
+
   const [filters, setFilters] = useState('');
   const [selectedCard, setSelectedCard] = useState<ICard | null>(null);
   const [seeAllDescription, setSeeAllDescription] = useState(false);
 
   //* in the pagination we start with 20 results, id_in=1...21
   //* and then fetch 10 items and the user scrolls and hits a threshold
-  const {
-    data,
-    error,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    refetch
-  } = useInfiniteQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: ['cards'],
     queryFn: async ({ pageParam = { start: 1, end: 21 } }) => {
       const { data }: AxiosResponse<ICardsResponse> = await axios.get(
@@ -62,55 +63,61 @@ const Cards: NextPage = () => {
 
       return data;
     },
-    getNextPageParam: (lastPage, pages) => {
-      //* check if the last request has count=0
-      //* if so there are no more items to fetch
-      return lastPage.count > 0
-        ? {
-            //* eg. 2*10 = 20 and then 20 + 11 = 31
-            //* eg. 3*10 = 30 and then 30 + 11 = 41
-            start: _mutiply(pages.length, 10) + 11,
-            //* eg. 2*10 = 20 and then 20 + 21 = 41
-            //* eg. 3*10 = 30 and then 30 + 21 = 51
-            end: _mutiply(pages.length, 10) + 21
-          }
-        : undefined;
+    onSuccess(data) {
+      const chunkedData = _chunk(data.results, 10);
+      setCards({
+        ...cards,
+        all: chunkedData,
+        current: [chunkedData[0]],
+        pages: chunkedData.length
+      });
     }
   });
+
+  const setNextPage = () => {
+    const nextPage = _add(cards.currentPage, 1);
+
+    setCards({
+      ...cards,
+      current: [...cards.current, cards.all[nextPage]],
+      currentPage: nextPage,
+      hasNextPage: nextPage !== cards.all.length - 1
+    });
+  };
 
   /*
   <FormLabel as="legend">Name</FormLabel>
   <FormLabel as="legend">Stars</FormLabel>
   <FormLabel as="legend">Sell Price</FormLabel>
   <FormLabel as="legend">Owned</FormLabel>
-  <FormLabel as="legend">Patch</FormLabel>
   */
 
   return (
     <CollectablesLayout
-      seo="Triple Triad Cards - FFXIV Colectables"
       title="Triple Triad Cards"
       description="Look at all the final fantasies bellow! Do they even end?"
     >
       {error ? (
         <Error />
+      ) : isLoading ? (
+        <SimpleGrid gap={8} w="full" columns={[1, null, 2, 3, 4, null, 5]}>
+          {Array.from(Array(10).keys()).map(i => (
+            <CollectableCardSkeleton key={i} imgH="16" />
+          ))}
+        </SimpleGrid>
       ) : data ? (
-        <InfiniteScroll
-          data={data}
-          isLoading={isLoading}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          skeleton={<CollectableCardSkeleton />}
+        <InfiniteScrollClient
+          hasNextPage={cards.hasNextPage}
           endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
         >
-          {data?.pages.map((page, pageI) =>
-            page?.results.map((card: ICard, i: number) => {
+          {cards.current.map((page, pageI) =>
+            page.map((card: ICard, i: number) => {
               return (
-                <InfiniteScrollItemsWrapper
+                <InfiniteScrollClientItemsWrapper
                   key={i}
-                  hasNextPage={hasNextPage}
-                  fetchNextPage={fetchNextPage}
-                  isLastAvailablePage={pageI === data.pages.length - 1}
+                  hasNextPage={cards.hasNextPage}
+                  setNextPage={() => setNextPage()}
+                  isLastAvailablePage={pageI === cards.current.length - 1}
                 >
                   <CollectableCard
                     isButton={true}
@@ -137,11 +144,11 @@ const Cards: NextPage = () => {
                       {card.stars === 1 ? 'Star' : 'Stars'}
                     </Text>
                   </CollectableCard>
-                </InfiniteScrollItemsWrapper>
+                </InfiniteScrollClientItemsWrapper>
               );
             })
           ) || <EmptyData expression="emotes" />}
-        </InfiniteScroll>
+        </InfiniteScrollClient>
       ) : null}
 
       {selectedCard !== null ? (

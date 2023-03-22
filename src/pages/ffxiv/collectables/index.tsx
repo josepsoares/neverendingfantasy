@@ -6,7 +6,7 @@ import { Heading, SimpleGrid, Text } from '@chakra-ui/react';
 import BgImgCard from '@components/cards/bgImgCard';
 import Container from '@components/container';
 import SEO from '@components/seo';
-import { capitalizeString } from '@utils/helpers/capitalizeString';
+import { _cap } from '@utils/helpers/string';
 
 const CollectablesAndFashion = () => {
   const router = useRouter();
@@ -56,7 +56,7 @@ const CollectablesAndFashion = () => {
           >
             Another Triple Triad Tracker
           </Link>{' '}
-          (specific for triple triad) websites
+          (specific for triple triad cards) websites
         </Text>
       </Container>
 
@@ -78,7 +78,7 @@ const CollectablesAndFashion = () => {
               h={64}
               radii={false}
               imgUrl={`/assets/img/ffxiv/${item.img}`}
-              imgAlt={`${capitalizeString(item.name)} Image`}
+              imgAlt={`${_cap(item.name)} Image`}
             >
               <Heading
                 as="h2"
@@ -99,7 +99,7 @@ const CollectablesAndFashion = () => {
       <SimpleGrid columns={[1, null, 2, null, 3]}>
         {[
           {
-            name: 'armoire',
+            name: 'armoires',
             description: 'all the pieces of clothing you can imagine',
             img: 'fashion-alt.jpg'
           },
@@ -134,7 +134,7 @@ const CollectablesAndFashion = () => {
               h={64}
               radii={false}
               imgUrl={`/assets/img/ffxiv/${item.img}`}
-              imgAlt={`${capitalizeString(item.name)} Image`}
+              imgAlt={`${_cap(item.name)} Image`}
             >
               <Heading
                 as="h2"

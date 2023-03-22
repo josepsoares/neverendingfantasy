@@ -3,7 +3,7 @@ import type { GetServerSideProps, NextPage } from 'next';
 
 import { useState } from 'react';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   Box,
   FormControl,
@@ -21,74 +21,85 @@ import {
 } from '@components/cards/collectableCard';
 import EmptyData from '@components/feedback/emptyData';
 import Error from '@components/feedback/error';
-import Loading from '@components/feedback/loading';
 import {
-  InfiniteScroll,
-  InfiniteScrollItemsWrapper
-} from '@components/infiniteScroll';
+  InfiniteScrollClient,
+  InfiniteScrollClientItemsWrapper
+} from '@components/infiniteScrollClient';
 import CollectablesLayout from '@components/layouts/collectables';
 import { indexOrchestrions } from '@services/ffxivCollectApi';
-import { _mutiply } from '@utils/helpers/math';
+import { _chunk } from '@utils/helpers/arr';
+import { _add, _mutiply } from '@utils/helpers/math';
 
 const Orchestrions: NextPage = () => {
+  const [orchestrions, setOrchestrions] = useState({
+    all: [],
+    current: [],
+    currentPage: 0,
+    pages: 1,
+    hasNextPage: true
+  });
+
   const [filters, setFilters] = useState('');
   const [seeAllDescription, setSeeAllDescription] = useState(false);
 
-  const {
-    data,
-    error,
-    isLoading,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
-    refetch
-  } = useInfiniteQuery({
-    queryKey: ['orchestrions', filters],
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['orchestrions'],
     queryFn: indexOrchestrions,
-    getNextPageParam: (lastPage, pages) => {
-      return lastPage.count > 0
-        ? {
-            start: _mutiply(pages.length, 10) + 11,
-            end: _mutiply(pages.length, 10) + 21
-          }
-        : undefined;
+    onSuccess(data) {
+      const chunkedData = _chunk(data.results, 10);
+      setOrchestrions({
+        ...orchestrions,
+        all: chunkedData,
+        current: [chunkedData[0]],
+        pages: chunkedData.length
+      });
     }
   });
 
+  const setNextPage = () => {
+    const nextPage = _add(orchestrions.currentPage, 1);
+
+    setOrchestrions({
+      ...orchestrions,
+      current: [...orchestrions.current, orchestrions.all[nextPage]],
+      currentPage: nextPage,
+      hasNextPage: nextPage !== orchestrions.all.length - 1
+    });
+  };
+
   /*
   <FormControl label="Name">
-  <FormControl label="Source">
   <FormControl label="Owned">
-  <FormControl label="Patch">
   */
 
   return (
     <CollectablesLayout
-      seo="Orchestrions - FFXIV Colectables"
       title="Orchestrions"
       description=" Look at all the final fantasies bellow! Do they even end?"
     >
       {error ? (
         <Error />
       ) : isLoading ? (
-        <Loading />
+        <SimpleGrid gap={8} w="full" columns={[1, null, 2, 3, 4, null, 5]}>
+          {Array.from(Array(10).keys()).map(i => (
+            <CollectableCardSkeleton key={i} imgH="16" />
+          ))}
+        </SimpleGrid>
       ) : data ? (
-        <InfiniteScroll
-          data={data}
-          isLoading={isLoading}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          skeleton={<CollectableCardSkeleton />}
+        <InfiniteScrollClient
+          hasNextPage={orchestrions.hasNextPage}
           endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
         >
-          {data?.pages.map((page, pageI) =>
-            page?.results.map((orchestrion: IOrchestrion, i: number) => {
+          {orchestrions.current.map((page, pageI) =>
+            page.map((orchestrion: IOrchestrion, i: number) => {
               return (
-                <InfiniteScrollItemsWrapper
+                <InfiniteScrollClientItemsWrapper
                   key={i}
-                  hasNextPage={hasNextPage}
-                  fetchNextPage={fetchNextPage}
-                  isLastAvailablePage={pageI === data.pages.length - 1}
+                  hasNextPage={orchestrions.hasNextPage}
+                  setNextPage={() => setNextPage()}
+                  isLastAvailablePage={
+                    pageI === orchestrions.current.length - 1
+                  }
                 >
                   <CollectableCard isButton={false}>
                     <Image
@@ -121,11 +132,11 @@ const Orchestrions: NextPage = () => {
                       </Text>
                     </Box>
                   </CollectableCard>
-                </InfiniteScrollItemsWrapper>
+                </InfiniteScrollClientItemsWrapper>
               );
             })
           ) || <EmptyData expression="orchestrions" />}
-        </InfiniteScroll>
+        </InfiniteScrollClient>
       ) : null}
     </CollectablesLayout>
   );

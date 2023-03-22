@@ -4,3 +4,8 @@ export const _shuffle = (arr: any[]) => {
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
 };
+
+export const _chunk = <T>(arr: T[], size: number): T[][] =>
+  [...Array(Math.ceil(arr.length / size))].map((_, i) =>
+    arr.slice(size * i, size + size * i)
+  );

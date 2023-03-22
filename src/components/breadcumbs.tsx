@@ -23,12 +23,16 @@ const Breadcrumbs = () => {
       const linkPath = router.asPath.split('/');
       linkPath.shift();
 
+      // console.log('QUeRY =>', router.query, router.pathname, router.basePath);
+
       const pathArray = linkPath.map((path, i) => {
         return {
-          breadcrumb: path.replaceAll('-', ' '),
+          breadcrumb: path.split('?')[0].replaceAll('-', ' '),
           href: '/' + linkPath.slice(0, i + 1).join('/')
         };
       });
+
+      // console.log(pathArray);
 
       setBreadcrumbs(pathArray);
     }
@@ -44,6 +48,7 @@ const Breadcrumbs = () => {
         as="header"
         display="flex"
         flexDir="row"
+        flexWrap="wrap"
         alignItems="center"
         gap={[2, null, 4]}
       >
@@ -55,7 +60,7 @@ const Breadcrumbs = () => {
           />
         </Link>
         <nav aria-label="breadcrumbs">
-          <ol>
+          <Box as="ol" flexWrap="wrap">
             <Box
               as="li"
               textColor="brand.100"
@@ -73,6 +78,7 @@ const Breadcrumbs = () => {
             </Box>
             {breadcrumbs.length >= 1 &&
               breadcrumbs.map((breadcrumb, i) => {
+                // console.log(breadcrumb);
                 if (!breadcrumb || breadcrumb.breadcrumb.length === 0) {
                   return null;
                 } else {
@@ -102,7 +108,7 @@ const Breadcrumbs = () => {
                   );
                 }
               })}
-          </ol>
+          </Box>
         </nav>
       </Box>
     </>

@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { useRef } from 'react';
+import Link from 'next/link';
 
 import {
   Box,
@@ -16,7 +16,11 @@ import CardImgBg from '@components/cards/bgImgCard';
 import Container from '@components/container';
 import TestimonialItem from '@components/misc/testimonialItem';
 import SEO from '@components/seo';
-import { apiLinks, ffResourcesLinks, testimonials } from '@utils/constants';
+import {
+  ffResourcesLinks,
+  relevantApisLinks,
+  testimonials
+} from '@utils/constants';
 
 const Home = () => {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -76,7 +80,7 @@ const Home = () => {
             fontWeight="medium"
             letterSpacing="wider"
           >
-            the neverending franchise with final in its name
+            the neverending franchise with "final" in its name
           </Heading>
           <Text
             mt="6"
@@ -85,8 +89,8 @@ const Home = () => {
             fontWeight="normal"
             fontSize={['md', 'lg', '2xl']}
           >
-            This is just a silly fan, tribute and informative page of the FF
-            games.
+            This is just a silly fan-made tribute and informative website of the
+            FF games.
           </Text>
           <Text
             color="#dae8ff"
@@ -174,7 +178,7 @@ const Home = () => {
             '1fr',
             null,
             null,
-            'repeat(2, 1fr)',
+            null,
             'repeat(3, 1fr)',
             'repeat(5, 1fr)',
             'repeat(7, 1fr)'
@@ -186,7 +190,6 @@ const Home = () => {
               img={item.img}
               name={item.name}
               quote={item.quote}
-              gridColSm={item?.gridColSm}
               gridColMd={item?.gridColMd}
               gridColLg={item?.gridColLg}
               profession={item.profession}
@@ -195,7 +198,7 @@ const Home = () => {
         </SimpleGrid>
       </Container>
 
-      <SimpleGrid ref={contentRef} columns={1}>
+      <SimpleGrid my="24" ref={contentRef} columns={1}>
         <Link href="/games">
           <CardImgBg
             h="lg"
@@ -266,10 +269,10 @@ const Home = () => {
               developers you can find bellow:
             </Text>
             <ul>
-              {apiLinks.map(({ url, text }, i) => (
+              {relevantApisLinks.map(({ url, name }, i) => (
                 <li key={i}>
                   <Link target="_blank" rel="noopener noreferrer" href={url}>
-                    {text}
+                    {name}
                   </Link>
                 </li>
               ))}
@@ -283,10 +286,10 @@ const Home = () => {
               noobs:
             </Text>
             <ul>
-              {ffResourcesLinks.map(({ url, text }, i) => (
+              {ffResourcesLinks.map(({ url, name }, i) => (
                 <li key={i}>
                   <Link target="_blank" rel="noopener noreferrer" href={url}>
-                    {text}
+                    {name}
                   </Link>
                 </li>
               ))}

@@ -1,8 +1,8 @@
 import type { IFashion } from '@ts/interfaces/ffxivCollectInterfaces';
 import type { GetServerSideProps, NextPage } from 'next';
 
-import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import { useQuery } from '@tanstack/react-query';
 import { Heading, Image, SimpleGrid, Text, VStack } from '@chakra-ui/react';
@@ -32,7 +32,6 @@ const Accessories: NextPage = () => {
   return (
     <CollectablesLayout
       title="Acessories"
-      seo="Accessories - FFXIV Colectables"
       description="Want to make your characters pop out and highlight it from others? Fear not, fashion accessories come to the rescue"
     >
       {error ? (
@@ -62,6 +61,7 @@ const Accessories: NextPage = () => {
                 h="32"
                 w="auto"
                 mx="auto"
+                opacity="65%"
                 src={`${accessory.image}`}
                 alt={`${accessory.name} Icon`}
               />
@@ -75,6 +75,8 @@ const Accessories: NextPage = () => {
                 <Heading noOfLines={2} fontSize="3xl" as="h1">
                   {accessory.name}
                 </Heading>
+
+                <Text noOfLines={3}>{accessory.description}</Text>
 
                 <VStack
                   w="full"
@@ -92,8 +94,6 @@ const Accessories: NextPage = () => {
                     {accessory.tradeable === true ? 'tradable' : 'non-tradable'}
                   </Text>
                 </VStack>
-
-                <Text noOfLines={3}>{accessory.description}</Text>
               </VStack>
             </CollectableCard>
           ))}

@@ -1,61 +1,42 @@
-import type {
-  FetchNextPageOptions,
-  InfiniteData,
-  InfiniteQueryObserverResult
-} from '@tanstack/react-query';
-
 import React, { useEffect, useRef, useState } from 'react';
 
-import { AnimatePresence } from 'framer-motion';
 import { Box, Flex, SimpleGrid } from '@chakra-ui/react';
 
-const InfiniteScroll: React.FC<{
-  data: InfiniteData<any>;
+const InfiniteScrollClient: React.FC<{
   hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-  isLoading: boolean;
+  hasItems: boolean;
+  hasActiveFilters?: boolean;
+  name: string;
   children: React.ReactNode;
-  skeleton: React.ReactNode;
-  endMessage: React.ReactNode;
-}> = ({
-  data,
-  hasNextPage,
-  isFetchingNextPage,
-  isLoading,
-  children,
-  skeleton,
-  endMessage
-}) => {
+}> = ({ hasNextPage, hasItems, hasActiveFilters, children, name }) => {
+  const endItemsMessage = `Well, there you have it, you scrolled through all the ${name}`;
+  const noFilteredItemsMessage = `Ops, it seems there are no ${name} with the filters you chose`;
+
   return (
     <>
-      <SimpleGrid columns={[1, null, 2, 3, 4, 5]} gap={8}>
+      <SimpleGrid columns={[1, null, 2, 3, 4, null, 5]} gap={8}>
         {children}
-        {isFetchingNextPage || isLoading
-          ? Array.from(Array(10).keys()).map(i => (
-              <AnimatePresence key={`skeleton ${i}`} mode="sync">
-                {skeleton}
-              </AnimatePresence>
-            ))
-          : null}
       </SimpleGrid>
 
-      {data?.pages && !hasNextPage ? (
-        <Flex justifyContent="center" textAlign="center">
-          {endMessage}
+      {!hasItems && hasActiveFilters ? (
+        <Flex mt="12" justifyContent="center" textAlign="center">
+          {noFilteredItemsMessage}
+        </Flex>
+      ) : !hasNextPage ? (
+        <Flex mt="12" justifyContent="center" textAlign="center">
+          {endItemsMessage}
         </Flex>
       ) : null}
     </>
   );
 };
 
-const InfiniteScrollItemsWrapper: React.FC<{
+const InfiniteScrollClientItemsWrapper: React.FC<{
   hasNextPage: boolean;
   isLastAvailablePage: boolean;
   children: React.ReactNode;
-  fetchNextPage: (
-    options?: FetchNextPageOptions
-  ) => Promise<InfiniteQueryObserverResult<any, unknown>>;
-}> = ({ hasNextPage, isLastAvailablePage, children, fetchNextPage }) => {
+  setNextPage: () => void;
+}> = ({ hasNextPage, isLastAvailablePage, children, setNextPage }) => {
   const [intersectionRef, setIntersectionRef] = useState(null);
   const [didIntersect, setDidIntersect] = useState(false);
 
@@ -92,7 +73,7 @@ const InfiniteScrollItemsWrapper: React.FC<{
   useEffect(() => {
     if (didIntersect) {
       if (hasNextPage) {
-        fetchNextPage();
+        setNextPage();
       } else {
         observer?.current.unobserve(intersectionRef);
       }
@@ -110,4 +91,4 @@ const InfiniteScrollItemsWrapper: React.FC<{
   );
 };
 
-export { InfiniteScroll, InfiniteScrollItemsWrapper };
+export { InfiniteScrollClient, InfiniteScrollClientItemsWrapper };

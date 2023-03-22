@@ -1,11 +1,12 @@
 import Link from 'next/link';
+
 import { Flex, Text } from '@chakra-ui/react';
 
 const Footer: React.FC = () => {
   return (
     <Flex
-      pt="20"
       px="24"
+      pt="12"
       pb="6"
       color="gray"
       as="footer"

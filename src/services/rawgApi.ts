@@ -1,18 +1,19 @@
-import axios, { AxiosResponse } from 'axios';
-import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
-
 import type {
   IGameDetail,
   IGameMoviesResponse,
   IGameScreenshotsResponse,
-  IGamesResponse,
   IGameStoresResponse,
+  IGamesResponse,
   ITagsGenresResponse
 } from '@ts/interfaces/rawgInterfaces';
 
-const RAWG_API_URL = '/api/rawg';
+import axios, { AxiosResponse } from 'axios';
+
+import { RAWG_API } from '@utils/constants';
+import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
+
 const RAWG_CLIENT = axios.create({
-  baseURL: RAWG_API_URL,
+  baseURL: RAWG_API.url,
   timeout: 3000
 });
 

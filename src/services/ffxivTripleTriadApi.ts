@@ -1,22 +1,18 @@
-import axios, { AxiosResponse } from 'axios';
-import { addParamsToGetRequest } from '@utils/helpers/addParamsToGetRequest';
-
 import type { ICardsResponse } from '@ts/interfaces/tripleTriadInterfaces';
 
-const FFXIV_TRIPLE_TRIAD_API_URL = 'https://triad.raelys.com/api';
+import axios, { AxiosResponse } from 'axios';
+
+import { FFXIV_TRIPLE_TRIAD_API } from '@utils/constants';
+
 const FFXIV_TRIPLE_TRIAD_CLIENT = axios.create({
-  baseURL: FFXIV_TRIPLE_TRIAD_API_URL,
+  baseURL: FFXIV_TRIPLE_TRIAD_API.url,
   timeout: 3000
 });
 
 export const ffxivTripleTriadApiEndpoints = {
-  indexCards: async ({ pageParam = { start: 1, end: 21 }, filters }) => {
+  indexCards: async () => {
     const { data }: AxiosResponse<ICardsResponse> =
-      await FFXIV_TRIPLE_TRIAD_CLIENT.get(
-        `/cards?id_in=${pageParam.start}...${
-          pageParam.end
-        }&${addParamsToGetRequest(filters)}`
-      );
+      await FFXIV_TRIPLE_TRIAD_CLIENT.get('/cards');
 
     return data;
   }

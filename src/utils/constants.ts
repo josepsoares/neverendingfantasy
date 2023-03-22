@@ -1,47 +1,47 @@
-export const RAWG_API = 'https://api.rawg.io/api';
-export const FFXIV_API = 'https://xivapi.com';
-export const TRIPLE_TRIAD_API = 'https://triad.raelys.com/api';
-export const FFXIV_COLLECT_API = 'https://ffxivcollect.com/api';
+export const RAWG_API = { url: 'https://api.rawg.io/api', name: 'Rawg' };
+export const XIV_API = { url: 'https://xivapi.com', name: 'XIVAPI' };
+export const FFXIV_COLLECT_API = {
+  url: 'https://ffxivcollect.com/api',
+  name: 'FFXIV Collect'
+};
+export const FFXIV_TRIPLE_TRIAD_API = {
+  url: 'https://triad.raelys.com/',
+  name: 'Another Triple Triad Tracker'
+};
 
-export const apiLinks = [
-  { url: 'https://rawg.io', text: 'Rawg' },
-  { url: 'https://xivapi.com', text: 'XIV Api' },
-  {
-    url: 'https://documenter.getpostman.com/view/1779678/TzXzDHM1#754f9294-e1e8-444c-9b52-0d76b2497884',
-    text: 'FFXIV Collect'
-  },
-  {
-    url: 'https://triad.raelys.com',
-    text: 'Another Triple Triad Tracker'
-  },
+export const relevantApisLinks = [
+  RAWG_API,
+  XIV_API,
+  FFXIV_COLLECT_API,
+  FFXIV_TRIPLE_TRIAD_API,
   {
     url: 'https://karashiiro.moe/xiv-resources/#web-apis',
-    text: 'Collection of XIV Resources/APIs'
+    name: 'Collection of XIV Resources/APIs'
   }
 ];
 
 export const ffResourcesLinks = [
-  { url: 'https://square-enix-games.com/en_EU/home', text: 'Square Enix' },
+  { url: 'https://square-enix-games.com/en_EU/home', name: 'Square Enix' },
   {
     url: 'https://finalfantasy.fandom.com/wiki/Final_Fantasy_Wiki',
-    text: 'Final Fantasy Wiki'
+    name: 'Final Fantasy Wiki'
   },
   {
     url: 'https://open.spotify.com/playlist/37i9dQZF1DWYnGFRu5xvi8',
-    text: 'Cool Music'
+    name: 'Cool Music'
   },
-  { url: 'https://www.speedrun.com/ff', text: 'Speedruns' },
+  { url: 'https://www.speedrun.com/ff', name: 'Speedruns' },
   {
     url: 'https://www.youtube.com/channel/UCJUSr7xT6mgyz0Xj2rMD5CA',
-    text: 'Final Fantasy Union Youtube'
+    name: 'Final Fantasy Union Youtube'
   },
   {
     url: 'https://www.youtube.com/watch?v=TQTwp9lAg5c',
-    text: 'Which Final Fantasy Game Should You Play First? | Final Fantasy Starter Guide'
+    name: 'Which Final Fantasy Game Should You Play First? | Final Fantasy Starter Guide'
   },
   {
     url: 'https://www.youtube.com/watch?v=s3v8aVe0_fQ',
-    text: 'Final Fantasy | Where to Start? - Austin Eruption'
+    name: 'Final Fantasy | Where to Start? - Austin Eruption'
   }
 ];
 
@@ -50,7 +50,6 @@ export const testimonials = [
     name: 'Jirard "The Completionist" Khalil',
     img: 'testimonials/jirard.png',
     profession: 'Youtuber',
-    gridColSm: '1/3',
     gridColMd: '1/3',
     gridColLg: '1/4',
     gridCol4K: '1/5',
@@ -60,9 +59,9 @@ export const testimonials = [
   {
     name: 'Naoki "YoshiP" Yoshida',
     img: 'testimonials/yoship.png',
+    gridColMd: '3/4',
     gridColLg: '4/6',
     gridCol4K: '5/7',
-
     profession: 'Video Game Producer',
     quote:
       'For me, Final Fantasy is about having a deep story, rich game design, the best game audio to accompany those aspects — as well as the inclusion of chocobos, moogles, and summons'
@@ -70,7 +69,6 @@ export const testimonials = [
   {
     name: 'Wisecrack',
     img: 'testimonials/wisecrack.jpg',
-    gridColSm: '1/3',
     gridColMd: '1/4',
     gridColLg: '1/6',
     gridCol4K: '1/4',
@@ -82,7 +80,6 @@ export const testimonials = [
     name: 'Hironobu Sakaguchi',
     img: 'testimonials/hironobu-sakaguchi.jpg',
     gridColMd: '1/2',
-
     gridColLg: '1/3',
     gridCol4K: '4/6',
     profession: 'Video Game Producer',

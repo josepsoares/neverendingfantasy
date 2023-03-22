@@ -1,9 +1,9 @@
 import type { AppProps } from 'next/app';
 
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Karla } from 'next/font/google';
 import localFont from 'next/font/local';
-import { useState } from 'react';
 
 import { nfTheme } from '@styles/theme';
 import {
@@ -38,18 +38,15 @@ const TopProgressBar = dynamic(
   { ssr: false }
 );
 
-const MyApp = ({ Component, pageProps, router }: AppProps) => {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            refetchOnWindowFocus: false
-          }
-        }
-      })
-  );
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+});
 
+const MyApp = ({ Component, pageProps, router }: AppProps) => {
   return (
     <>
       <style jsx global>
@@ -64,7 +61,7 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
         <Hydrate state={pageProps.dehydratedState}>
           <ChakraProvider theme={nfTheme}>
             <TopProgressBar />
-            <SimpleGrid width="100%" minH="100vh" templateRows="1fr auto">
+            <SimpleGrid width="100%" minH="100vh" templateRows="auto 1fr">
               {router.pathname !== '/' && (
                 <Box
                   pt={14}

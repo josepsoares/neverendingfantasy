@@ -1,33 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
-import type { TGenericObject } from '@ts/TGenericObject';
 
-const FFXIV_API_URL = 'https://xivapi.com/';
+import { XIV_API } from '@utils/constants';
+
 const FFXIV_CLIENT = axios.create({
-  baseURL: FFXIV_API_URL,
+  baseURL: XIV_API.url,
   timeout: 3000
 });
 
 export const ffxivApiEndpoints = {
-  indexInstances: async query => {
-    const { data }: AxiosResponse<TGenericObject> = await FFXIV_CLIENT.get(
-      `/InstanceContent?search`,
-      {
-        params: {
-          source: JSON.stringify(query),
-          source_content_type: 'application/json'
-        }
-      }
-    );
-
-    return data;
-  },
-  getInstance: async (id: number) => {
-    const { data }: AxiosResponse<any> = await FFXIV_CLIENT.get(
-      `/InstanceContent/${id}`
-    );
-
-    return data;
-  },
   indexClassJobs: async () => {
     const { data }: AxiosResponse<any> = await FFXIV_CLIENT.get(`/ClassJob`);
 
@@ -42,5 +22,4 @@ export const ffxivApiEndpoints = {
   }
 };
 
-export const { indexInstances, getInstance, indexClassJobs, getClassJob } =
-  ffxivApiEndpoints;
+export const { indexClassJobs, getClassJob } = ffxivApiEndpoints;

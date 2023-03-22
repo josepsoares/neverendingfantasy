@@ -1,10 +1,10 @@
 import type { IMount } from '@ts/interfaces/ffxivCollectInterfaces';
 import type { GetServerSideProps, NextPage } from 'next';
 
-import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
+import { useRouter } from 'next/router';
 
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import {
   Box,
   FormControl,
@@ -28,74 +28,89 @@ import {
   InfiniteScroll,
   InfiniteScrollItemsWrapper
 } from '@components/infiniteScroll';
+import {
+  InfiniteScrollClient,
+  InfiniteScrollClientItemsWrapper
+} from '@components/infiniteScrollClient';
 import CollectablesLayout from '@components/layouts/collectables';
 import BaseModal from '@components/modal';
 import { indexMounts } from '@services/ffxivCollectApi';
-import { _mutiply } from '@utils/helpers/math';
+import { _chunk } from '@utils/helpers/arr';
+import { _add, _mutiply } from '@utils/helpers/math';
 
 const Mounts: NextPage = () => {
   const router = useRouter();
+
+  const [mounts, setMounts] = useState({
+    all: [],
+    current: [],
+    currentPage: 0,
+    pages: 1,
+    hasNextPage: true
+  });
 
   const [filters, setFilters] = useState('');
   const [selectedMount, setSelectedMount] = useState<IMount | null>(null);
   const [seeAllDescription, setSeeAllDescription] = useState(false);
 
-  const {
-    data,
-    error,
-    isLoading,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
-    refetch
-  } = useInfiniteQuery({
-    queryKey: ['mounts', filters],
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['mounts'],
     queryFn: indexMounts,
-    getNextPageParam: (lastPage, pages) => {
-      return lastPage.count > 0
-        ? {
-            start: _mutiply(pages.length, 10) + 11,
-            end: _mutiply(pages.length, 10) + 21
-          }
-        : undefined;
+    onSuccess(data) {
+      const chunkedData = _chunk(data.results, 10);
+      setMounts({
+        ...mounts,
+        all: chunkedData,
+        current: [chunkedData[0]],
+        pages: chunkedData.length
+      });
     }
   });
+
+  const setNextPage = () => {
+    const nextPage = _add(mounts.currentPage, 1);
+
+    setMounts({
+      ...mounts,
+      current: [...mounts.current, mounts.all[nextPage]],
+      currentPage: nextPage,
+      hasNextPage: nextPage !== mounts.all.length - 1
+    });
+  };
 
   /*
   <FormControl label="Name">
   <FormControl label="Movement">
   <FormControl label="Seats">
   <FormControl label="Owned">
-  <FormControl label="Patch">
   */
 
   return (
     <CollectablesLayout
-      seo="Mounts - FFXIV Colectables"
       title="Mounts"
       description=" Look at all the final fantasies bellow! Do they even end?"
     >
       {error ? (
         <Error />
       ) : isLoading ? (
-        <Loading />
+        <SimpleGrid gap={8} w="full" columns={[1, null, 2, 3, 4, null, 5]}>
+          {Array.from(Array(10).keys()).map(i => (
+            <CollectableCardSkeleton key={i} imgH="16" />
+          ))}
+        </SimpleGrid>
       ) : data ? (
-        <InfiniteScroll
-          data={data}
-          isLoading={isLoading}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          skeleton={<CollectableCardSkeleton />}
+        <InfiniteScrollClient
+          hasNextPage={mounts.hasNextPage}
           endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
         >
-          {data?.pages.map((page, pageI) =>
-            page?.results.map((mount: IMount, i: number) => {
+          {mounts.current.map((page, pageI) =>
+            page.map((mount: IMount, i: number) => {
               return (
-                <InfiniteScrollItemsWrapper
+                <InfiniteScrollClientItemsWrapper
                   key={i}
-                  hasNextPage={hasNextPage}
-                  fetchNextPage={fetchNextPage}
-                  isLastAvailablePage={pageI === data.pages.length - 1}
+                  hasNextPage={mounts.hasNextPage}
+                  setNextPage={() => setNextPage()}
+                  isLastAvailablePage={pageI === mounts.current.length - 1}
                 >
                   <CollectableCard
                     isButton={true}
@@ -129,11 +144,11 @@ const Mounts: NextPage = () => {
                       {mount.tooltip}
                     </Text>
                   </CollectableCard>
-                </InfiniteScrollItemsWrapper>
+                </InfiniteScrollClientItemsWrapper>
               );
             })
           ) || <EmptyData expression="mounts" />}
-        </InfiniteScroll>
+        </InfiniteScrollClient>
       ) : null}
 
       {selectedMount !== null ? (

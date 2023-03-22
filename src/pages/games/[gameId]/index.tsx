@@ -17,8 +17,10 @@ import {
 } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
+import Container from '@components/container';
 import Error from '@components/feedback/error';
 import Loading from '@components/feedback/loading';
+import GameMediaCarousel from '@components/gameMediaCarousel';
 import SEO from '@components/seo';
 import {
   getGame,
@@ -27,7 +29,7 @@ import {
   getGameTrailers
 } from '@services/rawgApi';
 import { server } from '@utils/config/server';
-import { capitalizeString } from '@utils/helpers/capitalizeString';
+import { _cap } from '@utils/helpers/string';
 
 const GamePage: NextPage<{ gameId: number; game: IGameDetail }> = ({
   gameId,
@@ -99,191 +101,203 @@ const GamePage: NextPage<{ gameId: number; game: IGameDetail }> = ({
               description={gameDetails.data.description}
             />
 
-            <Flex
-              alignItems="center"
-              bgColor="brand.500"
-              justify="center"
-              opacity="0.9"
-              position="absolute"
-              zIndex="-100"
-              h="2xl"
-              w="full"
-            >
-              {gameDetails.data.background_image && (
-                <Image
-                  top={0}
-                  w="full"
-                  h="full"
-                  objectFit="cover"
-                  objectPosition="center"
-                  opacity={0.2}
-                  position="absolute"
-                  filter="sepia(100%) hue-rotate(173deg)"
-                  alt={`${gameDetails.data.name} Image`}
-                  src={gameDetails.data.background_image_additional}
-                />
-              )}
-            </Flex>
+            <Container py="16">
+              <Heading fontSize="8xl" as="h1" pt="2" color="brand.800">
+                {gameDetails.data.name}
+              </Heading>
+              <Text fontSize="xs" fontStyle="italic">
+                The data presented in this page was fetched from the{' '}
+                <Link
+                  href="https://rawg.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  RAWG Videogame Database
+                </Link>
+              </Text>
 
-            <Flex
-              mx="auto"
-              maxW={['91.666667%%', '83.333333%', null, '75%']}
-              flexDir="row"
-              flexWrap="wrap"
-            >
-              <Box>
+              <Box pt="8" h="500px">
                 <Image
-                  h="80"
-                  w="48"
+                  h="100%"
+                  w="full"
                   borderColor="blue.300"
-                  borderRadius="md"
+                  borderTopRadius="md"
                   objectFit="cover"
                   src={gameDetails.data.background_image}
                   fallbackSrc="/assets/img/placeholder.png"
                   alt={`${gameDetails.data.name} Image`}
                 />
               </Box>
-              <Box w="75%" mx="auto">
-                <Heading
-                  p="8"
-                  as="h1"
-                  fontSize="9xl"
-                  color="brand.800"
-                  textAlign="center"
-                >
-                  {gameDetails.data.name}
-                </Heading>
-                {gameDetails.data?.website && (
-                  <Link
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={gameDetails.data.website}
-                  >
-                    <Button
-                      variant="ghost"
-                      aria-label="Game Website"
-                      leftIcon={
-                        <Icon icon="bx:bx-link" width="25px" height="25px" />
-                      }
-                    >
-                      official website
-                    </Button>
-                  </Link>
-                )}
-              </Box>
-              <Box px={[12, null, 24, 32]} py={16}>
-                <Box pb={10}>
-                  <Text textAlign="center">
-                    Released at {gameDetails.data.released}
+              <Flex
+                py="8"
+                color="white"
+                flexDir="column"
+                borderBottomRadius="md"
+                px={['4', null, '10', '12']}
+                bgGradient="linear(to-br, brand.300, brand.700)"
+              >
+                <Flex flexDir="row" flexWrap="wrap" gap="5" pb="10">
+                  <Text>
+                    <b>Released date:</b> {gameDetails.data.released}
                   </Text>
+
+                  <Text>
+                    <b>Developers:</b>{' '}
+                    {gameDetails.data.developers
+                      .map(dev => dev.name)
+                      .join(', ')}
+                  </Text>
+
+                  {gameDetails.data.genres.length ? (
+                    <Text>
+                      <b>Genres:</b>{' '}
+                      {gameDetails.data.genres
+                        .map(item => _cap(item.name))
+                        .join(', ')}
+                    </Text>
+                  ) : null}
+
+                  <Text>
+                    <b>Platforms:</b>{' '}
+                    {gameDetails.data?.platforms
+                      .map(item => item.platform.name)
+                      .join(', ')}
+                  </Text>
+
+                  <Text>
+                    <b>Metacritic:</b> {gameDetails.data.metacritic}
+                  </Text>
+                </Flex>
+                <Text>{gameDetails.data.description_raw}</Text>
+              </Flex>
+
+              <Box pt="20">
+                <Heading fontSize="6xl" as="h1" pt="2" color="brand.800">
+                  Here, some tags, trailers and screenshots
+                </Heading>
+                <Text fontSize="3xl" mt="-2" color="brand.800">
+                  to help you establish an image of the game in your head
+                </Text>
+
+                <Box pt="10">
+                  <Heading fontSize="5xl" as="h2" pb="2" color="brand.600">
+                    The <i>'fantasytags'</i>
+                  </Heading>
+                  {gameDetails.data.tags.length ? (
+                    <Flex flexDir="row" flexWrap="wrap" gap="2">
+                      {gameDetails.data.tags.map((item, i) => (
+                        <Button
+                          key={i}
+                          as={Link}
+                          colorScheme="blue"
+                          borderRadius="md"
+                          fontWeight="normal"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={`https://rawg.io/tags/${item.slug}`}
+                        >
+                          # {_cap(item.name)}
+                        </Button>
+                      ))}
+                    </Flex>
+                  ) : (
+                    <Text>I guess this game doesn't have any tags...</Text>
+                  )}
                 </Box>
 
-                <Box>
-                  <Text>{gameDetails.data.description_raw}</Text>
+                <Box pt="10">
+                  <Heading fontSize="5xl" as="h2" pb="2" color="brand.600">
+                    Trailers / Screenshots
+                  </Heading>
+
+                  {gameDetails.data.tags.length ||
+                  gameDetails.data.tags.length ? (
+                    <GameMediaCarousel slides={[]} />
+                  ) : (
+                    <Text>I guess this game doesn't have any tags...</Text>
+                  )}
                 </Box>
               </Box>
-            </Flex>
 
-            <Box py="24" bgColor="brand.400" textColor="white">
-              <Box mx="auto" maxW={['91.666667%%', '83.333333%', null, '75%']}>
-                <Heading textAlign="center" as="h2" pb={10}>
-                  Info
+              <Box pt="10">
+                <Heading fontSize="6xl" as="h1" color="brand.800">
+                  To conclude... Should you partake on this "Final Fantasy"?
                 </Heading>
-                <Grid
-                  gridTemplateColumns={['1fr', null, null, '1fr 1fr 1fr']}
-                  pb={10}
-                >
-                  <Box>
-                    <Heading as="h3" pb={4}>
-                      Developers
-                    </Heading>
 
-                    <Text>
-                      {gameDetails.data.developers.map((dev, i) =>
-                        i === gameDetails.data.developers.length - 1
-                          ? dev.name
-                          : `${dev.name}, `
-                      )}
-                    </Text>
-                  </Box>
+                <Text fontSize="3xl" mt="-2" color="brand.800">
+                  well, check out some ratings and/or reviews to help you decide
+                </Text>
 
-                  <Box>
-                    <Heading as="h3" pb={4}>
-                      Misc
-                    </Heading>
-
-                    <Text>Metacritic: {gameDetails.data.metacritic}</Text>
-                    <Text>
-                      Achievements:{' '}
-                      {gameDetails.data?.achievements_count
-                        ? gameDetails.data.achievements_count
-                        : 'This game has no achievements'}
-                    </Text>
-                  </Box>
-                </Grid>
-
-                <Grid
-                  pt={8}
-                  gridTemplateColumns={['1fr', null, '1fr 1fr']}
-                  gap={[10, null, 20]}
-                >
-                  <Box width="100%">
-                    <Heading as="h2" pb={8}>
-                      Tags that describe this game:
-                    </Heading>
-
-                    {gameDetails.data.genres.length ? (
-                      <Text>
-                        {gameDetails.data.genres.map((item, i) =>
-                          gameDetails.data.genres.length !== i && i !== 0
-                            ? `${capitalizeString(item.name)}, `
-                            : capitalizeString(item.name)
-                        )}
-                      </Text>
-                    ) : (
-                      <>
-                        <Text>
-                          I guess this game doesn't have any genres...
+                <Box pt="6">
+                  <SimpleGrid
+                    templateColumns={['1fr', null, '1fr 1fr', null, '']}
+                    gap="4"
+                  >
+                    {gameDetails.data.ratings.map((item, i) => (
+                      <Box
+                        key={i}
+                        pt="4"
+                        pb="1"
+                        px="8"
+                        color="white"
+                        borderRadius="md"
+                        bgColor="brand.400"
+                        bgGradient="linear(to-br, brand.300, brand.700)"
+                      >
+                        <Text pb="1">
+                          <Text as="span" fontWeight="bold">
+                            {item.percent}%
+                          </Text>{' '}
+                          players rated
                         </Text>
-                      </>
-                    )}
-                  </Box>
-                  <Box height="medium" width="100%">
-                    <Heading as="h2" pb={8}>
-                      Tags that describe this game:
+                        <Text
+                          fontSize="5xl"
+                          letterSpacing="widest"
+                          fontFamily="heading"
+                        >
+                          {item.title}
+                        </Text>
+                      </Box>
+                    ))}
+                  </SimpleGrid>
+
+                  <Text pt="4" fontSize="xs" fontStyle="italic">
+                    The data presented in this page was fetched from the{' '}
+                    <Link
+                      href="https://rawg.io/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      RAWG Videogame Database
+                    </Link>
+                  </Text>
+
+                  <Box pt="16">
+                    <Heading
+                      textAlign="center"
+                      fontSize="5xl"
+                      as="h2"
+                      color="brand.600"
+                    >
+                      The Overall Rating for this <i>'fantasy'</i> is
                     </Heading>
-
-                    {gameDetails.data.tags.length ? (
-                      <Text>
-                        {gameDetails.data.tags.map((item, i) =>
-                          gameDetails.data.tags.length !== i && i !== 0
-                            ? `${capitalizeString(item.name)}, `
-                            : capitalizeString(item.name)
-                        )}
-                      </Text>
-                    ) : (
-                      <>
-                        <Text>I guess this game doesn't have any tags...</Text>
-                      </>
-                    )}
+                    <Heading
+                      textAlign="center"
+                      fontSize="7xl"
+                      as="h2"
+                      color="brand.600"
+                    >
+                      <Text as="span" color="blue.500">
+                        {gameDetails.data.rating}
+                      </Text>{' '}
+                      / 5
+                    </Heading>
                   </Box>
-                </Grid>
-              </Box>
-            </Box>
-
-            <SimpleGrid columns={[1, null, null, 2]}>
-              <Box textAlign="center" px={[12, null, 24, 32]} pt={16} pb={10}>
-                <Heading textAlign="center" as="h2" pb={10}>
-                  Trailers
-                </Heading>
+                </Box>
               </Box>
 
-              <Box textAlign="center" px={[12, null, 24, 32]} pt={16} pb={10}>
-                <Heading textAlign="center" as="h2" pb={10}>
-                  Screenshots
-                </Heading>
-              </Box>
-            </SimpleGrid>
+              <Box></Box>
+            </Container>
           </>
         )
       ) : null}
@@ -292,13 +306,12 @@ const GamePage: NextPage<{ gameId: number; game: IGameDetail }> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
-  params: { gameId }
+  params: { gameId },
+  query
 }) => {
-  const res = await fetch(`${server}/api/rawg/game/${gameId}`);
+  const res = await fetch(`${server}/api/rawg/game/${query.id}`);
 
   const json = await res.json();
-
-  console.log(json);
 
   return {
     props: {

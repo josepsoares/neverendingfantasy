@@ -1,17 +1,17 @@
 import { Box, Heading, Text } from '@chakra-ui/react';
+
 import Container from '@components/container';
 import SEO from '@components/seo';
 
 const CollectablesLayout: React.FC<{
   children: React.ReactNode;
-  seo: string;
   title: string;
   description: string;
-}> = ({ children, seo, title, description }) => {
+}> = ({ children, title, description }) => {
   return (
     <>
-      <SEO title={seo} />
-      <Container py="16">
+      <SEO title={`${title} - FFXIV Colectables`} />
+      <Container pt="12">
         <Heading fontSize="8xl" as="h1" pt="2" color="brand.800">
           {title}
         </Heading>

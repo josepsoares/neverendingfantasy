@@ -5,12 +5,12 @@ const Container: React.FC<{
   pt?: SpaceProps['px'];
   pb?: SpaceProps['px'];
   children: React.ReactNode;
-}> = ({ py = '0', pt = '0', pb = '0', children }) => {
+}> = ({ py, pt, pb, children }) => {
   return (
     <Box
-      py={py}
       pt={pt}
       pb={pb}
+      py={py}
       mx="auto"
       w={['91.666667%%', '83.333333%', null, '75%']}
     >

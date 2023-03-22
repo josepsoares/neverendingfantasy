@@ -1,7 +1,8 @@
+import React from 'react';
+
 import {
   Box,
   Button,
-  Flex,
   LayoutProps,
   Skeleton,
   SkeletonText
@@ -14,10 +15,11 @@ const CollectableCard: React.FC<{
 }> = ({ isButton = false, onClick, children }) => {
   return (
     <Button
+      p="6"
       top="0"
       h="auto"
-      p="6"
       gap="4"
+      w="full"
       textColor="white"
       border="2px"
       boxShadow="md"
@@ -26,7 +28,7 @@ const CollectableCard: React.FC<{
       borderRadius="lg"
       textAlign="left"
       alignItems="flex-start"
-      bgColor="brand.600"
+      bgColor="brand.500"
       borderColor="blue.300"
       fontWeight="normal"
       whiteSpace="normal"
@@ -36,13 +38,11 @@ const CollectableCard: React.FC<{
       as={!isButton ? 'div' : 'button'}
       onClick={onClick || null}
       _hover={{
-        top: '-5px',
         img: {
           opacity: '100%'
         }
       }}
       _active={{
-        top: '-5px',
         img: {
           opacity: '100%'
         }
@@ -56,7 +56,14 @@ const CollectableCard: React.FC<{
 const CollectableCardSkeleton: React.FC<{
   imgH?: LayoutProps['h'];
   imgW?: LayoutProps['w'];
-}> = ({ imgH = '48', imgW = '28' }) => {
+  skeletonTitleNoOfLines?: number;
+  skeletonContentH?: LayoutProps['h'];
+}> = ({
+  imgH = '48',
+  imgW = '28',
+  skeletonTitleNoOfLines = 1,
+  skeletonContentH = '44'
+}) => {
   return (
     <Box
       p="6"
@@ -72,8 +79,12 @@ const CollectableCardSkeleton: React.FC<{
     >
       <Skeleton mx="auto" w={imgW} height={imgH} />
       <Box gap="2" w="100%">
-        <SkeletonText skeletonHeight="6" h="72px" noOfLines={2} />
-        <SkeletonText noOfLines={9} h="36" w="full" />
+        <SkeletonText
+          noOfLines={skeletonTitleNoOfLines}
+          skeletonHeight="40px"
+          mb="6"
+        />
+        <Skeleton w="full" h={skeletonContentH} />
       </Box>
     </Box>
   );

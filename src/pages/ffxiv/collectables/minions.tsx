@@ -1,10 +1,10 @@
 import type { IMinion } from '@ts/interfaces/ffxivCollectInterfaces';
 import type { GetServerSideProps, NextPage } from 'next';
 
-import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   Box,
   FormControl,
@@ -23,43 +23,55 @@ import {
 } from '@components/cards/collectableCard';
 import EmptyData from '@components/feedback/emptyData';
 import Error from '@components/feedback/error';
-import Loading from '@components/feedback/loading';
 import {
-  InfiniteScroll,
-  InfiniteScrollItemsWrapper
-} from '@components/infiniteScroll';
+  InfiniteScrollClient,
+  InfiniteScrollClientItemsWrapper
+} from '@components/infiniteScrollClient';
 import CollectablesLayout from '@components/layouts/collectables';
 import BaseModal from '@components/modal';
 import { indexMinions } from '@services/ffxivCollectApi';
-import { _mutiply } from '@utils/helpers/math';
+import { _chunk } from '@utils/helpers/arr';
+import { _add, _mutiply } from '@utils/helpers/math';
 
 const Minions: NextPage = () => {
   const router = useRouter();
+
+  const [minions, setMinions] = useState({
+    all: [],
+    current: [],
+    currentPage: 0,
+    pages: 1,
+    hasNextPage: true
+  });
 
   const [filters, setFilters] = useState('');
   const [selectedMinion, setSelectedMinion] = useState<IMinion | null>(null);
   const [seeAllDescription, setSeeAllDescription] = useState(false);
 
-  const {
-    data,
-    error,
-    isLoading,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
-    refetch
-  } = useInfiniteQuery({
-    queryKey: ['minions', filters],
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['minions'],
     queryFn: indexMinions,
-    getNextPageParam: (lastPage, pages) => {
-      return lastPage.count > 0
-        ? {
-            start: _mutiply(pages.length, 10) + 11,
-            end: _mutiply(pages.length, 10) + 21
-          }
-        : undefined;
+    onSuccess(data) {
+      const chunkedData = _chunk(data.results, 10);
+      setMinions({
+        ...minions,
+        all: chunkedData,
+        current: [chunkedData[0]],
+        pages: chunkedData.length
+      });
     }
   });
+
+  const setNextPage = () => {
+    const nextPage = _add(minions.currentPage, 1);
+
+    setMinions({
+      ...minions,
+      current: [...minions.current, minions.all[nextPage]],
+      currentPage: nextPage,
+      hasNextPage: nextPage !== minions.all.length - 1
+    });
+  };
 
   /*
   <FormControl label="Name">
@@ -67,36 +79,34 @@ const Minions: NextPage = () => {
   <FormControl label="Behaviour">
   <FormControl label="Tradeable">
   <FormControl label="Owned">
-  <FormControl label="Patch">
   */
 
   return (
     <CollectablesLayout
-      seo="Minions - FFXIV Colectables"
       title="Minions"
       description=" Look at all the final fantasies bellow! Do they even end?"
     >
       {error ? (
         <Error />
       ) : isLoading ? (
-        <Loading />
+        <SimpleGrid gap={8} w="full" columns={[1, null, 2, 3, 4, null, 5]}>
+          {Array.from(Array(10).keys()).map(i => (
+            <CollectableCardSkeleton key={i} imgH="16" />
+          ))}
+        </SimpleGrid>
       ) : data ? (
-        <InfiniteScroll
-          data={data}
-          isLoading={isLoading}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          skeleton={<CollectableCardSkeleton />}
+        <InfiniteScrollClient
+          hasNextPage={minions.hasNextPage}
           endMessage="Well, there you have it, all the FFXIV achievements, is there even a player who got them all?"
         >
-          {data?.pages.map((page, pageI) =>
-            page?.results.map((minion: IMinion, i: number) => {
+          {minions.current.map((page, pageI) =>
+            page.map((minion: IMinion, i: number) => {
               return (
-                <InfiniteScrollItemsWrapper
+                <InfiniteScrollClientItemsWrapper
                   key={i}
-                  hasNextPage={hasNextPage}
-                  fetchNextPage={fetchNextPage}
-                  isLastAvailablePage={pageI === data.pages.length - 1}
+                  hasNextPage={minions.hasNextPage}
+                  setNextPage={() => setNextPage()}
+                  isLastAvailablePage={pageI === minions.current.length - 1}
                 >
                   <CollectableCard
                     isButton={true}
@@ -134,11 +144,11 @@ const Minions: NextPage = () => {
                       {minion.description.split('. ')[1]}
                     </Text>
                   </CollectableCard>
-                </InfiniteScrollItemsWrapper>
+                </InfiniteScrollClientItemsWrapper>
               );
             })
           ) || <EmptyData expression="minions" />}
-        </InfiniteScroll>
+        </InfiniteScrollClient>
       ) : null}
 
       {selectedMinion !== null ? (

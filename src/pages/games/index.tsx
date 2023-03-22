@@ -1,8 +1,8 @@
 import type { IGamesResponse } from '@ts/interfaces/rawgInterfaces';
 import type { GetServerSideProps, NextPage } from 'next';
 
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
+import Container from '@components/container';
 import Error from '@components/feedback/error';
 import SEO from '@components/seo';
 import { indexGames } from '@services/rawgApi';
@@ -143,7 +144,7 @@ const Games: NextPage<{ initialGames: IGamesResponse }> = ({
         title="Games"
         description="Find all, really all, the games the final fantasy franchise has to offer"
       />
-      <Box mx="auto" maxW={['91.666667%%', '83.333333%', null, '75%']} py="16">
+      <Container py="16">
         <Heading fontSize="8xl" as="h1" pt="2" color="brand.800">
           All Games
         </Heading>
@@ -269,7 +270,7 @@ const Games: NextPage<{ initialGames: IGamesResponse }> = ({
                           bgColor="brand.600"
                           borderColor="blue.300"
                           position="relative"
-                          href={`/games/${game.id}`}
+                          href={`/games/${game.slug}?id=${game.id}`}
                           bgGradient="linear(to-br, brand.300, brand.700)"
                           transition="all"
                           transitionDuration="0.2s"
@@ -394,14 +395,14 @@ const Games: NextPage<{ initialGames: IGamesResponse }> = ({
               </SimpleGrid>
               {data?.pages && !hasNextPage ? (
                 <Flex justifyContent="center" textAlign="center">
-                  Well, you found all the fantasy games, but, will the keep
-                  coming out until the end?
+                  Well, you found all the games, <b>final</b>ly! But... is this
+                  really the last <b>fantasy</b>?
                 </Flex>
               ) : null}
             </>
           )}
         </Box>
-      </Box>
+      </Container>
     </>
   );
 };

@@ -1,19 +1,21 @@
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import Link from 'next/link';
 
-const EmptyData: React.FC<{ expression: string }> = ({ expression }) => {
+import { Flex, Heading, Text } from '@chakra-ui/react';
+
+const EmptyData: React.FC<{
+  expression: string;
+  api: { name: string; url: string };
+}> = ({ expression, api }) => {
   return (
-    <Flex
-      flexDir="column"
-      alignItems="center"
-      justifyContent="center"
-      height="100%"
-    >
-      <Heading as="h2">No {expression} found!</Heading>
-      <p>Seems like you'll need to tweek the filter inputs</p>
-      <p>Or, maybe... just reset the filters</p>
-      <Button mt={6} type="submit" colorScheme="brand">
-        Reset filters
-      </Button>
+    <Flex flexDir="column" alignItems="center" justifyContent="center">
+      <Heading as="h2">No {expression} found...</Heading>
+      <Text>
+        <Link target="_blank" rel="noopener noreferrer" href={api.url}>
+          {api.name}
+        </Link>{' '}
+        API didn't return any results, try again later or check if the API is
+        still available
+      </Text>
     </Flex>
   );
 };

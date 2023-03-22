@@ -61,7 +61,7 @@ const FFXIVPage = () => {
               as="h2"
               fontSize={['4xl', null, '6xl']}
             >
-              Classes and Jobs
+              Classes / Jobs
             </Heading>
             <Text
               zIndex="2"
@@ -69,7 +69,7 @@ const FFXIVPage = () => {
               textAlign="center"
               fontSize={['xl', null, '2xl']}
             >
-              explore all the cool classes/jobs your character can do
+              explore all the cool classes/jobs your character can be/do
             </Text>
           </BgImgCard>
         </Link>
@@ -81,7 +81,7 @@ const FFXIVPage = () => {
             imgAlt="FFXIV Collectables Image"
           >
             <Heading textColor="white" as="h2" fontSize={['4xl', null, '6xl']}>
-              Collectables, Fashion, etc.
+              Collectables
             </Heading>
             <Text
               zIndex="2"
@@ -89,7 +89,7 @@ const FFXIVPage = () => {
               textAlign="center"
               fontSize={['xl', null, '2xl']}
             >
-              collectables, fashion things and other stuff
+              all kinds of collectables (fashion, mounts, cards etc.)
             </Text>
           </BgImgCard>
         </Link>

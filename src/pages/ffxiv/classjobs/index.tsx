@@ -12,7 +12,7 @@ import Loading from '@components/feedback/loading';
 import SEO from '@components/seo';
 import { indexClassJobs } from '@services/ffxivApi';
 import { FFXIV_API } from '@utils/constants';
-import { capitalizeString } from '@utils/helpers/capitalizeString';
+import { _cap } from '@utils/helpers/string';
 
 const ClassJobCard: React.FC<{ children: React.ReactNode; href: string }> = ({
   children,
@@ -98,7 +98,7 @@ const ClassJob: NextPage = () => {
                         alt={`${classJob.Name} Icon`}
                       />
                       <Heading noOfLines={1} fontSize="3xl" as="h2">
-                        {capitalizeString(classJob.Name)}
+                        {_cap(classJob.Name)}
                       </Heading>
                     </ClassJobCard>
                   )
@@ -124,7 +124,7 @@ const ClassJob: NextPage = () => {
                         alt={`${classJob.Name} Icon`}
                       />
                       <Heading noOfLines={1} fontSize="3xl" as="h3">
-                        {capitalizeString(classJob.Name)}
+                        {_cap(classJob.Name)}
                       </Heading>
                     </ClassJobCard>
                   )
