@@ -16,6 +16,7 @@ import CardImgBg from '@components/cards/bgImgCard';
 import Container from '@components/container';
 import TestimonialItem from '@components/misc/testimonialItem';
 import SEO from '@components/seo';
+
 import {
   ffResourcesLinks,
   relevantApisLinks,
@@ -269,13 +270,26 @@ const Home = () => {
               developers you can find bellow:
             </Text>
             <ul>
-              {relevantApisLinks.map(({ url, name }, i) => (
+              {relevantApisLinks.map((item, i) => (
                 <li key={i}>
-                  <Link target="_blank" rel="noopener noreferrer" href={url}>
-                    {name}
+                  <Link
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={item.baseUrl}
+                  >
+                    {item.name}
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://karashiiro.moe/xiv-resources/#web-apis"
+                >
+                  Collection of XIV Resources/APIs
+                </Link>
+              </li>
             </ul>
           </Box>
 

@@ -15,6 +15,7 @@
     "^@chakra-ui/react|^@iconify/react",
     "",
     "^@components/(.*)$",
+    "",
     "^@services/(.*)$|^@utils/(.*)$",
     "",
     "^[./]",

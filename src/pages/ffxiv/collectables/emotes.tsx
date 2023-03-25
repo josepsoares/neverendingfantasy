@@ -39,36 +39,16 @@ import {
 } from '@components/infiniteScrollClient';
 import CollectablesLayout from '@components/layouts/collectables';
 import BaseModal from '@components/modal';
+
 import { indexEmotes } from '@services/ffxivCollectApi';
 import { FFXIV_COLLECT_API } from '@utils/constants';
 import { _chunk } from '@utils/helpers/arr';
 import { _add, _sub } from '@utils/helpers/math';
 import { _cap } from '@utils/helpers/string';
+import useUpdateEffect from '@utils/hooks/useUpdateEffect';
 
 const Emotes = () => {
   const router = useRouter();
-
-  // state to control the client-side pagination stuff
-  const [emotes, setEmotes] = useState<{
-    data: IEmote[];
-    allItems: IEmote[][];
-    currentItems: IEmote[][];
-    currentPage: number;
-    pages: number;
-    hasNextPage: boolean;
-  }>({
-    data: [],
-    allItems: [],
-    currentItems: [],
-    currentPage: 0,
-    pages: 1,
-    hasNextPage: true
-  });
-
-  const [sort, setSort] = useState('');
-  const [filter, setFilter] = useState('');
-  const [emoteName, setEmoteName] = useState('');
-  const [selectedEmote, setSelectedEmote] = useState<IEmote | null>(null);
 
   /**
    * query to get all the emotes from the FFXIV Collect API
@@ -76,27 +56,35 @@ const Emotes = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ['emotes'],
     queryFn: indexEmotes,
-    refetchOnMount: false,
     refetchOnWindowFocus: false
   });
 
-  /**
-   * effect to wait for data to get populated
-   * and then populate the state in order to create a client-side
-   * pagination system with an infinite scroll mechanic
-   */
-  useEffect(() => {
-    if (data !== undefined) {
-      const chunkedData = _chunk(data.results, 10);
-      setEmotes({
-        ...emotes,
-        data: data.results,
-        allItems: chunkedData,
-        currentItems: [chunkedData[0]],
-        pages: chunkedData.length
-      });
-    }
-  }, [data]);
+  // state to control the client-side pagination/filter/sort stuff
+  const [emotes, setEmotes] = useState<{
+    data: IEmote[];
+    areItemsPopulated: boolean;
+    allItems: IEmote[][];
+    currentItems: IEmote[][];
+    currentPage: number;
+    pages: number;
+    hasNextPage: boolean;
+  }>({
+    data: [],
+    areItemsPopulated: false,
+    allItems: [],
+    currentItems: [],
+    currentPage: 0,
+    pages: 0,
+    hasNextPage: false
+  });
+
+  const [sort, setSort] = useState('');
+  const [filter, setFilter] = useState('');
+  const [emoteName, setEmoteName] = useState('');
+  const [selectedEmote, setSelectedEmote] = useState<IEmote | null>(null);
+
+  const isResetButtonDisabled =
+    emoteName === '' && filter === '' && sort === '';
 
   /**
    * func to change the page of the state, adding more items to the displayed items
@@ -117,7 +105,7 @@ const Emotes = () => {
    * filtering of the emotes
    */
   const resetSearchSortFilter = () => {
-    const chunkedData = _chunk(emotes.data, 10);
+    const chunkedData = _chunk(emotes.data, 12);
 
     flushSync(() => {
       setFilter('');
@@ -136,7 +124,7 @@ const Emotes = () => {
    * effect to sort the displayed emotes according
    * to the value of the option chosen by the user in the sorting input
    */
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (sort !== undefined) {
       const destructSort = sort.split('-');
       const sortProp = destructSort[0];
@@ -162,7 +150,7 @@ const Emotes = () => {
         }
       });
 
-      const allSortedItemsChunked = _chunk(allSortedItems, 10);
+      const allSortedItemsChunked = _chunk(allSortedItems, 12);
 
       setEmotes({
         ...emotes,
@@ -178,7 +166,7 @@ const Emotes = () => {
    * effect to filter the displayed emotes according
    * to the value of the option chosen by the user in the filter input
    */
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (filter !== undefined) {
       const destructFilter = filter.split('-');
       const filterProp = destructFilter[0];
@@ -197,7 +185,7 @@ const Emotes = () => {
         }
       });
 
-      const allFilteredItemsChunked = _chunk(allFilteredItems, 10);
+      const allFilteredItemsChunked = _chunk(allFilteredItems, 12);
 
       setEmotes({
         ...emotes,
@@ -215,24 +203,26 @@ const Emotes = () => {
    * effect to filter the displayed emotes according
    * to the value the user typed in the search input
    */
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (emoteName !== '') {
       const allFilteredNameItems = emotes.data.filter(emote => {
         return emote.name.toLowerCase().includes(emoteName);
       });
 
-      const allFilteredNameItemsChunked = _chunk(allFilteredNameItems, 10);
+      const allFilteredNameItemsChunked = _chunk(allFilteredNameItems, 12);
 
       setEmotes({
         ...emotes,
         allItems: allFilteredNameItemsChunked,
-        currentItems: [allFilteredNameItemsChunked[0]],
+        currentItems: !allFilteredNameItemsChunked.length
+          ? []
+          : [allFilteredNameItemsChunked[0]],
         currentPage: 0,
         pages: allFilteredNameItemsChunked.length,
         hasNextPage: allFilteredNameItemsChunked.length - 1 > 1
       });
     } else {
-      const chunkedData = _chunk(emotes.data, 10);
+      const chunkedData = _chunk(emotes.data, 12);
 
       setEmotes({
         ...emotes,
@@ -243,7 +233,25 @@ const Emotes = () => {
     }
   }, [emoteName]);
 
-  console.log(emotes.currentItems.length);
+  /**
+   * effect to wait for data to get populated
+   * and then populate the state in order to create a client-side
+   * pagination system with an infinite scroll mechanic
+   */
+  useEffect(() => {
+    if (data !== undefined) {
+      const chunkedData = _chunk(data.results, 12);
+      setEmotes({
+        ...emotes,
+        areItemsPopulated: true,
+        data: data.results,
+        allItems: chunkedData,
+        currentItems: [chunkedData[0]],
+        pages: chunkedData.length,
+        hasNextPage: true
+      });
+    }
+  }, [data]);
 
   return (
     <CollectablesLayout
@@ -270,10 +278,7 @@ const Emotes = () => {
                   colorScheme="gray"
                   color="brand.500"
                   placeholder="type emote name"
-                  onChange={val => {
-                    console.log(val);
-                    setEmoteName(val.target.value);
-                  }}
+                  onChange={val => setEmoteName(val.target.value)}
                 />
               </InputGroup>
             </Skeleton>
@@ -426,6 +431,7 @@ const Emotes = () => {
                 variant="ghost"
                 fontWeight="light"
                 leftIcon={<Icon icon="bx-reset" />}
+                disabled={isResetButtonDisabled}
                 onClick={() => {
                   resetSearchSortFilter();
                 }}
@@ -436,17 +442,17 @@ const Emotes = () => {
           </Flex>
           <InfiniteScrollClient
             hasNextPage={emotes.hasNextPage}
-            hasItems={emotes.currentItems.length !== 0}
+            hasItems={emotes.pages !== 0}
             hasActiveFilters={filter !== '' || emoteName !== ''}
             name="emotes"
           >
-            <AnimatePresence mode="wait">
-              {isLoading || !emotes.currentItems.length ? (
-                Array.from(Array(10).keys()).map(i => (
+            <AnimatePresence key="emotes" mode="sync">
+              {isLoading || !emotes.areItemsPopulated ? (
+                Array.from(Array(12).keys()).map(i => (
                   <CollectableCardSkeleton
-                    key={i}
                     imgH="14"
                     imgW="14"
+                    key={`skeleton ${i}`}
                     skeletonContentH="28"
                   />
                 ))
@@ -458,7 +464,7 @@ const Emotes = () => {
                   page?.map((emote: IEmote, i: number) => {
                     return (
                       <InfiniteScrollClientItemsWrapper
-                        key={i}
+                        key={emote.id}
                         hasNextPage={emotes.hasNextPage}
                         setNextPage={() => setNextPage()}
                         isLastAvailablePage={
@@ -485,6 +491,7 @@ const Emotes = () => {
                             transition="ease-in-out"
                             transitionDuration="0.2s"
                           />
+
                           <Heading noOfLines={1} fontSize="4xl" as="h1">
                             {emote.name}
                           </Heading>
@@ -527,27 +534,64 @@ const Emotes = () => {
         <BaseModal
           open={router.query?.emote ? true : false}
           title={selectedEmote.name}
-          whileClosing={() =>
-            router.push(router.pathname, {}, { scroll: false })
-          }
+          whileClosing={() => {
+            router.push(router.pathname, {}, { scroll: false });
+          }}
           body={
-            <>
-              <Heading color="brand.500" fontSize="2xl" as="h4" pb={2}>
-                Source(s)
-              </Heading>
+            <VStack w="full" alignItems="flex-start" gap="3" fontSize="18px">
+              <Box>
+                <Heading color="brand.500" fontSize="3xl" as="h4">
+                  Command
+                </Heading>
+                <Text>{selectedEmote.command}</Text>
+              </Box>
 
-              {selectedEmote.sources.length > 0 ? (
-                <SimpleGrid gap={1} pt={2}>
-                  {selectedEmote.sources.map((item, i) => (
-                    <Text key={i}>
-                      <u>{item.type}:</u> {item.text}
-                    </Text>
-                  ))}
-                </SimpleGrid>
-              ) : (
-                <Text>No source(s) found for this emote</Text>
-              )}
-            </>
+              <Box>
+                <Heading color="brand.500" fontSize="3xl" as="h4">
+                  Type
+                </Heading>
+                <Text>{selectedEmote.category.name} Emote</Text>
+              </Box>
+
+              <Box>
+                <Heading color="brand.500" fontSize="3xl" as="h4">
+                  General Info
+                </Heading>
+
+                <VStack
+                  w="full"
+                  spacing="1"
+                  textAlign="left"
+                  alignItems="flex-start"
+                >
+                  <Text>
+                    {selectedEmote.tradeable ? 'Tradeable' : 'Non-tradeable'}{' '}
+                    emote
+                  </Text>
+                  <Text>Owned by {selectedEmote.owned} players</Text>
+
+                  <Text>Introduced in patch {selectedEmote.patch}</Text>
+                </VStack>
+              </Box>
+
+              <Box>
+                <Heading color="brand.500" fontSize="3xl" as="h4">
+                  Source(s)
+                </Heading>
+
+                {selectedEmote.sources.length > 0 ? (
+                  <VStack w="full" spacing="1" alignItems="flex-start">
+                    {selectedEmote.sources.map((item, i) => (
+                      <Text key={i}>
+                        <u>{item.type}:</u> {item.text}
+                      </Text>
+                    ))}
+                  </VStack>
+                ) : (
+                  <Text>No source(s) found for this emote</Text>
+                )}
+              </Box>
+            </VStack>
           }
         />
       ) : null}

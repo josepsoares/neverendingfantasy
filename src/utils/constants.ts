@@ -1,11 +1,21 @@
-export const RAWG_API = { url: 'https://api.rawg.io/api', name: 'Rawg' };
-export const XIV_API = { url: 'https://xivapi.com', name: 'XIVAPI' };
+export const RAWG_API = {
+  url: 'https://api.rawg.io/api',
+  baseUrl: 'https://rawg.io/',
+  name: 'Rawg'
+};
+export const XIV_API = {
+  url: 'https://xivapi.com',
+  baseUrl: 'https://xivapi.com',
+  name: 'XIVAPI'
+};
 export const FFXIV_COLLECT_API = {
   url: 'https://ffxivcollect.com/api',
+  baseUrl: 'https://ffxivcollect.com/',
   name: 'FFXIV Collect'
 };
 export const FFXIV_TRIPLE_TRIAD_API = {
-  url: 'https://triad.raelys.com/',
+  url: 'https://triad.raelys.com/api',
+  baseUrl: 'https://triad.raelys.com/',
   name: 'Another Triple Triad Tracker'
 };
 
@@ -13,11 +23,7 @@ export const relevantApisLinks = [
   RAWG_API,
   XIV_API,
   FFXIV_COLLECT_API,
-  FFXIV_TRIPLE_TRIAD_API,
-  {
-    url: 'https://karashiiro.moe/xiv-resources/#web-apis',
-    name: 'Collection of XIV Resources/APIs'
-  }
+  FFXIV_TRIPLE_TRIAD_API
 ];
 
 export const ffResourcesLinks = [

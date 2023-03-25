@@ -17,8 +17,8 @@ const CollectableCard: React.FC<{
     <Button
       p="6"
       top="0"
-      h="auto"
       gap="4"
+      h="full"
       w="full"
       textColor="white"
       border="2px"
@@ -28,6 +28,7 @@ const CollectableCard: React.FC<{
       borderRadius="lg"
       textAlign="left"
       alignItems="flex-start"
+      justifyContent="flex-start"
       bgColor="brand.500"
       borderColor="blue.300"
       fontWeight="normal"
