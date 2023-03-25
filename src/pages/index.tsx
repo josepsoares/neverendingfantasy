@@ -1,316 +1,316 @@
-import type { NextPage } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
 import { useRef } from 'react';
-import { Box, Button, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import Link from 'next/link';
+
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  SimpleGrid,
+  Text
+} from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
-import SEO from '@components/common/seo';
-import ExternalLink from '@components/common/externalLink';
+import CardImgBg from '@components/cards/bgImgCard';
+import Container from '@components/container';
+import TestimonialItem from '@components/misc/testimonialItem';
+import SEO from '@components/seo';
 
-import { apiLinks, ffResourcesLinks } from '@utils/constants';
+import {
+  ffResourcesLinks,
+  relevantApisLinks,
+  testimonials
+} from '@utils/constants';
 
-const Home: NextPage = () => {
+const Home = () => {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const scrollToContent = () =>
+  const scrollToContent = () => {
     contentRef.current &&
-    contentRef.current.scrollIntoView({ behavior: 'smooth' });
+      window &&
+      window.scrollTo({
+        top: contentRef.current.getBoundingClientRect().top,
+        left: 0,
+        behavior: 'smooth'
+      });
+  };
 
   return (
     <>
       <SEO title="Home" />
 
       <Flex
-        p={[12, null, 24, 32]}
-        position="relative"
-        flexDir="column"
-        alignItems="center"
-        justifyContent="space-between"
         boxShadow="lg"
         minH="100vh"
         zIndex="100"
         color="white"
+        flexDir="column"
+        position="relative"
+        alignItems="center"
+        justifyContent="center"
+        px={['10', null, '0']}
+        bgGradient="linear(to-bl,#000035 0%,#0056af 100%)"
         sx={{
-          position: 'relative',
-          background:
-            'linear-gradient(-45deg,rgba(0, 0, 53, 1) 0%,rgba(0, 86, 175, 1) 100%)',
           span: {
-            zIndex: '-200'
-          },
-          img: {
             zIndex: '-200'
           }
         }}
       >
         <Image
-          alt="Final Fantasy Illustration"
-          layout="fill"
+          top={0}
+          w="full"
+          h="full"
+          zIndex="-100"
+          opacity={0.15}
           objectFit="cover"
-          quality={100}
-          className="overlay-img"
-          placeholder="blur"
-          src={require('../assets/img/ffxiv-lodestone.jpeg')}
+          position="absolute"
+          objectPosition="center"
+          alt="Final Fantasy Illustration"
+          src="/assets/img/ffxiv/free-trial-promo-art.jpg"
         />
-        <Box>
+        <Flex justifyContent="center" alignItems="center" flexDir="column">
+          <Image
+            alt="Neverending Fantasy Logo"
+            src="/assets/logo/nef-logo-hero-bg.png"
+          />
           <Heading
-            alignSelf="start"
-            className="title"
-            fontSize={['7xl', '8xl', '9xl', '12rem']}
-            as="h1"
+            as="h2"
+            fontSize="5xl"
+            textAlign="center"
+            fontWeight="medium"
+            letterSpacing="wider"
           >
-            Neverending Fantasy
+            the neverending franchise with "final" in its name
           </Heading>
-          <Heading fontSize={['5xl', '6xl', '7xl']} as="h2">
-            the franchise, with final in its name, which never ends
-          </Heading>
-          <Text mt={10} fontSize={['md', '2xl', '3xl']} color="#dae8ff">
-            Made by the japanese company -{' '}
-            <Link href="https://en.wikipedia.org/wiki/Square_(video_game_company)">
-              <a>Square</a>
-            </Link>{' '}
-            - known for its innovation, visuals, such as the inclusion of
-            full-motion videos (FMVs), photorealistic character models, silly
-            clothes and hairsyles, and music by{' '}
-            <Link href="https://open.spotify.com/artist/3V79CTgRnsDdJSTqKitROv">
-              <a>Nobuo Uematsu</a>
-            </Link>
-            .
+          <Text
+            mt="6"
+            color="#dae8ff"
+            textAlign="center"
+            fontWeight="normal"
+            fontSize={['md', 'lg', '2xl']}
+          >
+            This is just a silly fan-made tribute and informative website of the
+            FF games.
           </Text>
           <Text
-            mt={2}
-            fontSize={['md', '2xl', '3xl']}
-            weight="bold"
             color="#dae8ff"
+            textAlign="center"
+            mt={['4', null, '2']}
+            fontSize={['sm', null, 'md']}
           >
-            This is just a silly fan, tribute and informative page of the FF
-            games.
-          </Text>
-          <Text my={10} fontSize="md" color="#dae8ff">
             ALL FINAL FANTASY GAMES CONTENT IS PROPERTY OF SQUARE ENIX CO., LTD
+          </Text>
+
+          <Button
+            p="8"
+            mt="8"
+            size="lg"
+            fontSize="2xl"
+            textColor="brand"
+            alignItems="center"
+            colorScheme="whiteAlpha"
+            onClick={scrollToContent}
+            leftIcon={
+              <Icon
+                width="40"
+                height="40"
+                icon="bx:bx-down-arrow-alt"
+                color="white"
+              />
+            }
+          >
+            <Text>Start Exploring</Text>
+          </Button>
+        </Flex>
+      </Flex>
+
+      <Container pb="32" pt={['20', null, null, '32']}>
+        <Heading
+          as="h1"
+          pb="8"
+          fontSize="8xl"
+          textColor="brand.500"
+          textAlign={['left', null, 'center']}
+        >
+          What truly is Final Fantasy?
+        </Heading>
+
+        <Box pb="12" px={[null, null, '10']}>
+          <Text fontSize="2xl">
+            Well, repeating a little bit the intro above, Final Fantasy is a
+            Japanese anthology media franchise made by{' '}
+            <Link href="https://en.wikipedia.org/wiki/Square_(video_game_company)">
+              Square Enix (formerly Square)
+            </Link>{' '}
+            and created by{' '}
+            <a href="https://en.wikipedia.org/wiki/Hironobu_Sakaguchi">
+              Hironobu Sakaguchi
+            </a>
+            , which centers on a series of fantasy and sci-fi role-playing video
+            games. It is known for its innovation, visuals, such as the
+            inclusion of full-motion videos (FMVs), photorealistic character
+            models, silly clothes and hairsyles, and music by{' '}
+            <Link href="https://open.spotify.com/artist/3V79CTgRnsDdJSTqKitROv">
+              Nobuo Uematsu
+            </Link>
+            . The franchise has also branched into different game genres and
+            medias including CGI films, anime, etc.
+          </Text>
+
+          <Text fontSize="2xl" pt="2">
+            But yeah, the games of the franchise can address various themes and{' '}
+            <Box as="span" fontWeight="semibold" color="brand.500">
+              convey different feelings and messages to the human masses
+            </Box>
+            , so nothing better than{' '}
+            <Box as="span" fontWeight="semibold" color="brand.500">
+              some quotes of various individuals about their feelings of the
+              franchise:
+            </Box>
           </Text>
         </Box>
 
-        <Button
-          size="lg"
-          colorScheme="whiteAlpha"
-          textColor="brand"
-          onClick={scrollToContent}
-          leftIcon={
-            <Icon
-              icon="bx:bx-down-arrow-alt"
-              color="white"
-              height="25px"
-              width="25px"
-            />
-          }
+        <SimpleGrid
+          gap={4}
+          alignItems="center"
+          px={[null, null, '8', '18']}
+          gridTemplateColumns={[
+            '1fr',
+            null,
+            null,
+            null,
+            'repeat(3, 1fr)',
+            'repeat(5, 1fr)',
+            'repeat(7, 1fr)'
+          ]}
         >
-          Start Exploring
-        </Button>
-      </Flex>
-
-      <Box
-        ref={contentRef}
-        pt={[20, null, null, 32]}
-        px={[8, 12, 24, null]}
-        pb={10}
-      >
-        <Flex
-          gap={[8, 10, null, 12, 20]}
-          flexDir="row"
-          flexWrap="wrap"
-          justifyContent={['center', null]}
-          pb={20}
-        >
-          <Box
-            order={[2, null, null, 1]}
-            w={['full', null, null, '60%']}
-            pt={[null, null, null, 12]}
-            fontSize="lg"
-          >
-            <Text>
-              For those who don't know, Final Fantasy is a Japanese anthology
-              science fantasy media franchise created by{' '}
-              <a href="https://en.wikipedia.org/wiki/Hironobu_Sakaguchi">
-                Hironobu Sakaguchi
-              </a>
-              , and developed and owned by{' '}
-              <a href="https://square-enix-games.com/en_EU/home">Square Enix</a>{' '}
-              (formerly Square).
-            </Text>
-            <Text>
-              It's somewhat old, basically an adult, and it centers on a series
-              of fantasy and science role-playing video games. The first game in
-              the series was released in 1987, it already counts with 15
-              numbered main entries having been released to date.
-            </Text>
-            <Text>
-              The franchise has since branched into other video game genres as
-              well as branching into other media (CGI films, anime, manga etc.).
-            </Text>
-            <Text>
-              Still, here in the Neverending Fantasy webpage you can explore
-              only the games of the FF series, you can do it bellow
-            </Text>
-          </Box>
-
-          <Flex
-            justifyContent="center"
-            alignItems="center"
-            w={['100%', 'auto']}
-            order={[1, null, null, 2]}
-          >
-            <Image
-              alt="Final Fantasy Everywhere"
-              width={400}
-              height={300}
-              placeholder="blur"
-              src={require('../assets/img/ff-everywhere-meme.png')}
-              objectFit="cover"
+          {testimonials.map((item, i) => (
+            <TestimonialItem
+              key={i}
+              img={item.img}
+              name={item.name}
+              quote={item.quote}
+              gridColMd={item?.gridColMd}
+              gridColLg={item?.gridColLg}
+              profession={item.profession}
             />
-          </Flex>
-        </Flex>
-      </Box>
+          ))}
+        </SimpleGrid>
+      </Container>
 
-      <SimpleGrid columns={[1, null, null, 2]}>
-        <Link href="/games" passHref={true}>
-          <Box
-            as="a"
-            w="100%"
-            opacity="0.9"
-            display="block"
-            transition="background-color 1s linear"
-            background="#0064d7"
-            sx={{
-              '&:hover, &:active': {
-                background: '#2f93ff'
-              }
-            }}
+      <SimpleGrid my="24" ref={contentRef} columns={1}>
+        <Link href="/games">
+          <CardImgBg
+            h="lg"
+            imgUrl="/assets/img/ffx-opening-art.png"
+            imgAlt="Final Fantasy Games"
           >
-            <Flex
-              p={8}
-              height="96"
-              flexDir="column"
-              position="relative"
-              boxShadow="base"
-              justifyContent="center"
-              alignItems="center"
+            <Heading
+              as="h3"
+              zIndex="200"
               color="white"
+              fontSize={['6xl', '8xl']}
             >
-              <Image
-                alt="Final Fantasy Games"
-                src={require('../assets/img/FFX_HD_Opening.png')}
-                placeholder="blur"
-                layout="fill"
-                objectFit="cover"
-                quality={100}
-                className="overlay-img-w-round"
-              />
-              <Heading
-                fontFamily="FinalFantasyFont"
-                fontSize={['4xl', null, '5xl', '6xl']}
-                zIndex="200"
-                as="h3"
-              >
-                Games
-              </Heading>
-              <Text zIndex="200" fontSize={['lg', null, 'xl']}>
-                find the gazillion games the series has
-              </Text>
-            </Flex>
-          </Box>
+              All Games
+            </Heading>
+            <Text
+              color="white"
+              zIndex="200"
+              textAlign="center"
+              fontSize={['2xl', '3xl']}
+            >
+              find the gazillion games the series has
+            </Text>
+          </CardImgBg>
         </Link>
 
-        <Link href="/ffxiv" passHref={true}>
-          <Box
-            as="a"
-            w="100%"
-            opacity="0.9"
-            display="block"
-            transition="background-color 1s linear"
-            background="#0064d7"
-            sx={{
-              '&:hover, &:active': {
-                background: '#2f93ff'
-              }
-            }}
+        <Link href="/ffxiv">
+          <CardImgBg
+            h="lg"
+            imgUrl="/assets/img/ffxiv/data-center-travel-system.jpg"
+            imgAlt="Final Fantasy XIV"
           >
-            <Flex
-              p={8}
-              height="96"
-              flexDir="column"
-              position="relative"
-              boxShadow="base"
-              justifyContent="center"
-              alignItems="center"
+            <Heading fontSize={['6xl', '8xl']} color="white" zIndex="2" as="h3">
+              FFXIV Stuff
+            </Heading>
+            <Text
+              zIndex="2"
               color="white"
+              textAlign="center"
+              fontSize={['2xl', '3xl']}
             >
-              <Image
-                alt="Final Fantasy XIV"
-                src={require('../assets/img/final-fantasy-xiv-shadowbringer.jpg')}
-                placeholder="blur"
-                layout="fill"
-                objectFit="cover"
-                quality={100}
-                className="overlay-img-w-round"
-              />
-              <Heading
-                fontFamily="FinalFantasyFont"
-                fontSize={['4xl', null, '5xl', '6xl']}
-                zIndex="2"
-                as="h3"
-              >
-                FFXIV
-              </Heading>
-              <Text zIndex="2" fontSize={['lg', null, 'xl']}>
-                explore a fashion randomizer and stuff from the popular mmo
-              </Text>
-            </Flex>
-          </Box>
+              explore info and stuff from the popular mmo
+            </Text>
+          </CardImgBg>
         </Link>
       </SimpleGrid>
 
-      <Box pt={[32, null, null]} px={[8, 12, 24, 32]}>
-        <Heading textColor="brand.500" as="h1" pb={8}>
+      <Container pt="32">
+        <Heading
+          pb="8"
+          as="h1"
+          fontSize="8xl"
+          textColor="brand.500"
+          textAlign={['left', null, 'center']}
+        >
           But...? where all this data came from?
         </Heading>
         <SimpleGrid
-          gap={[8, 10, null, 12, 20]}
+          pb="10"
           columns={[1, null, null, 2]}
-          pb={10}
+          gap={['8', '10', null, '12', '20']}
         >
           <Box>
-            <Text fontSize="xl" pb={4}>
-              If you're wondering if someone had to make a big word or excel
-              document of the FF series,ye, someone had to do it, not me though.
-              You can do all this as well via some wonderful APIs made by{' '}
-              <b>fantasy</b>tastic developers you can find bellow:
+            <Text pb="4">
+              If you're wondering if someone had to make a big excel document
+              and whole databases of the FF series, ye, someone had to do it,
+              not me though. Even you can get all of the info in this website
+              via some wonderful APIs made by some <b>fantasy</b>tastic
+              developers you can find bellow:
             </Text>
             <ul>
-              {apiLinks.map(({ url, text }, i) => (
+              {relevantApisLinks.map((item, i) => (
                 <li key={i}>
-                  <ExternalLink link={url}>{text}</ExternalLink>
+                  <Link
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={item.baseUrl}
+                  >
+                    {item.name}
+                  </Link>
                 </li>
               ))}
+              <li>
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://karashiiro.moe/xiv-resources/#web-apis"
+                >
+                  Collection of XIV Resources/APIs
+                </Link>
+              </li>
             </ul>
           </Box>
 
           <Box>
-            <Text fontSize="xl" pb={4}>
+            <Text pb="4">
               If you feel like diving more in the franchising there are a couple
               of resources that could be helpful, both for the experts and
               noobs:
             </Text>
             <ul>
-              {ffResourcesLinks.map(({ url, text }, i) => (
+              {ffResourcesLinks.map(({ url, name }, i) => (
                 <li key={i}>
-                  <ExternalLink link={url}>{text}</ExternalLink>
+                  <Link target="_blank" rel="noopener noreferrer" href={url}>
+                    {name}
+                  </Link>
                 </li>
               ))}
             </ul>
           </Box>
         </SimpleGrid>
-      </Box>
+      </Container>
     </>
   );
 };

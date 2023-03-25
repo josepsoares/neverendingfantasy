@@ -1,6 +1,32 @@
 {
+  "organizeImportsSkipDestructiveCodeActions": true,
   "singleQuote": true,
   "arrowParens": "avoid",
   "trailingComma": "none",
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "importOrder": [
+    "<THIRD_PARTY_TS_TYPES>",
+    "<TYPES>",
+    "",
+    "^(react/(.*)$)|^(react$)|^(react-dom)",
+    "^(next/(.*)$)|^(next$)|^(next)",
+    "",
+    "<THIRD_PARTY_MODULES>",
+    "^@chakra-ui/react|^@iconify/react",
+    "",
+    "^@components/(.*)$",
+    "",
+    "^@services/(.*)$|^@utils/(.*)$",
+    "",
+    "^[./]",
+    "^(?!.*[.]css$)[./].*$",
+    ".css$"
+  ],
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true,
+  "importOrderBuiltinModulesToTop": true,
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
+  "importOrderMergeDuplicateImports": true,
+  "importOrderCombineTypeAndValueImports": true,
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"]
 }

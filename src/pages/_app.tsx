@@ -1,88 +1,113 @@
 import type { AppProps } from 'next/app';
+
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Box, ChakraProvider, SimpleGrid } from '@chakra-ui/react';
+import { Karla } from 'next/font/google';
+import localFont from 'next/font/local';
 
 import { nfTheme } from '@styles/theme';
-import { store } from '@redux/store';
-import Footer from '@components/common/footer';
-import Breadcrumbs from '@components/common/breadcumbs';
-import GoToTopButton from '@components/common/buttons/goToTopButton';
-import GoBackButton from '@components/common/buttons/goBackButton';
-import Fonts from '@styles/font';
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider
+} from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Box, ChakraProvider, SimpleGrid } from '@chakra-ui/react';
+
+import Breadcrumbs from '@components/breadcumbs';
+import Footer from '@components/footer';
+import GoToTopButton from '@components/misc/goToTopButton';
 
 import '@styles/globals.css';
-import '@styles/embla.css';
 import 'nprogress/nprogress.css';
+
+const karla = Karla({
+  subsets: ['latin'],
+  variable: '--font-karla'
+});
+
+const ffFont = localFont({
+  src: '../styles/fonts/highwind.ttf',
+  variable: '--font-ff'
+});
 
 const TopProgressBar = dynamic(
   () => {
-    return import('@components/common/topProgressBar');
+    return import('@components/misc/topProgressBar');
   },
   { ssr: false }
 );
 
-const MyApp = ({ Component, pageProps, router }: AppProps) => {
-  useEffect(() => {
-    router.events.on('routeChangeComplete', () => {
-      window.scroll({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
-    });
-  }, [router]);
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }
+});
 
+const MyApp = ({ Component, pageProps, router }: AppProps) => {
   return (
-    <ChakraProvider theme={nfTheme}>
-      <Fonts />
-      <TopProgressBar />
-      <SimpleGrid width="100%" minH="110vh" templateRows="1fr auto">
-        <AnimatePresence
-          exitBeforeEnter
-          initial={false}
-          onExitComplete={() =>
-            typeof window !== 'undefined' && window.scrollTo(0, 0)
+    <>
+      <style jsx global>
+        {`
+          :root {
+            --karla-font: ${karla.style.fontFamily};
+            --ff-font: ${ffFont.style.fontFamily};
           }
-        >
-          <motion.main
-            key={router.route}
-            transition={{
-              type: 'tween',
-              duration: 0.7,
-              ease: 'easeInOut'
-            }}
-            initial={{
-              overflow: 'visible',
-              opacity: 0,
-              height: '100%'
-            }}
-            animate={{
-              overflow: 'visible',
-              opacity: 1,
-              position: 'static'
-            }}
-            exit={{
-              overflow: 'visible',
-              opacity: 0,
-              height: '100%'
-            }}
-          >
-            {router.pathname !== '/' && (
-              <Box px={[12, null, 24, 32]} pt={14}>
-                <Breadcrumbs />
-              </Box>
-            )}
-            <Component {...pageProps} />
-          </motion.main>
-        </AnimatePresence>
-        <Footer />
-      </SimpleGrid>
-      <GoBackButton />
-      <GoToTopButton />
-    </ChakraProvider>
+        `}
+      </style>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <ChakraProvider theme={nfTheme}>
+            <TopProgressBar />
+            <SimpleGrid width="100%" minH="100vh" templateRows="auto 1fr">
+              {router.pathname !== '/' && (
+                <Box
+                  pt={14}
+                  mx="auto"
+                  w={['91.666667%%', '83.333333%', null, '75%']}
+                >
+                  <Breadcrumbs />
+                </Box>
+              )}
+
+              {/*  <AnimatePresence mode="wait" initial={false}>
+                <motion.main
+                  key={router.route}
+                  transition={{
+                    type: 'tween',
+                    duration: 1,
+                    ease: 'easeInOut'
+                  }}
+                  initial={{
+                    overflow: 'visible',
+                    opacity: 0,
+                    height: '100%'
+                  }}
+                  animate={{
+                    overflow: 'visible',
+                    opacity: 1,
+                    position: 'static'
+                  }}
+                  exit={{
+                    overflow: 'visible',
+                    opacity: 0,
+                    height: '100%'
+                  }}
+                > */}
+              <Component {...pageProps} />
+              {/* </motion.main>
+              </AnimatePresence> */}
+              <Footer />
+            </SimpleGrid>
+            <GoToTopButton />
+          </ChakraProvider>
+        </Hydrate>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </>
   );
 };
 
-export default store.withRedux(MyApp);
+export default MyApp;

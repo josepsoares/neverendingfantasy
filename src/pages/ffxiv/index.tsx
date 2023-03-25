@@ -1,12 +1,11 @@
-import { NextPage } from 'next';
 import Link from 'next/link';
 
-import SEO from '@components/common/seo';
-import { Box, Grid, Heading, Text } from '@chakra-ui/react';
-import CardBg from '@components/common/cardBg';
-import BgBlueBox from '@components/common/bgBlueBox';
+import { Container, Grid, Heading, Text } from '@chakra-ui/react';
 
-const FFXIVPage: NextPage = () => {
+import BgImgCard from '@components/cards/bgImgCard';
+import SEO from '@components/seo';
+
+const FFXIVPage = () => {
   return (
     <>
       <SEO
@@ -14,143 +13,85 @@ const FFXIVPage: NextPage = () => {
         description="Check lots of stuff related to the hottest FF MMORPG ever in the block, FFXIV"
       />
 
-      <Box px={[12, null, 24, 32]} py={16}>
-        <Heading as="h1" pb={6} textColor="brand.500">
+      <Container
+        py="16"
+        mx="auto"
+        maxW={['91.666667%%', '83.333333%', null, '75%']}
+      >
+        <Heading
+          as="h1"
+          color="brand.800"
+          fontSize={['5xl', null, null, '8xl']}
+        >
           FFXIV stuff
         </Heading>
-        <Text pb={4}>
-          Final Fantasy XIV is a massively multiplayer online role-playing game
-          (MMORPG) developed and published by Square Enix. Directed and produced
-          by Naoki Yoshida, it was released worldwide for Microsoft Windows and
+        <Text fontWeight="medium" fontSize="2xl" pb="4">
+          Did you know that the critically acclaimed MMORPG Final Fantasy XIV
+          has a free trial, and includes the entirety of A Realm Reborn AND the
+          award-winning Heavensward expansion up to level 60 with no
+          restrictions on playtime? Sign up, and enjoy Eorzea today!
+        </Text>
+
+        <Text fontSize="xl" pb="4">
+          Well, for serious now, Final Fantasy XIV is directed and produced by
+          Naoki Yoshida, it was released worldwide for Microsoft Windows and
           PlayStation 3 in August 2013, as a replacement for the failed 2010
           version of the game, with support for PlayStation 4, PlayStation 5,
           and macOS releasing later. Final Fantasy XIV takes place in the
           fictional land of Eorzea, five years after the events of the original
           2010 release.
         </Text>
-        <Text>
+
+        <Text fontSize="xl">
           You can check out here things about FFXIV, you know, collectables,
-          class jobs, raids, dungeons, the oyster is your world
+          class jobs, raids, dungeons, the oyster is your world, enjoy!
         </Text>
-      </Box>
+      </Container>
 
-      <Link href="/ffxiv/collectables-fashion" passHref={true}>
-        <Box
-          as="a"
-          w="100%"
-          opacity="0.9"
-          display="block"
-          transition="background-color 1s linear"
-          background="#0064d7"
-          sx={{
-            '&:hover, &:active': {
-              background: '#2f93ff'
-            }
-          }}
-        >
-          <CardBg
-            h={80}
-            imgUrl="img/ffxiv/ffxiv-fashion.jpg"
-            imgAlt="Fashion Image"
-            radii={false}
-          >
-            <Heading textColor="white" as="h2">
-              Collectables and Fashion
-            </Heading>
-            <Text textColor="white">
-              collectables, fashion things and a randomizer
-            </Text>
-          </CardBg>
-        </Box>
-      </Link>
-
-      <Grid templateColumns={['1fr', null, 'repeat(2, 1fr)', 'repeat(3, 1fr)']}>
+      <Grid templateColumns={['1fr', null, 'repeat(2, 1fr)']}>
         <Link href="/ffxiv/classjobs" passHref={true}>
-          <Box
-            as="a"
-            w="100%"
-            opacity="0.9"
-            display="block"
-            transition="background-color 1s linear"
-            background="#0064d7"
-            sx={{
-              '&:hover, &:active': {
-                background: '#2f93ff'
-              }
-            }}
+          <BgImgCard
+            h={80}
+            imgUrl="/assets/img/ffxiv/classjobs.jpg"
+            imgAlt="Class Jobs"
           >
-            <CardBg
-              h={64}
-              imgUrl="img/ffxiv/ffxiv-classjobs.jpg"
-              imgAlt="Class Jobs"
-              radii={false}
+            <Heading
+              zIndex="2"
+              textColor="white"
+              as="h2"
+              fontSize={['4xl', null, '6xl']}
             >
-              <Heading zIndex="2" textColor="white" as="h2">
-                Class Jobs
-              </Heading>
-              <Text zIndex="2" textColor="white">
-                explore all the cool class jobs your character can do
-              </Text>
-            </CardBg>
-          </Box>
+              Classes / Jobs
+            </Heading>
+            <Text
+              zIndex="2"
+              textColor="white"
+              textAlign="center"
+              fontSize={['xl', null, '2xl']}
+            >
+              explore all the cool classes/jobs your character can be/do
+            </Text>
+          </BgImgCard>
         </Link>
 
-        <Link href="/ffxiv/instances" passHref={true}>
-          <Box
-            as="a"
-            w="100%"
-            opacity="0.9"
-            display="block"
-            transition="background-color 1s linear"
-            background="#0064d7"
-            sx={{
-              '&:hover, &:active': {
-                background: '#2f93ff'
-              }
-            }}
+        <Link href="/ffxiv/collectables">
+          <BgImgCard
+            h={80}
+            imgUrl="/assets/img/ffxiv/fashion.jpg"
+            imgAlt="FFXIV Collectables Image"
           >
-            <CardBg
-              h={64}
-              imgUrl="img/ffxiv/ffxiv-dungeon.jpg"
-              imgAlt="Class Jobs"
-              radii={false}
+            <Heading textColor="white" as="h2" fontSize={['4xl', null, '6xl']}>
+              Collectables
+            </Heading>
+            <Text
+              zIndex="2"
+              textColor="white"
+              textAlign="center"
+              fontSize={['xl', null, '2xl']}
             >
-              <Heading zIndex="2" textColor="white" as="h2">
-                Instances
-              </Heading>
-              <Text zIndex="2" textColor="white">
-                the raids, the dungeons, the excitment
-              </Text>
-            </CardBg>
-          </Box>
-        </Link>
-
-        <Link href="/ffxiv/triple-triad" passHref={true}>
-          <Box
-            as="a"
-            w="100%"
-            opacity="0.9"
-            display="block"
-            transition="background-color 1s linear"
-            background="#0064d7"
-            sx={{
-              '&:hover, &:active': {
-                background: '#2f93ff'
-              }
-            }}
-          >
-            <CardBg
-              h={64}
-              imgUrl="img/ffxiv/ffxiv-triple-triad.jpg"
-              imgAlt="Triple Triad Image"
-              radii={false}
-            >
-              <Heading as="h2" textColor="white">
-                Triple Triad
-              </Heading>
-              <Text textColor="white">aim to be the ace of cards in ffxiv</Text>
-            </CardBg>
-          </Box>
+              all kinds of collectables (fashion, mounts, cards etc.)
+            </Text>
+          </BgImgCard>
         </Link>
       </Grid>
     </>

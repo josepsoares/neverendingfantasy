@@ -16,14 +16,11 @@
     "incremental": true,
     "baseUrl": "src/",
     "paths": {
-      "@assets/*": ["assets/*"],
-      "@redux/*": ["redux/*"],
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
       "@styles/*": ["styles/*"],
       "@services/*": ["services/*"],
       "@utils/*": ["utils/*"],
-      "@hooks/*": ["hooks/*"],
       "@ts/*": ["ts/*"]
     }
   },

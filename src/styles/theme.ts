@@ -5,10 +5,20 @@ const config = {
   initialColorMode: 'light'
 };
 
+const breakpoints = {
+  sm: '320px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1440px',
+  '2xl': '1920px',
+  '3xl': '2560px'
+};
+
 export const nfTheme = extendTheme({
+  breakpoints,
   fonts: {
-    heading: "'Karla', sans-serif",
-    body: "'Karla', sans-serif"
+    heading: 'var(--ff-font), sans-serif',
+    body: "'var(--karla-font)', sans-serif"
   },
   colors: {
     brand: {
@@ -21,37 +31,6 @@ export const nfTheme = extendTheme({
       700: '#173a86',
       800: '#143375',
       900: '#112c64'
-    }
-  },
-  styles: {
-    global: {
-      h1: {
-        fontFamily: 'FinalFantasyFont !important',
-        fontSize: '8rem'
-      },
-      h2: {
-        fontFamily: 'FinalFantasyFont !important'
-      },
-      '#nprogress .bar': {
-        height: '10px !important'
-      },
-      '.overlay-img': {
-        opacity: 0.1,
-        zIndex: '-100'
-      },
-      '.overlay-img-round': {
-        opacity: 0.4,
-        zIndex: -100,
-        borderRadius: '24px'
-      },
-      'nav ol li': {
-        listStyleType: 'none'
-      },
-      'nav ol': {
-        margin: 0,
-        padding: 0,
-        display: 'inline-flex'
-      }
     }
   },
   ...config

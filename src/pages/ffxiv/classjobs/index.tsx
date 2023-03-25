@@ -1,68 +1,139 @@
-import { NextPage } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Box, Flex, Grid, Heading } from '@chakra-ui/react';
+import type { NextPage } from 'next';
 
-import { useIndexClassJobsQuery } from '@services/api/ffxivApi';
-import Loading from '@components/common/feedback/loading';
-import Error from '@components/common/feedback/error';
-import SEO from '@components/common/seo';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { useQuery } from '@tanstack/react-query';
+import { Box, Button, Heading, SimpleGrid, VStack } from '@chakra-ui/react';
+
+import Container from '@components/container';
+import Error from '@components/feedback/error';
+import Loading from '@components/feedback/loading';
+import SEO from '@components/seo';
+import { indexClassJobs } from '@services/ffxivApi';
 import { FFXIV_API } from '@utils/constants';
-import { capitalizeString } from '@utils/helpers/capitalizeString';
+import { _cap } from '@utils/helpers/string';
+
+const ClassJobCard: React.FC<{ children: React.ReactNode; href: string }> = ({
+  children,
+  href
+}) => {
+  return (
+    <Button
+      top="0"
+      h="auto"
+      p="6"
+      gap="4"
+      href={href}
+      textColor="white"
+      border="2px"
+      boxShadow="md"
+      display="flex"
+      flexDir="column"
+      borderRadius="lg"
+      textAlign="left"
+      alignItems="center"
+      bgColor="brand.600"
+      borderColor="blue.300"
+      fontWeight="normal"
+      whiteSpace="normal"
+      position="relative"
+      bgGradient="linear(to-br, brand.300, brand.700)"
+      transition="all ease-in-out 0.2s"
+      as={Link}
+      _hover={{
+        top: '-5px',
+        img: {
+          opacity: '100%'
+        }
+      }}
+      _active={{
+        top: '-5px',
+        img: {
+          opacity: '100%'
+        }
+      }}
+    >
+      {children}
+    </Button>
+  );
+};
 
 const ClassJob: NextPage = () => {
-  const classJobs = useIndexClassJobsQuery();
-  const { data, error, isLoading } = classJobs;
-
-  // console.log(data);
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['classjobs'],
+    queryFn: indexClassJobs
+  });
 
   return (
     <>
-      <SEO title="Class Jobs - FFXIV" />
-      <Box px={[12, null, 24, 32]} py={16}>
-        <Heading as="h1">Class Jobs</Heading>
-        <Box>
-          {error ? (
-            <Error />
-          ) : isLoading ? (
-            <Loading />
-          ) : data ? (
-            <Grid
-              gridTemplateColumns={[
-                '1fr',
-                '1fr 1fr',
-                'repeat(3, 1fr)',
-                null,
-                'repeat(5, 1fr)'
-              ]}
-              gap={8}
-            >
-              {data.Results.map((classJob, i) => (
-                <Link key={i} href={`/ffxiv/classjobs/${classJob.ID}`}>
-                  <a>
-                    <Flex
-                      justifyContent="center"
-                      alignItems="center"
-                      flexDir="column"
-                      p={8}
+      <SEO title="Clas/Jobs - FFXIV" />
+      <Container py="16">
+        <Heading color="brand.800" fontSize="8xl" as="h1" pb={8}>
+          Classes and Jobs
+        </Heading>
+
+        {error ? (
+          <Error />
+        ) : isLoading ? (
+          <Loading />
+        ) : data ? (
+          <VStack spacing="20">
+            <Box w="full">
+              <Heading as="h2" letterSpacing="normal" fontFamily="body" pb="8">
+                Disciples of War / Magic
+              </Heading>
+
+              <SimpleGrid columns={[1, null, 2, 3, 4, 5]} gap={8}>
+                {data.Results.filter(item => item.ID < 8 || item.ID > 18).map(
+                  (classJob, i) => (
+                    <ClassJobCard
+                      key={i}
+                      href={`/ffxiv/classjobs/${classJob.ID}`}
                     >
                       <Image
                         src={`${FFXIV_API}${classJob.Icon}`}
-                        width="85px"
-                        height="80px"
+                        width="85"
+                        height="80"
                         alt={`${classJob.Name} Icon`}
                       />
-                      <Heading mt={6} fontSize="2xl" as="h4">
-                        {capitalizeString(classJob.Name)}
+                      <Heading noOfLines={1} fontSize="3xl" as="h2">
+                        {_cap(classJob.Name)}
                       </Heading>
-                    </Flex>
-                  </a>
-                </Link>
-              ))}
-            </Grid>
-          ) : null}
-        </Box>
-      </Box>
+                    </ClassJobCard>
+                  )
+                )}
+              </SimpleGrid>
+            </Box>
+            <Box w="full">
+              <Heading as="h2" letterSpacing="normal" fontFamily="body" pb={8}>
+                Disciples of the Hand / Land
+              </Heading>
+
+              <SimpleGrid columns={[1, null, 2, 3, 4, 5]} gap={8}>
+                {data.Results.filter(item => item.ID >= 8 && item.ID <= 18).map(
+                  (classJob, i) => (
+                    <ClassJobCard
+                      key={i}
+                      href={`/ffxiv/classjobs/${classJob.ID}`}
+                    >
+                      <Image
+                        width="85"
+                        height="80"
+                        src={`${FFXIV_API}${classJob.Icon}`}
+                        alt={`${classJob.Name} Icon`}
+                      />
+                      <Heading noOfLines={1} fontSize="3xl" as="h3">
+                        {_cap(classJob.Name)}
+                      </Heading>
+                    </ClassJobCard>
+                  )
+                )}
+              </SimpleGrid>
+            </Box>
+          </VStack>
+        ) : null}
+      </Container>
     </>
   );
 };
